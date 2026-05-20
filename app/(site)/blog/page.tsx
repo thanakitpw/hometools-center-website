@@ -1,0 +1,65 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { listPosts } from '@/lib/queries/posts';
+import { Breadcrumb } from '@/components/site/breadcrumb';
+import { Pagination } from '@/components/site/pagination';
+
+export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: 'บทความและข่าวสาร',
+  description: 'รวมบทความ ความรู้ และข่าวสาร เกี่ยวกับงานระบบ ท่อ ประปา และวัสดุก่อสร้าง',
+  alternates: { canonical: '/blog' },
+};
+
+type SearchParams = { page?: string };
+
+export default async function BlogIndex({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const sp = await searchParams;
+  const page = Math.max(1, parseInt(sp.page || '1', 10));
+  const perPage = 12;
+  const { items, total } = await listPosts({ page, perPage });
+  const totalPages = Math.ceil(total / perPage);
+
+  return (
+    <div className="mx-auto max-w-7xl px-6 py-6">
+      <Breadcrumb items={[{ label: 'หน้าหลัก', href: '/' }, { label: 'บทความ' }]} />
+      <h1 className="mt-6 !text-2xl !text-[var(--color-fg)] md:!text-3xl">บทความและข่าวสาร</h1>
+
+      <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map(p => (
+          <Link
+            key={p.id}
+            href={`/blog/${p.slug}` as any}
+            className="group overflow-hidden rounded-lg border border-[var(--color-border)] bg-white transition-shadow hover:shadow-md"
+          >
+            <div className="aspect-[16/10] overflow-hidden bg-[var(--color-muted)]">
+              {p.cover_image_url ? (
+                <img
+                  src={p.cover_image_url}
+                  alt={p.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-xs text-[var(--color-muted-fg)]">No image</div>
+              )}
+            </div>
+            <div className="p-4">
+              <h3 className="line-clamp-2 text-base font-semibold text-[var(--color-fg)] group-hover:text-[var(--color-brand-500)]">
+                {p.title}
+              </h3>
+              {p.published_at && (
+                <p className="mt-2 text-xs text-[var(--color-muted-fg)]">
+                  {new Date(p.published_at).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </p>
+              )}
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <Pagination page={page} totalPages={totalPages} baseUrl="/blog" />
+    </div>
+  );
+}

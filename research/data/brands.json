@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "toa",
+    "name": "TOA"
+  },
+  {
+    "slug": "scg",
+    "name": "SCG"
+  },
+  {
+    "slug": "ana",
+    "name": "ANA"
+  },
+  {
+    "slug": "elixir",
+    "name": "ELIXIR"
+  },
+  {
+    "slug": "sanwa",
+    "name": "SANWA"
+  },
+  {
+    "slug": "grand",
+    "name": "GRAND"
+  },
+  {
+    "slug": "grundfos",
+    "name": "Grundfos"
+  }
+]

@@ -1,0 +1,224 @@
+[
+  {
+    "from_path": "/article/",
+    "to_path": "/blog",
+    "status_code": 301,
+    "reason": "blog index moved"
+  },
+  {
+    "from_path": "/article",
+    "to_path": "/blog",
+    "status_code": 301,
+    "reason": "blog index moved"
+  },
+  {
+    "from_path": "/มารู้-5-สาเหตุของการเกิด/",
+    "from_path_encoded": "/%e0%b8%a1%e0%b8%b2%e0%b8%a3%e0%b8%b9%e0%b9%89-5-%e0%b8%aa%e0%b8%b2%e0%b9%80%e0%b8%ab%e0%b8%95%e0%b8%b8%e0%b8%82%e0%b8%ad%e0%b8%87%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b9%80%e0%b8%81%e0%b8%b4%e0%b8%94/",
+    "to_path": "/blog/5-causes-dirty-tap-water",
+    "status_code": 301,
+    "reason": "blog post: มารู้ 5 สาเหตุของการเกิดน้ำประปาสกปรก พร้อมวิธีแก้"
+  },
+  {
+    "from_path": "/น้ำประปาดื่มได้จริงเหร/",
+    "from_path_encoded": "/%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%9b%e0%b8%b2%e0%b8%94%e0%b8%b7%e0%b9%88%e0%b8%a1%e0%b9%84%e0%b8%94%e0%b9%89%e0%b8%88%e0%b8%a3%e0%b8%b4%e0%b8%87%e0%b9%80%e0%b8%ab%e0%b8%a3/",
+    "to_path": "/blog/is-tap-water-safe-to-drink",
+    "status_code": 301,
+    "reason": "blog post: น้ำประปาดื่มได้จริงเหรอ??"
+  },
+  {
+    "from_path": "/รู้หรือไม่-ท่อpvc-มีอายุกา/",
+    "from_path_encoded": "/%e0%b8%a3%e0%b8%b9%e0%b9%89%e0%b8%ab%e0%b8%a3%e0%b8%b7%e0%b8%ad%e0%b9%84%e0%b8%a1%e0%b9%88-%e0%b8%97%e0%b9%88%e0%b8%adpvc-%e0%b8%a1%e0%b8%b5%e0%b8%ad%e0%b8%b2%e0%b8%a2%e0%b8%b8%e0%b8%81%e0%b8%b2/",
+    "to_path": "/blog/pvc-pipe-lifespan",
+    "status_code": 301,
+    "reason": "blog post: รู้หรือไม่? ท่อPVC มีอายุการใช้งานเท่าไร"
+  },
+  {
+    "from_path": "/ทริคการบำรุงรักษาท่อ-ppr-เ/",
+    "from_path_encoded": "/%e0%b8%97%e0%b8%a3%e0%b8%b4%e0%b8%84%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b8%9a%e0%b8%b3%e0%b8%a3%e0%b8%b8%e0%b8%87%e0%b8%a3%e0%b8%b1%e0%b8%81%e0%b8%a9%e0%b8%b2%e0%b8%97%e0%b9%88%e0%b8%ad-ppr-%e0%b9%80/",
+    "to_path": "/blog/ppr-pipe-maintenance-tips",
+    "status_code": 301,
+    "reason": "blog post: ทริคการบำรุงรักษาท่อ PPR เพื่อยืดอายุการใช้งาน"
+  },
+  {
+    "from_path": "/free-shipping-promotion/",
+    "from_path_encoded": "/free-shipping-promotion/",
+    "to_path": "/blog/delivery-promotion",
+    "status_code": 301,
+    "reason": "blog post: โปรโมชั่นการจัดส่ง"
+  },
+  {
+    "from_path": "/home-tools-center-บริการจัดส่ง/",
+    "from_path_encoded": "/home-tools-center-%e0%b8%9a%e0%b8%a3%e0%b8%b4%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b8%88%e0%b8%b1%e0%b8%94%e0%b8%aa%e0%b9%88%e0%b8%87/",
+    "to_path": "/blog/delivery-service",
+    "status_code": 301,
+    "reason": "blog post: Home Tools Center บริการจัดส่ง"
+  },
+  {
+    "from_path": "/น้ำประปามาจากไหน/",
+    "from_path_encoded": "/%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%9b%e0%b8%b2%e0%b8%a1%e0%b8%b2%e0%b8%88%e0%b8%b2%e0%b8%81%e0%b9%84%e0%b8%ab%e0%b8%99/",
+    "to_path": "/blog/where-tap-water-comes-from",
+    "status_code": 301,
+    "reason": "blog post: น้ำประปามาจากไหน"
+  },
+  {
+    "from_path": "/โปรโมชนสำหรบลกคาทตองกา/",
+    "from_path_encoded": "/%e0%b9%82%e0%b8%9b%e0%b8%a3%e0%b9%82%e0%b8%a1%e0%b8%8a%e0%b8%99%e0%b8%aa%e0%b8%b3%e0%b8%ab%e0%b8%a3%e0%b8%9a%e0%b8%a5%e0%b8%81%e0%b8%84%e0%b8%b2%e0%b8%97%e0%b8%95%e0%b8%ad%e0%b8%87%e0%b8%81%e0%b8%b2/",
+    "to_path": "/blog/new-shop-opening-promotion",
+    "status_code": 301,
+    "reason": "blog post: โปรโมชั่นสำหรับลูกค้าที่ต้องการเปิดร้านใหม่"
+  },
+  {
+    "from_path": "/หาซื้อท่อพีวีซีกันอยู่/",
+    "from_path_encoded": "/%e0%b8%ab%e0%b8%b2%e0%b8%8b%e0%b8%b7%e0%b9%89%e0%b8%ad%e0%b8%97%e0%b9%88%e0%b8%ad%e0%b8%9e%e0%b8%b5%e0%b8%a7%e0%b8%b5%e0%b8%8b%e0%b8%b5%e0%b8%81%e0%b8%b1%e0%b8%99%e0%b8%ad%e0%b8%a2%e0%b8%b9%e0%b9%88/",
+    "to_path": "/blog/how-to-choose-drinking-water-pipe",
+    "status_code": 301,
+    "reason": "blog post: เลือกท่อน้ำดื่มอย่างไร ให้อุ่นใจ ไร้กังวล"
+  },
+  {
+    "from_path": "/เลือกท่อน้ำดื่มอย่างไร/",
+    "from_path_encoded": "/%e0%b9%80%e0%b8%a5%e0%b8%b7%e0%b8%ad%e0%b8%81%e0%b8%97%e0%b9%88%e0%b8%ad%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%94%e0%b8%b7%e0%b9%88%e0%b8%a1%e0%b8%ad%e0%b8%a2%e0%b9%88%e0%b8%b2%e0%b8%87%e0%b9%84%e0%b8%a3/",
+    "to_path": "/blog/scg-green-premium-pvc-pipe",
+    "status_code": 301,
+    "reason": "blog post: ท่อพีวีซี เอสซีจี รุ่น Green Premium มีดีอย่างไร ท"
+  },
+  {
+    "from_path": "/ระบบประปา-น้ำอุ่น-น้ำร้อ/",
+    "from_path_encoded": "/%e0%b8%a3%e0%b8%b0%e0%b8%9a%e0%b8%9a%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%9b%e0%b8%b2-%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%ad%e0%b8%b8%e0%b9%88%e0%b8%99-%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%a3%e0%b9%89%e0%b8%ad/",
+    "to_path": "/blog/best-pipe-for-hot-water-system",
+    "status_code": 301,
+    "reason": "blog post: ระบบประปา น้ำอุ่น น้ำร้อน ใช้ท่ออะไรดีนะ ?"
+  },
+  {
+    "from_path": "/article-title-1/",
+    "from_path_encoded": "/article-title-1/",
+    "to_path": "/blog/4-reasons-choose-scg-pipe",
+    "status_code": 301,
+    "reason": "blog post: 4 เหตุผลที่ต้องเลือกท่อเอสซีจี"
+  },
+  {
+    "from_path": "/ระบบสุขาภิบาล-sanitary-system/",
+    "from_path_encoded": "/%e0%b8%a3%e0%b8%b0%e0%b8%9a%e0%b8%9a%e0%b8%aa%e0%b8%b8%e0%b8%82%e0%b8%b2%e0%b8%a0%e0%b8%b4%e0%b8%9a%e0%b8%b2%e0%b8%a5-sanitary-system/",
+    "to_path": "/blog/types-of-sanitary-system",
+    "status_code": 301,
+    "reason": "blog post: ระบบสุขาภิบาลมีกี่ประเภท ?"
+  },
+  {
+    "from_path": "/ระบบน้ำประปาภายในบ้าน/",
+    "from_path_encoded": "/%e0%b8%a3%e0%b8%b0%e0%b8%9a%e0%b8%9a%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%9b%e0%b8%b2%e0%b8%a0%e0%b8%b2%e0%b8%a2%e0%b9%83%e0%b8%99%e0%b8%9a%e0%b9%89%e0%b8%b2%e0%b8%99/",
+    "to_path": "/blog/home-water-supply-system",
+    "status_code": 301,
+    "reason": "blog post: ระบบน้ำประปาภายในบ้าน"
+  },
+  {
+    "from_path": "/โปรโมชั่น-toa-megapaint/",
+    "from_path_encoded": "/%e0%b9%82%e0%b8%9b%e0%b8%a3%e0%b9%82%e0%b8%a1%e0%b8%8a%e0%b8%b1%e0%b9%88%e0%b8%99-toa-megapaint/",
+    "to_path": "/blog/toa-paint-promotion",
+    "status_code": 301,
+    "reason": "blog post: โปรโมชั่น ซื้อสี TOA"
+  },
+  {
+    "from_path": "/ประเภทท่อในระบบสุขาภิบ/",
+    "from_path_encoded": "/%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b9%80%e0%b8%a0%e0%b8%97%e0%b8%97%e0%b9%88%e0%b8%ad%e0%b9%83%e0%b8%99%e0%b8%a3%e0%b8%b0%e0%b8%9a%e0%b8%9a%e0%b8%aa%e0%b8%b8%e0%b8%82%e0%b8%b2%e0%b8%a0%e0%b8%b4%e0%b8%9a/",
+    "to_path": "/blog/sanitary-pipe-types",
+    "status_code": 301,
+    "reason": "blog post: ประเภทท่อในระบบสุขาภิบาล"
+  },
+  {
+    "from_path": "/ท่อประปารั่วใต้พื้นบ้า/",
+    "from_path_encoded": "/%e0%b8%97%e0%b9%88%e0%b8%ad%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%9b%e0%b8%b2%e0%b8%a3%e0%b8%b1%e0%b9%88%e0%b8%a7%e0%b9%83%e0%b8%95%e0%b9%89%e0%b8%9e%e0%b8%b7%e0%b9%89%e0%b8%99%e0%b8%9a%e0%b9%89%e0%b8%b2/",
+    "to_path": "/blog/underground-water-pipe-leak",
+    "status_code": 301,
+    "reason": "blog post: ท่อประปารั่วใต้พื้นบ้าน"
+  },
+  {
+    "from_path": "/สาเหตุของเสียงรบกวนจาก/",
+    "from_path_encoded": "/%e0%b8%aa%e0%b8%b2%e0%b9%80%e0%b8%ab%e0%b8%95%e0%b8%b8%e0%b8%82%e0%b8%ad%e0%b8%87%e0%b9%80%e0%b8%aa%e0%b8%b5%e0%b8%a2%e0%b8%87%e0%b8%a3%e0%b8%9a%e0%b8%81%e0%b8%a7%e0%b8%99%e0%b8%88%e0%b8%b2%e0%b8%81/",
+    "to_path": "/blog/drain-pipe-noise-causes",
+    "status_code": 301,
+    "reason": "blog post: สาเหตุของเสียงรบกวนจากระบบท่อน้ำทิ้ง เกิดจากอะไร"
+  },
+  {
+    "from_path": "/รูปแบบการเดินท่อประปาภ/",
+    "from_path_encoded": "/%e0%b8%a3%e0%b8%b9%e0%b8%9b%e0%b9%81%e0%b8%9a%e0%b8%9a%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b9%80%e0%b8%94%e0%b8%b4%e0%b8%99%e0%b8%97%e0%b9%88%e0%b8%ad%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%9b%e0%b8%b2%e0%b8%a0/",
+    "to_path": "/blog/home-plumbing-layout-guide",
+    "status_code": 301,
+    "reason": "blog post: รูปแบบการเดินท่อประปาภายในบ้าน"
+  },
+  {
+    "from_path": "/ระบบน้ำที่เหมาะกับการใ/",
+    "from_path_encoded": "/%e0%b8%a3%e0%b8%b0%e0%b8%9a%e0%b8%9a%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%97%e0%b8%b5%e0%b9%88%e0%b9%80%e0%b8%ab%e0%b8%a1%e0%b8%b2%e0%b8%b0%e0%b8%81%e0%b8%b1%e0%b8%9a%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b9%83/",
+    "to_path": "/blog/ppr-pipe-applications",
+    "status_code": 301,
+    "reason": "blog post: ระบบน้ำที่เหมาะกับการใช้ท่อ PPR"
+  },
+  {
+    "from_path": "/ก๊อกน้ำรั่ว-น้ำหยด-เกิดจ/",
+    "from_path_encoded": "/%e0%b8%81%e0%b9%8a%e0%b8%ad%e0%b8%81%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%a3%e0%b8%b1%e0%b9%88%e0%b8%a7-%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%ab%e0%b8%a2%e0%b8%94-%e0%b9%80%e0%b8%81%e0%b8%b4%e0%b8%94%e0%b8%88/",
+    "to_path": "/blog/leaky-faucet-causes",
+    "status_code": 301,
+    "reason": "blog post: ก๊อกน้ำรั่ว น้ำหยด เกิดจากอะไร"
+  },
+  {
+    "from_path": "/ปัญหาของระบบประปาที่ทำ/",
+    "from_path_encoded": "/%e0%b8%9b%e0%b8%b1%e0%b8%8d%e0%b8%ab%e0%b8%b2%e0%b8%82%e0%b8%ad%e0%b8%87%e0%b8%a3%e0%b8%b0%e0%b8%9a%e0%b8%9a%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%9b%e0%b8%b2%e0%b8%97%e0%b8%b5%e0%b9%88%e0%b8%97%e0%b8%b3/",
+    "to_path": "/blog/tap-water-sediment-problems",
+    "status_code": 301,
+    "reason": "blog post: ปัญหาของระบบประปาที่ทำให้มีตะกอนและมีสิ่งเจือปน"
+  },
+  {
+    "from_path": "/3-สาเหตุหลักส่งผลให้-น้ำ/",
+    "from_path_encoded": "/3-%e0%b8%aa%e0%b8%b2%e0%b9%80%e0%b8%ab%e0%b8%95%e0%b8%b8%e0%b8%ab%e0%b8%a5%e0%b8%b1%e0%b8%81%e0%b8%aa%e0%b9%88%e0%b8%87%e0%b8%9c%e0%b8%a5%e0%b9%83%e0%b8%ab%e0%b9%89-%e0%b8%99%e0%b9%89%e0%b8%b3/",
+    "to_path": "/blog/3-causes-bad-smell-tap-water",
+    "status_code": 301,
+    "reason": "blog post: 3 สาเหตุหลักส่งผลให้ น้ำประปา มีกลิ่นไม่พึง"
+  },
+  {
+    "from_path": "/3-วิธีกำจัดกลิ่นคลอรีนใน/",
+    "from_path_encoded": "/3-%e0%b8%a7%e0%b8%b4%e0%b8%98%e0%b8%b5%e0%b8%81%e0%b8%b3%e0%b8%88%e0%b8%b1%e0%b8%94%e0%b8%81%e0%b8%a5%e0%b8%b4%e0%b9%88%e0%b8%99%e0%b8%84%e0%b8%a5%e0%b8%ad%e0%b8%a3%e0%b8%b5%e0%b8%99%e0%b9%83%e0%b8%99/",
+    "to_path": "/blog/3-ways-remove-chlorine-smell",
+    "status_code": 301,
+    "reason": "blog post: 3 วิธีกำจัดกลิ่นคลอรีนในน้ำประปา"
+  },
+  {
+    "from_path": "/การตรวจสอบมิเตอร์น้ำ/",
+    "from_path_encoded": "/%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b8%95%e0%b8%a3%e0%b8%a7%e0%b8%88%e0%b8%aa%e0%b8%ad%e0%b8%9a%e0%b8%a1%e0%b8%b4%e0%b9%80%e0%b8%95%e0%b8%ad%e0%b8%a3%e0%b9%8c%e0%b8%99%e0%b9%89%e0%b8%b3/",
+    "to_path": "/blog/how-to-check-water-meter",
+    "status_code": 301,
+    "reason": "blog post: การตรวจสอบมิเตอร์น้ำ"
+  },
+  {
+    "from_path": "/เทคนิคแก้ปัญหาท่อน้ำตั/",
+    "from_path_encoded": "/%e0%b9%80%e0%b8%97%e0%b8%84%e0%b8%99%e0%b8%b4%e0%b8%84%e0%b9%81%e0%b8%81%e0%b9%89%e0%b8%9b%e0%b8%b1%e0%b8%8d%e0%b8%ab%e0%b8%b2%e0%b8%97%e0%b9%88%e0%b8%ad%e0%b8%99%e0%b9%89%e0%b8%b3%e0%b8%95%e0%b8%b1/",
+    "to_path": "/blog/unclog-water-pipe-diy",
+    "status_code": 301,
+    "reason": "blog post: เทคนิคแก้ปัญหาท่อน้ำตันได้เองโดยไม่ต้องโทรเรียกช่า"
+  },
+  {
+    "from_path": "/ความแตกต่างระหว่างท่อร/",
+    "from_path_encoded": "/%e0%b8%84%e0%b8%a7%e0%b8%b2%e0%b8%a1%e0%b9%81%e0%b8%95%e0%b8%81%e0%b8%95%e0%b9%88%e0%b8%b2%e0%b8%87%e0%b8%a3%e0%b8%b0%e0%b8%ab%e0%b8%a7%e0%b9%88%e0%b8%b2%e0%b8%87%e0%b8%97%e0%b9%88%e0%b8%ad%e0%b8%a3/",
+    "to_path": "/blog/yellow-vs-white-conduit-pipe",
+    "status_code": 301,
+    "reason": "blog post: ความแตกต่างระหว่างท่อร้อยสายไฟ สีเหลือง VS สีขาว"
+  },
+  {
+    "from_path": "/สวิงเช็ควาล์ว-สปริงเช็/",
+    "from_path_encoded": "/%e0%b8%aa%e0%b8%a7%e0%b8%b4%e0%b8%87%e0%b9%80%e0%b8%8a%e0%b9%87%e0%b8%84%e0%b8%a7%e0%b8%b2%e0%b8%a5%e0%b9%8c%e0%b8%a7-%e0%b8%aa%e0%b8%9b%e0%b8%a3%e0%b8%b4%e0%b8%87%e0%b9%80%e0%b8%8a%e0%b9%87/",
+    "to_path": "/blog/swing-vs-spring-check-valve",
+    "status_code": 301,
+    "reason": "blog post: สวิงเช็ควาล์ว & สปริงเช็ควาล์ว คืออะไร"
+  },
+  {
+    "from_path": "/ผลิตภัณฑ์ท่อ-pvc-ตราช้าง-scg/",
+    "from_path_encoded": "/%e0%b8%9c%e0%b8%a5%e0%b8%b4%e0%b8%95%e0%b8%a0%e0%b8%b1%e0%b8%93%e0%b8%91%e0%b9%8c%e0%b8%97%e0%b9%88%e0%b8%ad-pvc-%e0%b8%95%e0%b8%a3%e0%b8%b2%e0%b8%8a%e0%b9%89%e0%b8%b2%e0%b8%87-scg/",
+    "to_path": "/blog/scg-elephant-pvc-pipe",
+    "status_code": 301,
+    "reason": "blog post: ผลิตภัณฑ์ท่อ PVC ตราช้าง SCG"
+  },
+  {
+    "from_path": "/article-water-pipe/",
+    "from_path_encoded": "/article-water-pipe/",
+    "to_path": "/blog/home-pipe-leak-fix-guide",
+    "status_code": 301,
+    "reason": "blog post: ทำอย่างไรเมื่อท่อน้ำรั่วในบ้าน บ้านนะไม่ใช่สวนน้ำ "
+  }
+]

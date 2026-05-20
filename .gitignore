@@ -1,0 +1,42 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env
+.env*.local
+.env
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# vercel
+.vercel
+
+# research artifacts (large, regenerate via npm run crawl)
+/research/crawl/
+/research/screenshots-full/
+/research/screenshots/
+/research/crawl-meta.json
+/research/crawl-progress.json
+/research/extract-log.txt
+/research/preview-*.png
+/research/screencapture*.png
+/.next-build*.log

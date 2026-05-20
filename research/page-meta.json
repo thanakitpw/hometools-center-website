@@ -1,0 +1,65 @@
+[
+  {
+    "name": "01-home",
+    "url": "https://hometools-center.com/",
+    "title": "ศูนย์รวมวัสดุก่อสร้างครบวงจร | ราคาโดนใจ ครบจบไวทุกงานระบบ",
+    "desc": "Home Tool Center ร้านขายวัสดุอุปกรณ์ก่อสร้างงานระบบชั้นนำ ประสบการณ์กว่า 30 ปี ศูนย์รวมสินค้าครบวงจร ทั้งงานประปา ไฟฟ้า สีทาบ้าน และอื่นๆ บริการรวดเร็ว สั่งเลย!",
+    "h1": [
+      "บริษัท โฮมทูล เซ็นเตอร์ ศูนย์จำหน่ายวัสดุก่อสร้าง และอุปกรณ์ก่อสร้าง ทุกงานระบบครบวงจร"
+    ]
+  },
+  {
+    "name": "02-shop",
+    "url": "https://hometools-center.com/shop/",
+    "title": "สินค้าทั้งหมด | ครบจบทุกงานระบบที่ Home Tool Center",
+    "desc": "Products Archive | Home Tool Center",
+    "h1": [
+      "สินค้าทั้งหมด"
+    ]
+  },
+  {
+    "name": "03-system-work-cat",
+    "url": "https://hometools-center.com/product-category/system-work/",
+    "title": "สินค้าในงานระบบ | ราคาโดนใจ สั่งเลยที่ Home Tool Center",
+    "desc": "",
+    "h1": [
+      "หมวดหมู่ : งานระบบ"
+    ]
+  },
+  {
+    "name": "04-product-detail",
+    "url": "https://hometools-center.com/product/toa-premium-grout-plus/",
+    "title": "ทีโอเอ พรีเมี่ยม เกร๊าท์ พลัส | Home Tool Center",
+    "desc": "กาวยาแนวสำหรับร่องเล็กพิเศษ เหมาะสำหรับร่องกระเบื้องทุกชนิดที่ต้องการปูแบบชิดที่มีร่องกว้าง 0.2 – 3 มม. ไม่หดตัว ไม่หลุดร่อน ให้การยึดเกาะและคงทนสูง ผิวของกาวยาแนวจะมีเนื้อละเอียดทำให้อุดร่องได้สะดวกสวยงาม และยังมีสารที่ช่วยป้องกันเชื้อรา ราดำและเชื้อแบคทีเรีย ชนิดของฟิล์มสี เทา , ฟ้า , ขาว , ดำ, ครีม ขนาดบรรจุ 1 กิโลกรัม/ถุง",
+    "h1": [
+      "ทีโอเอ พรีเมี่ยม เกร๊าท์ พลัส"
+    ]
+  },
+  {
+    "name": "05-blog",
+    "url": "https://hometools-center.com/blog/",
+    "title": "Page Not Found | Home Tool Center",
+    "desc": "",
+    "h1": [
+      "This page doesn't seem to exist."
+    ]
+  },
+  {
+    "name": "06-about",
+    "url": "https://hometools-center.com/about-us/",
+    "title": "เกี่ยวกับเรา โฮมทูล เซ็นเตอร์ | Home Tool Center",
+    "desc": "          ด้วยประสบการณ์ในการเป็นตัวแทนจำหน่ายที่มากกว่า 30 ปี ทำให้ปัจจุบัน โฮมทูล เซ็นเตอร์",
+    "h1": [
+      "เกี่ยวกับเรา"
+    ]
+  },
+  {
+    "name": "07-contact",
+    "url": "https://hometools-center.com/contact-us/",
+    "title": "ติดต่อเรา | Home Tool Center : วัสดุอุปกรณ์ก่อสร้างครบวงจร",
+    "desc": "โฮมทูลเซ็นเตอร์",
+    "h1": [
+      "ติดต่อเรา"
+    ]
+  }
+]
