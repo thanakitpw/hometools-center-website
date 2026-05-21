@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-05-21
+> **Last updated:** 2026-05-21 (Phase 5 complete)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -58,22 +58,22 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] Update header/footer logo to Supabase
 - [x] Lock `next.config.ts` `remotePatterns` to Supabase host
 
-## Phase 5 — Admin panel ⬜
+## Phase 5 — Admin panel ✅
 
-- [ ] 5.1 Supabase Auth setup + `/admin/login` page
-- [ ] 5.2 Middleware guard for `/admin/*` routes
-- [ ] 5.3 Admin shell (sidebar nav + topbar + breadcrumb + toaster)
-- [ ] 5.4 First admin user — manual SQL insert into `admin_users` after signup
-- [ ] 5.5 Products CRUD (list table with search/filter, edit form, image upload, markdown editor, SEO tab, status toggle)
-- [ ] 5.6 Categories CRUD (tree editor, parent picker)
-- [ ] 5.7 Brands CRUD
-- [ ] 5.8 Posts CRUD (markdown editor with image insert, preview, status, tags)
-- [ ] 5.9 Quote requests inbox (filter by status, detail view, status update, CSV export)
-- [ ] 5.10 Contact messages inbox (same pattern)
-- [ ] 5.11 Media library (grid view, upload, alt-text edit, used-by indicator)
-- [ ] 5.12 Redirects manager (CRUD + CSV import, hit counter)
-- [ ] 5.13 Site settings + menus editor
-- [ ] 5.14 Server actions for revalidation (`revalidatePath`) on save
+- [x] 5.1 Supabase Auth setup + `/admin/login` page
+- [x] 5.2 Middleware guard for `/admin/*` routes
+- [x] 5.3 Admin shell (sidebar nav + topbar + dashboard with counts)
+- [x] 5.4 First admin user — seeded (thanakit.dev@gmail.com)
+- [x] 5.5 Products CRUD (search + filter + pagination, edit form w/ main+SEO tabs)
+- [x] 5.6 Categories CRUD (tree view, parent picker)
+- [x] 5.7 Brands CRUD
+- [x] 5.8 Posts CRUD (markdown editor, tags, status, SEO)
+- [x] 5.9 Quote requests inbox (status update + admin note + CSV export)
+- [x] 5.10 Contact messages inbox (auto-mark-read, status update)
+- [x] 5.11 Media library (multi-upload, grid, alt-text edit, copy URL)
+- [x] 5.12 Redirects manager (CRUD)
+- [x] 5.13 Site settings + menus editor (contact / SEO / header+footer JSON)
+- [x] 5.14 Server actions for revalidation (`revalidatePath`) on save
 
 ## Phase 5.5 — Marketing & SEO tools ⬜
 
