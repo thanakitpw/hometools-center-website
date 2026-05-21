@@ -248,8 +248,9 @@ node scripts/migrate-images.js          # re-run image migration (resumable)
 See [`TASKS.md`](./TASKS.md) for the full live checklist. Priority order:
 
 1. **Phase 5 — Admin panel** (`/admin/*`) — biggest remaining piece.
-2. **Phase 6 — Pre-launch polish** — brand mapping, visual polish, SEO checks, notify hardening.
-3. **Phase 7 — Launch** — DNS cutover, GSC submit, monitoring.
+2. **Phase 5.5 — Marketing & SEO tools** — GTM/GA4/GSC/Clarity/schemas/cookie banner. Detailed plan in [`docs/marketing-plan.md`](docs/marketing-plan.md). Implementation **after Phase 5**.
+3. **Phase 6 — Pre-launch polish** — brand mapping, visual polish, notify hardening.
+4. **Phase 7 — Launch** — DNS cutover, GSC submit, monitoring.
 
 Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waiting on user".
 
@@ -268,3 +269,5 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
 ### 2026-05-21 (session 1 continued)
 - Added `CLAUDE.md` and `TASKS.md`
 - `TASKS.md` is now the single source of truth for completion tracking; this file references it
+- Added `docs/marketing-plan.md` — full marketing/SEO plan covering Tier 1 (pre-launch essentials: GTM/GA4/GSC/Clarity/schemas/cookie banner), Tier 2 (post-launch), Tier 3 (paid ads), and ongoing SEO workflow
+- New phase 5.5 in TASKS.md tracks marketing/SEO setup. Execution happens after Phase 5 admin is built

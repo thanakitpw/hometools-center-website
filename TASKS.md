@@ -75,6 +75,47 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [ ] 5.13 Site settings + menus editor
 - [ ] 5.14 Server actions for revalidation (`revalidatePath`) on save
 
+## Phase 5.5 — Marketing & SEO tools ⬜
+
+> Detailed plan in [`docs/marketing-plan.md`](docs/marketing-plan.md). Execute **after Phase 5 (admin) is done**.
+
+### Tier 1 — pre-launch essentials
+- [ ] Collect IDs from client (GA4, GTM, GSC, Clarity, FB Pixel, LINE token, Google Business, Resend domain) — see `docs/marketing-plan.md` §1
+- [ ] GTM container in `app/layout.tsx` + noscript fallback
+- [ ] GA4 wired via GTM + custom events (form_submit, view_item, generate_lead, search)
+- [ ] GSC verification meta tag
+- [ ] JSON-LD: `Organization` (site-wide)
+- [ ] JSON-LD: `LocalBusiness` (home + contact)
+- [ ] JSON-LD: `BreadcrumbList` (all pages with breadcrumbs)
+- [ ] JSON-LD: `WebSite` + SearchAction (sitelinks search box)
+- [ ] Cookie consent banner (PDPA, blocks GTM until accepted)
+- [ ] Microsoft Clarity snippet (lazy-loaded)
+- [ ] Dynamic OG image generation per template (`ImageResponse`)
+
+### Tier 2 — post-launch
+- [ ] Submit sitemap to GSC + request indexing
+- [ ] Vercel Analytics + Speed Insights enable
+- [ ] 404 logging → admin can convert to redirect
+- [ ] Site search analytics (log `/shop?q=`)
+- [ ] Resend domain verification (SPF/DKIM in Cloudflare)
+- [ ] Google Business Profile setup/claim
+
+### Tier 3 — paid marketing (when budget approved)
+- [ ] Facebook Pixel + Conversions API
+- [ ] Google Ads conversion tags
+- [ ] LINE Ads pixel
+- [ ] CRM integration (HubSpot/Pipedrive — TBD)
+- [ ] Newsletter signup + Mailchimp/Brevo sync
+
+### Ongoing SEO (post-launch, monthly)
+- [ ] Monthly GSC + GA4 health check
+- [ ] 2–4 articles/month publishing rhythm
+- [ ] Existing post re-optimization (GSC top queries)
+- [ ] Backlink outreach + local citations
+- [ ] Google Business Profile weekly updates
+
+---
+
 ## Phase 6 — Pre-launch polish ⬜
 
 ### Data fixes
