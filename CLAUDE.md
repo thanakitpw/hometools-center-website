@@ -1,8 +1,13 @@
 # CLAUDE.md — Project context for Claude Code
 
-> **Update rule:** Every meaningful session, append to the "Session log" at the bottom
-> and bump the "Last updated" date at the top. Keep "Current state" + "What's next"
-> always reflecting reality.
+> **Companion file:** [`TASKS.md`](./TASKS.md) — single source of truth for what's
+> done vs. pending. **Always check it first** when resuming a session, and tick
+> off boxes as you finish work.
+>
+> **Update rules — every meaningful session:**
+> 1. Tick boxes in [`TASKS.md`](./TASKS.md) as you complete them.
+> 2. Append to the "Session log" at the bottom of this file.
+> 3. Bump "Last updated" on both files.
 
 **Last updated:** 2026-05-21
 
@@ -62,6 +67,8 @@ direct e-commerce checkout).
 ---
 
 ## Current state (Phases 0–4 complete)
+
+> **For the live checklist see [`TASKS.md`](./TASKS.md).** Summary below.
 
 ### ✅ Done
 
@@ -203,9 +210,10 @@ NEXT_PUBLIC_SITE_URL      # https://hometools-center.com
 
 ### Resuming a session
 1. Read this file top-to-bottom.
-2. `git status` + `git log --oneline -5` to see recent commits.
-3. Check `TaskList` if any tasks are still `in_progress`.
-4. Re-read `docs/plan.md` ONLY if working on launch-critical workflow.
+2. Open [`TASKS.md`](./TASKS.md) — find next unchecked item or the in-progress phase.
+3. `git status` + `git log --oneline -5` to see recent commits.
+4. Check `TaskList` if any session-level tasks are still `in_progress`.
+5. Re-read `docs/plan.md` ONLY if working on launch-critical workflow.
 
 ### Common commands
 ```bash
@@ -235,37 +243,15 @@ node scripts/migrate-images.js          # re-run image migration (resumable)
 
 ---
 
-## What's next (in priority order)
+## What's next
 
-1. **Admin panel** (`/admin/*`) — biggest remaining piece. Sub-phases:
-   - 5.1 Supabase Auth + `/admin/login` + middleware guard
-   - 5.2 Shell (sidebar + topbar + toast)
-   - 5.3 Products CRUD (table, edit form, image upload, markdown editor, SEO tab)
-   - 5.4 Categories + Brands CRUD
-   - 5.5 Posts CRUD
-   - 5.6 Quotes / Contact inbox (read-only + status + CSV export)
-   - 5.7 Media library
-   - 5.8 Redirects manager
-   - 5.9 Site settings + menus editor
-   - 5.10 Add first admin user (manual SQL after auth signup)
+See [`TASKS.md`](./TASKS.md) for the full live checklist. Priority order:
 
-2. **Brand mapping fix** — assign correct `brand_id` to 200 products (currently all null). Can do via a SQL update once brand seeds match Thai variants, or via admin bulk-edit.
+1. **Phase 5 — Admin panel** (`/admin/*`) — biggest remaining piece.
+2. **Phase 6 — Pre-launch polish** — brand mapping, visual polish, SEO checks, notify hardening.
+3. **Phase 7 — Launch** — DNS cutover, GSC submit, monitoring.
 
-3. **Resend setup** — verify a sending domain, update `from:` in `lib/notify.ts`.
-
-4. **Line OA** — get channel access token + target user/group ID, set env, test notify.
-
-5. **Polish home + sections** — match WP visual spec section-by-section.
-
-6. **Pre-launch**
-   - Lighthouse audit each page-type
-   - JSON-LD schema validator
-   - 301 sample tests against `redirects` table
-   - Vercel deploy + custom domain + SSL
-   - GSC + GA4 setup
-   - Submit sitemap
-   - 7-day WP content-freeze coordination with client
-   - Cutover DNS
+Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waiting on user".
 
 ---
 
@@ -278,3 +264,7 @@ node scripts/migrate-images.js          # re-run image migration (resumable)
 - Image migration had a Thai-filename collision bug — fixed with hash naming on retry
 - 30 blog posts had Thai top-level slugs in WP — decided new pattern `/blog/<english-slug>` + 301 each old URL
 - User installed Supabase MCP server (HTTP transport + OAuth) — DB access from this assistant works directly without service-role keys
+
+### 2026-05-21 (session 1 continued)
+- Added `CLAUDE.md` and `TASKS.md`
+- `TASKS.md` is now the single source of truth for completion tracking; this file references it
