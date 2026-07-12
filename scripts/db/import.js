@@ -157,7 +157,7 @@ async function main() {
       short_description: rewrite(p.short_description || (rc && rc.short_description) || null),
       description_md,
       primary_category_id,
-      images, brand_id: null,
+      images: images.map((src) => ({ src })), brand_id: null,
       specs: (rc && rc.specs) || [],
       catalog_pdf_url: rc && rc.catalog_pdf_url ? (urlMap[rc.catalog_pdf_url] || null) : null,
       seo_title: resolveSeoTitle(p.seo_title, { postTitle: p.name_th, siteName: SITE_NAME }),

@@ -52,7 +52,7 @@ const STORAGE_PREFIX = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/`;
   const { data: posts } = await sb.from('posts').select('id,slug,cover_image_url,og_image_url,content_md').limit(1000);
   const urls = [];
   for (const p of prods) {
-    for (const u of (p.images || [])) urls.push({ src: `product:${p.slug}:images`, url: u });
+    for (const u of (p.images || [])) urls.push({ src: `product:${p.slug}:images`, url: (u && u.src) || u });
     if (p.og_image_url) urls.push({ src: `product:${p.slug}:og_image_url`, url: p.og_image_url });
   }
   for (const p of posts) {
@@ -66,7 +66,7 @@ const STORAGE_PREFIX = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/`;
   // media reachability: sample 3 products that DO have images → HTTP 200
   const sample = prods.filter(p => p.images && p.images[0]).slice(0, 3);
   for (const p of sample) {
-    const r = await fetch(p.images[0]);
+    const r = await fetch(p.images[0].src || p.images[0]);
     check(`img-200:${p.slug}`, r.status === 200, `${r.status}`);
   }
 
