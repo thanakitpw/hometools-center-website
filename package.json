@@ -38,6 +38,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "cheerio": "^1.2.0",
+    "mysql2": "^3.22.6",
     "playwright": "^1.60.0",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2"
