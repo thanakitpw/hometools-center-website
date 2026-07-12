@@ -50,3 +50,35 @@ export function websiteSchema() {
     },
   };
 }
+
+export function localBusinessSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HardwareStore',
+    '@id': `${siteConfig.url}/#localbusiness`,
+    name: siteConfig.name,
+    url: siteConfig.url,
+    image: absoluteUrl(siteConfig.logoUrl),
+    logo: absoluteUrl(siteConfig.logoUrl),
+    telephone: siteConfig.contact.phone,
+    email: siteConfig.contact.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'เลขที่ 642 ถนนพระราม 2 แขวงบางมด',
+      addressLocality: 'เขตจอมทอง',
+      addressRegion: 'กรุงเทพมหานคร',
+      postalCode: '10150',
+      addressCountry: 'TH',
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        opens: '08:00',
+        closes: '17:00',
+      },
+    ],
+    sameAs: [siteConfig.social.facebook, siteConfig.social.line],
+    parentOrganization: { '@id': ORG_ID },
+  };
+}

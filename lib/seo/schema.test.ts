@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { organizationSchema, websiteSchema } from './schema';
+import { organizationSchema, websiteSchema, localBusinessSchema } from './schema';
 import { siteConfig } from '@/lib/site-config';
 
 describe('organizationSchema', () => {
@@ -23,5 +23,22 @@ describe('websiteSchema', () => {
       `${siteConfig.url}/shop?q={search_term_string}`,
     );
     expect(w.publisher['@id']).toBe(`${siteConfig.url}/#organization`);
+  });
+});
+
+describe('localBusinessSchema', () => {
+  it('is a HardwareStore with NAP, address parts, and Mon-Sat hours', () => {
+    const b = localBusinessSchema();
+    expect(b['@type']).toBe('HardwareStore');
+    expect(b.telephone).toBe(siteConfig.contact.phone);
+    expect(b.address['@type']).toBe('PostalAddress');
+    expect(b.address.postalCode).toBe('10150');
+    expect(b.address.addressCountry).toBe('TH');
+    const hours = b.openingHoursSpecification[0];
+    expect(hours.opens).toBe('08:00');
+    expect(hours.closes).toBe('17:00');
+    expect(hours.dayOfWeek).toContain('Saturday');
+    expect(hours.dayOfWeek).not.toContain('Sunday');
+    expect(b.parentOrganization['@id']).toBe(`${siteConfig.url}/#organization`);
   });
 });
