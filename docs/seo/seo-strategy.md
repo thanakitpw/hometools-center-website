@@ -188,3 +188,4 @@ Organic traffic ที่มี intent → **ขอใบเสนอราค�
 
 ## 9) Change log
 - **2026-07-12** — สร้างเอกสารจาก brainstorming (Approach A+C). ยังไม่เริ่ม implement.
+- **2026-07-12** — **0.5 Structured data foundation implemented** (branch `feat/seo-structured-data-foundation`): `lib/seo/schema.ts` (builders + vitest 8/8) + `<JsonLd>` component; wired Organization + WebSite(+SearchAction) sitewide, LocalBusiness (home/contact), BreadcrumbList + ItemList (category), Product (no-price) + Article refactored to builders (product/blog). Verify: `npm run test` + `typecheck` เขียว; **`npm run build` + Rich Results Test ยัง defer** (ดิสก์เต็ม — รันตอนมีพื้นที่ว่าง).
