@@ -1,0 +1,470 @@
+[
+  {
+    "from_path": "/lorem-ipsum-dolor-sit-amet-consectetuer-adipiscing-elit-2/",
+    "to_path": "/%e0%b9%82%e0%b8%9b%e0%b8%a3%e0%b9%82%e0%b8%a1%e0%b8%8a%e0%b8%99%e0%b8%aa%e0%b8%b3%e0%b8%ab%e0%b8%a3%e0%b8%9a%e0%b8%a5%e0%b8%81%e0%b8%84%e0%b8%b2%e0%b8%97%e0%b8%95%e0%b8%ad%e0%b8%87%e0%b8%81%e0%b8%b2/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/การขนส่ง",
+    "to_path": "/how-to-place-an-order/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/dflip_category/ท่อและอุปกรณ์-pvc-scg/",
+    "to_path": "/dflip_category/pvc-pipes-and-fittings-scg/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ท่อและอุปกรณ์-pvc-สีฟ้า/",
+    "to_path": "/product/%e0%b8%97%e0%b9%88%e0%b8%ad-pvc-%e0%b9%81%e0%b8%a5%e0%b8%b0%e0%b8%ad%e0%b8%b8%e0%b8%9b%e0%b8%81%e0%b8%a3%e0%b8%93%e0%b9%8c-pvc-%e0%b8%aa%e0%b8%b5%e0%b8%9f%e0%b9%89%e0%b8%b2/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/hdpe/",
+    "to_path": "/product/%e0%b8%97%e0%b9%88%e0%b8%ad%e0%b9%80%e0%b8%ad%e0%b8%8a%e0%b8%94%e0%b8%b5%e0%b8%9e%e0%b8%b5%e0%b8%ad%e0%b8%b5-hdpe/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/pb/",
+    "to_path": "/product/%e0%b8%97%e0%b9%88%e0%b8%ad-pb/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/price-list-pp/",
+    "to_path": "/product/price-list-%e0%b8%97%e0%b9%88%e0%b8%adpp/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/catalog-pat/",
+    "to_path": "/product/%e0%b8%97%e0%b9%88%e0%b8%ad%e0%b9%80%e0%b8%ab%e0%b8%a5%e0%b9%87%e0%b8%81%e0%b8%a3%e0%b9%89%e0%b8%ad%e0%b8%a2%e0%b8%aa%e0%b8%b2%e0%b8%a2%e0%b9%84%e0%b8%9f-pat/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/pp/",
+    "to_path": "/product/%e0%b8%97%e0%b9%88%e0%b8%ad-pp/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product-category/special-paint/",
+    "to_path": "/product-category/construction-materials-and-equipment/toa-color/special-paint/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product-category/decorative-coatings/",
+    "to_path": "/product-category/construction-materials-and-equipment/toa-color/decorative-coatings/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product-category/metal-coatings/",
+    "to_path": "/product-category/construction-materials-and-equipment/toa-color/metal-coatings/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product-category/construction-chemicals/",
+    "to_path": "/product-category/construction-materials-and-equipment/toa-color/construction-chemicals/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product-category/heavy-duty-coatings/",
+    "to_path": "/product-category/construction-materials-and-equipment/toa-color/heavy-duty-coatings/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product-category/wood-coatings/",
+    "to_path": "/product-category/construction-materials-and-equipment/toa-color/wood-coatings/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์ชิลด์-สีน้ำอะคร/",
+    "to_path": "/product/supershield-titanium-2/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์ชิลด์-สีรองพื้น/",
+    "to_path": "/product/supershield-alkali-resisting-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ออร์แกนิค-แคร์-สี/",
+    "to_path": "/product/toa-organic-care/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์ชิลด์-ดูราคลีน-เ/",
+    "to_path": "/product/supershield-duraclean-a-semi-gloss/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์ชิลด์-ดูราคลีน-2/",
+    "to_path": "/product/supershield-duraclean-a-for-ceiling/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์ชิลด์-ดูราคลีน-3/",
+    "to_path": "/product/supershield-duraclean-a-matt/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์ชิลด์-ดูราคลีน-ส/",
+    "to_path": "/product/supershield-duraclean-semi-gloss/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์ชิลด์-ดูราคลีน-4/",
+    "to_path": "/product/supershield-duraclean-matt/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์ชิลด์-ดูราคลีน-น/",
+    "to_path": "/product/supershield-duraclean-contact-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-7-in-1-สีน้ำอะคริลิกยื/",
+    "to_path": "/product/toa-7in1-acrylic-elastomeric/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-7-in-1-สีน้ำอะคริลิกยื-2/",
+    "to_path": "/product/toa-7in1-acrylic-elastomeric-1/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ไฮโดร-ควิก-ไพรเมอ/",
+    "to_path": "/product/toa-hydroquick-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ซุปเปอร์เฟล็ก-ไพร/",
+    "to_path": "/product/toa-super-flex-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-เอ็กซ์ตร้า-เวท-ไพ/",
+    "to_path": "/product/toa-extrawet-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ชิลด์-วัน-ภายนอก-ช/",
+    "to_path": "/product/toa-shield-1-nano-for-exterior-interior-2/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ชิลด์-วัน-ภายนอก-ช-2/",
+    "to_path": "/product/toa-shield-1-nano-for-exterior-interior/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ชิลด์-วัน-ภายนอก-ช-3/",
+    "to_path": "/product/toa-shield-1-nano-for-exterior-interior-1/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ชิลด์-วัน-ภายใน-ชน/",
+    "to_path": "/product/toa-shield-1-nano-for-interior-semi-gloss/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ชิลด์-วัน-ภายใน-ชน-2/",
+    "to_path": "/product/toa-shield-1-nano-for-interior-matt/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ชิลด์-วัน-สีน้ำอะ/",
+    "to_path": "/product/toa-shield-1-nano-for-ceiling/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ชิลด์-วัน-สีรองพื/",
+    "to_path": "/product/toa-shield-1-nano-acrylic-alkali-resisting-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/น้ำยารองพื้นปูนทับสีเก/",
+    "to_path": "/product/toa-contact-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-ควิก-ไพรเมอร์/",
+    "to_path": "/product/toa-quick-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ทีโอเอ-รูฟเพ้นท์/",
+    "to_path": "/product/toa-roof-paint/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฟร์ซีซั่นส์-ไฟว์-อิน-วั/",
+    "to_path": "/product/4-seasons-5-in-1-alkali-resisting-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฟร์ซีซั่นส์-ภายนอกและภ/",
+    "to_path": "/product/4-seasons-emulsion-paint-semi-gloss/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฟร์ซีซั่นส์-ภายนอกและ-2/",
+    "to_path": "/product/4-seasons-acrylic-emulsion-matt/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฟร์ซีซั่นส์-สําหรับภาย/",
+    "to_path": "/product/4-seasons-acrylic-emulsion-matt-1/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฟร์ซีซั่นส์-สีน้ำอะคริ/",
+    "to_path": "/product/4-seasons-acrylic-emulsion-for-ceiling/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฟร์ซีซั่นส์-สีรองพื้นป/",
+    "to_path": "/product/4-seasons-alkali-resisting-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฟร์ซีซั่นส์-ซุปเปอร์-ไพ/",
+    "to_path": "/product/4-seasons-super-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฟร์ซีซั่นส์-ควิก-ไพรเมอ/",
+    "to_path": "/product/4-seasons-quick-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฟร์ซีซั่นส์-5-in-1-ภายนอกและ/",
+    "to_path": "/product/4-seasons-5-in-1-crack-guard-sheen/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เทค-พลัส-สีน้ำอะ/",
+    "to_path": "/product/supertech-plus-semi-gloss/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เทค-พลัส-สีน้ำอ-2/",
+    "to_path": "/product/supertech-plus-matt/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เทค-พลัส-สีน้ำอ-3/",
+    "to_path": "/product/supertech-plus-matt-for-interior/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เทค-พลัส-สีน้ำอ-4/",
+    "to_path": "/product/supertech-plus-for-ceiling/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เทค-พลัส-สีรองพื/",
+    "to_path": "/product/supertech-plus-alkali-resisting-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เทค-สีรองพื้นปู/",
+    "to_path": "/product/supertech-contact-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เมเทค-สีน้ำอะคร/",
+    "to_path": "/product/super-matex-semi-gloss-for-exterior-and-interior/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เมเทค-สีน้ำอะค-2/",
+    "to_path": "/product/super-matex-matt-for-exterior-and-interior/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เมเทค-สีน้ำอะค-3/",
+    "to_path": "/product/super-matex-matt-for-interior/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เมเทค-สีน้ำอะค-4/",
+    "to_path": "/product/super-matex-for-ceiling/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เมเทค-สีรองพื้น/",
+    "to_path": "/product/super-matex-alkali-resisting-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ซุปเปอร์เมเทค-สีรองพื้-2/",
+    "to_path": "/product/super-matex-contact-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/เป็ดหงส์-สีรองพื้นปูนให/",
+    "to_path": "/product/mandarin-duck-brand-alkali-resisting-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/เป็ดหงส์-น้ำยารองพื้นปู/",
+    "to_path": "/product/mandarin-duck-contact-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฮมโค้ท-สีน้ำอิมัลชันชน/",
+    "to_path": "/product/home-cote-matt-exterior-and-interior-emulsion-paint/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฮมโค้ท-สีอิมัลชัน-ชนิดด/",
+    "to_path": "/product/home-cote-interior-emulsion-paint/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/โฮมโค้ท-สีรองพื้นปูนใหม/",
+    "to_path": "/product/homecote-alkali-resisting-primer/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/แปรงสร้างลาย-บรัช-เดคคอร/",
+    "to_path": "/product/brush-decor/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/เชนไดร้ท์-ราดพื้น-สเตดฟา/",
+    "to_path": "/product/chaindrite-stedfast-30-sc/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/เชนไดร้ท์-รักษาเนื้อไม้/",
+    "to_path": "/product/chaindrite-wood-preservative/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/lorem-ipsum-dolor-sit-amet-consectetuer-adipiscing-elit-3/",
+    "to_path": "/%e0%b9%82%e0%b8%9b%e0%b8%a3%e0%b9%82%e0%b8%a1%e0%b8%8a%e0%b8%b1%e0%b9%88%e0%b8%99-toa-megapaint/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/ระบบสุขาภิบาล-มีกี่ประเ/",
+    "to_path": "/%e0%b8%a3%e0%b8%b0%e0%b8%9a%e0%b8%9a%e0%b8%aa%e0%b8%b8%e0%b8%82%e0%b8%b2%e0%b8%a0%e0%b8%b4%e0%b8%9a%e0%b8%b2%e0%b8%a5-sanitary-system/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/lorem-ipsum-dolor-sit-amet-consectetuer-adipiscing-elit/",
+    "to_path": "/free-shipping-promotion/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/product/ท่อและอุปกรณ์-ท่อ-pvc-ท่อน้/",
+    "to_path": "/product/pipes-and-fittings-pvc-pipes-thai-pipe/",
+    "status_code": 301,
+    "source": "rankmath"
+  },
+  {
+    "from_path": "/wp-content/uploads/2022/10/Copy-of-ท่อพีอี.pdf",
+    "to_path": "/product-category/system-work/pe-pipes-and-fittings/",
+    "status_code": 301,
+    "source": "redirection"
+  },
+  {
+    "from_path": "/wp-content/uploads/2022/10/Copy-of-Catalog-PP.pdf",
+    "to_path": "/product-category/system-work/pp-pipes-and-fittings/",
+    "status_code": 301,
+    "source": "redirection"
+  },
+  {
+    "from_path": "/category/ท่อ-pvc/page/2/",
+    "to_path": "/product-category/system-work/",
+    "status_code": 301,
+    "source": "redirection"
+  },
+  {
+    "from_path": "/category/home-tool-center/page/3/",
+    "to_path": "/shop/",
+    "status_code": 301,
+    "source": "redirection"
+  },
+  {
+    "from_path": "/wp-content/uploads/astra-addon/astra-addon-681bf3e2a3d106-08069826.css?ver=4.11.0",
+    "to_path": "/",
+    "status_code": 301,
+    "source": "redirection"
+  },
+  {
+    "from_path": "/wp-content/uploads/2022/10/Copy-of-ท่อพีอี.pdf",
+    "to_path": "/product-category/system-work/pe-pipes-and-fittings/",
+    "status_code": 301,
+    "source": "redirection"
+  }
+]
