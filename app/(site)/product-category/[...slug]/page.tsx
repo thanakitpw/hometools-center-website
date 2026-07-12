@@ -62,7 +62,9 @@ export default async function CategoryPage({
             { name: 'สินค้าทั้งหมด', path: '/shop' },
             { name: cat.name_th, path: `/product-category/${cat.slug}` },
           ]),
-          itemListSchema(items.map((p) => ({ name: p.name_th, path: `/product/${p.slug}` }))),
+          ...(items.length > 0
+            ? [itemListSchema(items.map((p) => ({ name: p.name_th, path: `/product/${p.slug}` })))]
+            : []),
         ]}
       />
       <Breadcrumb

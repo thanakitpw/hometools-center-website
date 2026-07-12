@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { organizationSchema, websiteSchema, localBusinessSchema, breadcrumbSchema, itemListSchema, productSchema, articleSchema, ORG_ID } from './schema';
+import { organizationSchema, websiteSchema, localBusinessSchema, breadcrumbSchema, itemListSchema, productSchema, articleSchema, ORG_ID, profileUrls } from './schema';
 import { siteConfig } from '@/lib/site-config';
 import type { Product, Post } from '@/lib/queries/types';
 
@@ -12,6 +12,17 @@ describe('organizationSchema', () => {
     expect(o.url).toBe(siteConfig.url);
     expect(o.logo).toBe(`${siteConfig.url}/logo-htc.png`);
     expect(o.contactPoint.telephone).toBe(siteConfig.contact.phone);
+  });
+});
+
+describe('profileUrls', () => {
+  it('drops bare-origin URLs and keeps real profile URLs', () => {
+    expect(profileUrls(['https://www.facebook.com/', 'https://line.me/'])).toEqual([]);
+    expect(profileUrls(['https://www.facebook.com/hometools', 'https://line.me/@htc']))
+      .toEqual(['https://www.facebook.com/hometools', 'https://line.me/@htc']);
+  });
+  it('makes organizationSchema omit sameAs when only bare origins are configured', () => {
+    expect(organizationSchema()).not.toHaveProperty('sameAs');
   });
 });
 

@@ -10,7 +10,13 @@ export function absoluteUrl(pathOrUrl: string): string {
   return `${siteConfig.url}${pathOrUrl.startsWith('/') ? '' : '/'}${pathOrUrl}`;
 }
 
+/** Keep only social URLs that point at a real profile (path beyond the bare origin). */
+export function profileUrls(urls: string[]): string[] {
+  return urls.filter((u) => !/^https?:\/\/[^/]+\/?$/.test(u));
+}
+
 export function organizationSchema() {
+  const sameAs = profileUrls([siteConfig.social.facebook, siteConfig.social.line]);
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -21,7 +27,7 @@ export function organizationSchema() {
     image: absoluteUrl(siteConfig.logoUrl),
     telephone: siteConfig.contact.phone,
     email: siteConfig.contact.email,
-    sameAs: [siteConfig.social.facebook, siteConfig.social.line],
+    ...(sameAs.length ? { sameAs } : {}),
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: siteConfig.contact.phone,
@@ -53,6 +59,7 @@ export function websiteSchema() {
 }
 
 export function localBusinessSchema() {
+  const sameAs = profileUrls([siteConfig.social.facebook, siteConfig.social.line]);
   return {
     '@context': 'https://schema.org',
     '@type': 'HardwareStore',
@@ -79,7 +86,7 @@ export function localBusinessSchema() {
         closes: '17:00',
       },
     ],
-    sameAs: [siteConfig.social.facebook, siteConfig.social.line],
+    ...(sameAs.length ? { sameAs } : {}),
     parentOrganization: { '@id': ORG_ID },
   };
 }
