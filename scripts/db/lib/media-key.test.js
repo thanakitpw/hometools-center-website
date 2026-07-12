@@ -20,3 +20,10 @@ test('mime lookup', () => {
   assert.strictEqual(mimeForExt('jpg'), 'image/jpeg');
   assert.strictEqual(mimeForExt('pdf'), 'application/pdf');
 });
+
+// Regression: ext must come from the basename, not the whole path, so a
+// dotless/trailing-slash path can't fold a '/' into the storage key.
+test('derives ext from the basename, lowercased', () => {
+  const k = storageKeyForFile('2025/02/สื่อ.JPG');
+  assert.match(k, /^u-[0-9a-f]{12}\.jpg$/);
+});

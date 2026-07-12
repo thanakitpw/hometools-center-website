@@ -28,3 +28,27 @@ test('falls back to blog-post-<ID> when unmatched', () => {
   const out = reconcileBlogSlug({ ID: 99, post_title: 'ใหม่เอี่ยม', post_name: 'ใหม่' }, rules);
   assert.deepStrictEqual(out, { slug: 'blog-post-99', matched: false });
 });
+
+// Regression: a stray '%' that isn't a valid escape (e.g. "100%-guarantee")
+// must not throw URI malformed and halt the batch.
+test('does not throw on an invalid percent-escape in post_name', () => {
+  const out = reconcileBlogSlug(
+    { ID: 1, post_title: 'ทดสอบ', post_name: '100%-guarantee' },
+    []);
+  assert.deepStrictEqual(out, { slug: 'blog-post-1', matched: false });
+});
+
+// Regression: exact match must win over a shorter reason that happens to be
+// a substring of a longer, more specific reason.
+test('exact reason match wins over shorter containment match', () => {
+  const rules = blogRedirects([
+    { from_path: '/a/', to_path: '/blog/short', reason: 'ทดสอบ' },
+    { from_path: '/b/', to_path: '/blog/correct', reason: 'ทดสอบระบบใหม่' },
+  ]);
+
+  const exact = reconcileBlogSlug({ ID: 2, post_title: 'ทดสอบระบบใหม่', post_name: 'x' }, rules);
+  assert.deepStrictEqual(exact, { slug: 'correct', matched: true });
+
+  const short = reconcileBlogSlug({ ID: 3, post_title: 'ทดสอบ', post_name: 'y' }, rules);
+  assert.deepStrictEqual(short, { slug: 'short', matched: true });
+});

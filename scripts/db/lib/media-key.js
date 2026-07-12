@@ -12,8 +12,8 @@ function mimeForExt(ext) {
 }
 
 function storageKeyForFile(relPath) {
-  const ext = relPath.split('.').pop().toLowerCase();
   const base = relPath.split('/').pop();
+  const ext = base.split('.').pop().toLowerCase();
   if (/^[\x00-\x7F]+$/.test(base)) return relPath;         // ascii → keep path
   const md5 = crypto.createHash('md5').update(relPath).digest('hex').slice(0, 12);
   return `u-${md5}.${ext}`;
