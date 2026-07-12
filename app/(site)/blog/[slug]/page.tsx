@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getPostBySlug, getAllPostSlugs, getRelatedPosts } from '@/lib/queries/posts';
 import { Breadcrumb } from '@/components/site/breadcrumb';
-import { siteConfig } from '@/lib/site-config';
+import { JsonLd } from '@/components/site/json-ld';
+import { articleSchema, breadcrumbSchema } from '@/lib/seo/schema';
 
 export const revalidate = 3600;
 
@@ -38,25 +39,18 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
   if (!p) notFound();
   const related = await getRelatedPosts(slug, 3);
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: p.title,
-    image: p.cover_image_url || p.og_image_url || undefined,
-    datePublished: p.published_at || undefined,
-    dateModified: p.published_at || undefined,
-    author: { '@type': 'Organization', name: 'Home Tool Center' },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Home Tool Center',
-      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/logo-htc.png` },
-    },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteConfig.url}/blog/${p.slug}` },
-  };
-
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd
+        data={[
+          articleSchema(p),
+          breadcrumbSchema([
+            { name: 'หน้าหลัก', path: '/' },
+            { name: 'บทความ', path: '/blog' },
+            { name: p.title, path: `/blog/${p.slug}` },
+          ]),
+        ]}
+      />
       <div className="mx-auto max-w-3xl px-6 py-6">
         <Breadcrumb
           items={[

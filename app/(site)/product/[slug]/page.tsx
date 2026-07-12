@@ -10,6 +10,8 @@ import { QuoteDialog } from '@/components/site/quote-dialog';
 import { Download, Phone, Award, Truck, BadgeCheck } from 'lucide-react';
 import { SiLine } from '@icons-pack/react-simple-icons';
 import { siteConfig } from '@/lib/site-config';
+import { JsonLd } from '@/components/site/json-ld';
+import { productSchema, breadcrumbSchema } from '@/lib/seo/schema';
 
 export const revalidate = 3600;
 
@@ -54,24 +56,19 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
   const hasPdf = !!p.catalog_pdf_url;
   const hasSpecs = !!(p.specs && p.specs.length > 0);
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: p.name_th,
-    sku: p.sku || undefined,
-    description: p.short_description?.replace(/<[^>]+>/g, '').trim() || p.seo_description || undefined,
-    image: p.images.map(i => i.src),
-    offers: {
-      '@type': 'Offer',
-      url: `${siteConfig.url}/product/${p.slug}`,
-      availability: 'https://schema.org/InStock',
-      priceCurrency: 'THB',
-    },
-  };
-
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd
+        data={[
+          productSchema(p),
+          breadcrumbSchema([
+            { name: 'หน้าแรก', path: '/' },
+            { name: 'สินค้าทั้งหมด', path: '/shop' },
+            ...(category ? [{ name: category.name_th, path: `/product-category/${category.slug}` }] : []),
+            { name: p.name_th, path: `/product/${p.slug}` },
+          ]),
+        ]}
+      />
 
       <div className="mx-auto max-w-[1140px] px-6 py-8">
         <Breadcrumb

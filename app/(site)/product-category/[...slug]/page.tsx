@@ -7,6 +7,8 @@ import { Breadcrumb } from '@/components/site/breadcrumb';
 import { CategorySidebar } from '@/components/site/category-sidebar';
 import { Pagination } from '@/components/site/pagination';
 import Link from 'next/link';
+import { JsonLd } from '@/components/site/json-ld';
+import { breadcrumbSchema, itemListSchema } from '@/lib/seo/schema';
 
 export const revalidate = 3600;
 
@@ -53,6 +55,16 @@ export default async function CategoryPage({
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-6">
+      <JsonLd
+        data={[
+          breadcrumbSchema([
+            { name: 'หน้าหลัก', path: '/' },
+            { name: 'สินค้าทั้งหมด', path: '/shop' },
+            { name: cat.name_th, path: `/product-category/${cat.slug}` },
+          ]),
+          itemListSchema(items.map((p) => ({ name: p.name_th, path: `/product/${p.slug}` }))),
+        ]}
+      />
       <Breadcrumb
         items={[
           { label: 'หน้าหลัก', href: '/' },
