@@ -1,4 +1,5 @@
 import { siteConfig } from '@/lib/site-config';
+import type { Product, Post } from '@/lib/queries/types';
 
 export const ORG_ID = `${siteConfig.url}/#organization`;
 export const WEBSITE_ID = `${siteConfig.url}/#website`;
@@ -107,5 +108,41 @@ export function itemListSchema(items: { name: string; path: string }[]) {
       url: absoluteUrl(it.path),
       name: it.name,
     })),
+  };
+}
+
+export function productSchema(p: Product, opts: { brandName?: string } = {}) {
+  const description = (p.short_description || p.seo_description || '')
+    .replace(/<[^>]+>/g, '')
+    .trim();
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.name_th,
+    ...(p.sku ? { sku: p.sku } : {}),
+    ...(description ? { description } : {}),
+    image: p.images.map((i) => i.src),
+    ...(opts.brandName ? { brand: { '@type': 'Brand', name: opts.brandName } } : {}),
+    offers: {
+      '@type': 'Offer',
+      url: `${siteConfig.url}/product/${p.slug}`,
+      availability: 'https://schema.org/InStock',
+      seller: { '@id': ORG_ID },
+    },
+  };
+}
+
+export function articleSchema(p: Post) {
+  const image = p.cover_image_url || p.og_image_url || undefined;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: p.title,
+    ...(image ? { image } : {}),
+    ...(p.published_at ? { datePublished: p.published_at, dateModified: p.published_at } : {}),
+    author: { '@id': ORG_ID },
+    publisher: { '@id': ORG_ID },
+    inLanguage: 'th',
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteConfig.url}/blog/${p.slug}` },
   };
 }

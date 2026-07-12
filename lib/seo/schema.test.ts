@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { organizationSchema, websiteSchema, localBusinessSchema, breadcrumbSchema, itemListSchema } from './schema';
+import { organizationSchema, websiteSchema, localBusinessSchema, breadcrumbSchema, itemListSchema, productSchema, articleSchema, ORG_ID } from './schema';
 import { siteConfig } from '@/lib/site-config';
+import type { Product, Post } from '@/lib/queries/types';
 
 describe('organizationSchema', () => {
   it('is an Organization with stable @id, name, url, absolute logo', () => {
@@ -68,5 +69,44 @@ describe('itemListSchema', () => {
     expect(l['@type']).toBe('ItemList');
     expect(l.numberOfItems).toBe(2);
     expect(l.itemListElement[1].url).toBe(`${siteConfig.url}/product/b`);
+  });
+});
+
+const fakeProduct = {
+  slug: 'pvc-pipe-1', sku: 'SKU1', name_th: 'ท่อ PVC',
+  short_description: '<p>ท่อพีวีซีคุณภาพ</p>', seo_description: null,
+  images: [{ src: 'https://cdn/x.jpg' }], brand_id: null,
+} as unknown as Product;
+
+const fakePost = {
+  slug: 'water-system', title: 'ระบบน้ำ', published_at: '2025-01-02T00:00:00Z',
+  cover_image_url: 'https://cdn/c.jpg', og_image_url: null,
+} as unknown as Post;
+
+describe('productSchema', () => {
+  it('is a Product with NO price/priceCurrency and InStock offer', () => {
+    const s = productSchema(fakeProduct);
+    expect(s['@type']).toBe('Product');
+    expect(s.name).toBe('ท่อ PVC');
+    expect(s.description).toBe('ท่อพีวีซีคุณภาพ'); // HTML ถูกถอด
+    expect(s.offers.availability).toBe('https://schema.org/InStock');
+    expect(s.offers).not.toHaveProperty('price');
+    expect(s.offers).not.toHaveProperty('priceCurrency');
+    expect(s).not.toHaveProperty('brand');
+  });
+  it('adds brand only when brandName is given', () => {
+    const s = productSchema(fakeProduct, { brandName: 'SCG' });
+    expect(s.brand).toEqual({ '@type': 'Brand', name: 'SCG' });
+  });
+});
+
+describe('articleSchema', () => {
+  it('references Organization @id for author and publisher', () => {
+    const s = articleSchema(fakePost);
+    expect(s['@type']).toBe('Article');
+    expect(s.headline).toBe('ระบบน้ำ');
+    expect(s.author['@id']).toBe(`${siteConfig.url}/#organization`);
+    expect(s.publisher['@id']).toBe(`${siteConfig.url}/#organization`);
+    expect(s.mainEntityOfPage['@id']).toBe(`${siteConfig.url}/blog/water-system`);
   });
 });
