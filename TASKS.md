@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-05-21 (Phase 5 complete)
+> **Last updated:** 2026-07-12 (DB re-migration complete)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -22,7 +22,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] shadcn/ui init + 13 core components
 - [x] Apply migration `0001_init.sql` (13 tables + RLS)
 - [x] Seed `site_settings` (contact + seo placeholders)
-- [x] Import to Supabase (200 products / 42 categories / 7 brands / 30 posts / 32 redirects)
+- [x] Import to Supabase (200 products / 42 categories / 7 brands / 30 posts / 32 redirects) — *superseded 2026-07-12, see Phase 4.5*
 - [x] Supabase clients: `server.ts`, `client.ts`, `admin.ts`, `static.ts`
 - [x] Query helpers in `lib/queries/`
 - [x] Vercel env decisions locked (Resend, Line Messaging API, Cloudflare DNS-only)
@@ -57,6 +57,19 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] Update home page hardcoded URLs to Supabase
 - [x] Update header/footer logo to Supabase
 - [x] Lock `next.config.ts` `remotePatterns` to Supabase host
+
+## Phase 4.5 — DB re-migration (2026-07-12) ✅
+
+> The Phase 0 crawl was lossy vs. the live WooCommerce DB (200/348 products,
+> 30/31 posts, 32/~78 redirects, 256/382+ media). Client supplied the
+> authoritative MySQL dump + uploads archive; re-migrated products,
+> categories, posts, redirects, and referenced media directly from it.
+
+- [x] Product/media/redirect gap closed — **347 products / 42 categories / 31 posts / 109 redirects** re-migrated from the authoritative WP DB dump (`scripts/db/extract.js`, `scripts/db/media.js`, `scripts/db/import.js`; artifacts in `research/db-2026-07/`)
+- [x] 382 referenced media files (incl. 37/37 catalog PDFs) uploaded to Supabase Storage, URL map preserved at `research/db-2026-07/url-map.json`
+- [x] `product_categories` m2m rebuilt (1036 rows); `quote_requests`, `contact_messages`, `admin_users`, `site_settings`, `menus`, `brands`, `media` preserved untouched
+- [x] Parity verify script `scripts/db/verify.js` — counts, no dangling primary category, no dead (non-Storage) media URLs, sample image reachability — all pass; report at `research/db-2026-07/verify-report.json`
+- [x] Production build (`npm run build`) passes end-to-end against re-migrated data
 
 ## Phase 5 — Admin panel ✅
 

@@ -9,7 +9,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-05-21
+**Last updated:** 2026-07-12
 
 ---
 
@@ -42,7 +42,7 @@ direct e-commerce checkout).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Styling | Tailwind v4 + shadcn/ui ("new-york", slate) |
-| Thai font | `IBM Plex Sans Thai` via `next/font/google` |
+| Thai font | `Sukhumvit Set` self-hosted via `next/font/local` (`app/fonts/SukhumvitSet-*.ttf`) — matches source site exactly. ⚠️ Apple-proprietary; confirm license before launch. (Was `IBM Plex Sans Thai`; overridden 2026-06-03 per client request for pixel-parity.) |
 | DB | Supabase Postgres + RLS |
 | Storage | Supabase Storage (bucket `media`, public) |
 | Auth | Supabase Auth, 2 roles: `admin` / `editor` |
@@ -66,21 +66,21 @@ direct e-commerce checkout).
 
 ---
 
-## Current state (Phases 0–4 complete)
+## Current state (Phases 0–4 + DB re-migration complete)
 
 > **For the live checklist see [`TASKS.md`](./TASKS.md).** Summary below.
 
 ### ✅ Done
 
 1. **Phase 0 — Discovery**
-   - Crawled 282 WP URLs (200 products / 42 categories / 30 posts / 8 pages / 1 home)
+   - Crawled 282 WP URLs (200 products / 42 categories / 30 posts / 8 pages / 1 home) — *counts superseded 2026-07-12, see item 6*
    - Extracted to `research/data/{products,categories,posts,brands,pages,static-pages,images}.json`
    - Design tokens at `research/design-tokens.json` (brand: blue `#1e73be`, accent: orange `#f7931e`)
    - Redirect map: `research/redirect-map.{json,csv}` — 32 rules (30 Thai blog slugs + 2 article→blog)
 
 2. **Phase 1 — Foundation**
    - DB schema migration `0001_init.sql` applied — 13 tables + RLS + 2 seed rows in `site_settings`
-   - Imported: 200 products / 42 categories / 7 brand seeds / 30 posts / 32 redirects / 1 header menu
+   - Imported: 200 products / 42 categories / 7 brand seeds / 30 posts / 32 redirects / 1 header menu — *counts superseded 2026-07-12, see item 6*
    - `lib/supabase/{server,client,admin,static}.ts` — 4 client variants
    - `lib/queries/{products,categories,posts,redirects,types}.ts` — typed query helpers
 
@@ -108,6 +108,18 @@ direct e-commerce checkout).
    - Thai filenames use `u-<md5-12char>.<ext>` (Storage rejects non-ASCII keys)
    - Mapping preserved at `research/image-url-map.json`
    - WP server can now be shut down without breaking the new site
+
+6. **Phase 4.5 — DB re-migration (2026-07-12)**
+   - The Phase 0 crawl was lossy vs. the live WooCommerce DB (200/348 products, 30/31 posts,
+     32/~78 redirects, 256/382+ media). Client supplied the authoritative MySQL dump
+     (`adminhometools_wp_orpro.sql`) + full `wp-content/uploads` archive
+   - `scripts/db/{extract,media,import,verify}.js` — extract from dump → upload referenced
+     media only → truncate+insert the 5 target tables (FK-safe order) → parity verify
+   - **Now: 347 products / 42 categories / 31 posts / 109 redirects**, `product_categories`
+     rebuilt (1036 rows), 382 media files (incl. 37/37 catalog PDFs) uploaded to Storage
+   - Preserved untouched: `quote_requests`, `contact_messages`, `admin_users`,
+     `site_settings`, `menus`, `brands`, `media`
+   - Artifacts: `research/db-2026-07/*.json`, `verify-report.json`
 
 ### ⬜ Not yet built
 
@@ -271,3 +283,16 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
 - `TASKS.md` is now the single source of truth for completion tracking; this file references it
 - Added `docs/marketing-plan.md` — full marketing/SEO plan covering Tier 1 (pre-launch essentials: GTM/GA4/GSC/Clarity/schemas/cookie banner), Tier 2 (post-launch), Tier 3 (paid ads), and ongoing SEO workflow
 - New phase 5.5 in TASKS.md tracks marketing/SEO setup. Execution happens after Phase 5 admin is built
+
+### 2026-07-12 (session 2 — DB re-migration, branch `feat/db-remigration`)
+- Client supplied the authoritative WooCommerce MySQL dump (`backup-oldwebsite/adminhometools_wp_orpro.sql`, phpMyAdmin export, prefix `jQH0o_`) plus the full `wp-content/uploads` archive (`wpuploads.zip`). The Phase 0 HTML crawl turned out lossy against this source of truth: 200/348 products, 30/31 posts, 32/~78 redirects, 256/382+ media
+- Built `scripts/db/{extract,media,import,verify}.js`, in 3 stages:
+  1. **Extract** — spin up a temp local MySQL, load the dump, pull products/categories/posts/redirects + the attachment index into `research/db-2026-07/*.json` (RankMath SEO fields, primary-category term, blog-slug reconciliation against the existing redirect map)
+  2. **Media** — upload only *referenced* media (382 files, incl. 37/37 catalog PDFs) to Supabase Storage, reusing existing files by content hash; build `url-map.json` and rewrite all internal URLs in migrated HTML/markdown
+  3. **Import** — truncate + re-insert the 5 target tables in FK-safe order (`product_categories` → `products` → `posts` → `redirects` → `categories`), preserving `quote_requests`, `contact_messages`, `admin_users`, `site_settings`, `menus`, `brands`, `media` untouched (verified via before/after row counts)
+- `scripts/db/verify.js` gate: table counts, no dangling `primary_category_id`, no dead (non-Storage) media URL, sample image HTTP-200 — all pass. `npm run build` completes cleanly against the re-migrated data
+- **Result: 347 products / 42 categories / 31 posts / 109 redirects**, `product_categories` 1036 rows
+- Still pending / carried forward:
+  - `brand_id` mapping — confirmed the live WooCommerce DB has **no** brand taxonomy at all (not just a Thai/English name mismatch as previously assumed); brand assignment stays a manual/admin task
+  - Blog-category migration — **not** done; `posts.category_id` stays `null` (WP's `category` taxonomy was intentionally not ported into the product `categories` table, to avoid polluting product nav)
+  - `[dflip id]` inline flipbook shortcodes in a handful of product/post descriptions render as literal text (not resolved to an embed); the catalog-download flow is unaffected since it's served via `catalog_pdf_url`

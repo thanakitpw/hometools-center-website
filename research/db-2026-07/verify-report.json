@@ -1,0 +1,56 @@
+{
+  "checks": [
+    {
+      "name": "count:products",
+      "pass": true,
+      "detail": "347/347"
+    },
+    {
+      "name": "count:categories",
+      "pass": true,
+      "detail": "42/42"
+    },
+    {
+      "name": "count:posts",
+      "pass": true,
+      "detail": "31/31"
+    },
+    {
+      "name": "count:redirects>=78",
+      "pass": true,
+      "detail": "109"
+    },
+    {
+      "name": "no-dangling-primary-category",
+      "pass": true,
+      "detail": "0 dangling"
+    },
+    {
+      "name": "no-dead-media-urls",
+      "pass": true,
+      "detail": "752 URLs checked, all on Storage"
+    },
+    {
+      "name": "img-200:toa-110-skim-coat-smooth",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "img-200:toa-110-skim-coat-smooth-grey",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "img-200:toa-skim-coat-white",
+      "pass": true,
+      "detail": "200"
+    }
+  ],
+  "info": [
+    {
+      "name": "imageless-products",
+      "detail": "2 product(s) with empty images[] (expect 2): toa-polyurethane-semi-gloss-2k, toa-polyurethane-matt-2k"
+    }
+  ],
+  "ok": true
+}
