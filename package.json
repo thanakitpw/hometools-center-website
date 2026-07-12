@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "crawl": "node scripts/crawl.js",
     "extract": "node scripts/extract-data.js",
     "redirects": "node scripts/build-redirects.js",
@@ -44,6 +46,7 @@
     "mysql2": "^3.22.6",
     "playwright": "^1.60.0",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.10"
   }
 }
