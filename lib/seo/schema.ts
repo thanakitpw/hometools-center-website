@@ -82,3 +82,30 @@ export function localBusinessSchema() {
     parentOrganization: { '@id': ORG_ID },
   };
 }
+
+export function breadcrumbSchema(items: { name: string; path?: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: it.name,
+      ...(it.path ? { item: absoluteUrl(it.path) } : {}),
+    })),
+  };
+}
+
+export function itemListSchema(items: { name: string; path: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    numberOfItems: items.length,
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: absoluteUrl(it.path),
+      name: it.name,
+    })),
+  };
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { organizationSchema, websiteSchema, localBusinessSchema } from './schema';
+import { organizationSchema, websiteSchema, localBusinessSchema, breadcrumbSchema, itemListSchema } from './schema';
 import { siteConfig } from '@/lib/site-config';
 
 describe('organizationSchema', () => {
@@ -40,5 +40,33 @@ describe('localBusinessSchema', () => {
     expect(hours.dayOfWeek).toContain('Saturday');
     expect(hours.dayOfWeek).not.toContain('Sunday');
     expect(b.parentOrganization['@id']).toBe(`${siteConfig.url}/#organization`);
+  });
+});
+
+describe('breadcrumbSchema', () => {
+  it('numbers positions from 1 and makes paths absolute; last item has no url', () => {
+    const b = breadcrumbSchema([
+      { name: 'หน้าแรก', path: '/' },
+      { name: 'สินค้าทั้งหมด', path: '/shop' },
+      { name: 'ท่อ PVC' },
+    ]);
+    expect(b['@type']).toBe('BreadcrumbList');
+    expect(b.itemListElement).toHaveLength(3);
+    expect(b.itemListElement[0].position).toBe(1);
+    expect(b.itemListElement[0].item).toBe(`${siteConfig.url}/`);
+    expect(b.itemListElement[2].position).toBe(3);
+    expect(b.itemListElement[2].item).toBeUndefined();
+  });
+});
+
+describe('itemListSchema', () => {
+  it('lists items with absolute urls and numberOfItems', () => {
+    const l = itemListSchema([
+      { name: 'A', path: '/product/a' },
+      { name: 'B', path: '/product/b' },
+    ]);
+    expect(l['@type']).toBe('ItemList');
+    expect(l.numberOfItems).toBe(2);
+    expect(l.itemListElement[1].url).toBe(`${siteConfig.url}/product/b`);
   });
 });
