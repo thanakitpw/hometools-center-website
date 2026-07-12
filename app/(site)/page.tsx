@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { homeImg as img } from '@/lib/home-assets';
 import { HomeCarousel } from '@/components/site/home-carousel';
+import { JsonLd } from '@/components/site/json-ld';
+import { localBusinessSchema } from '@/lib/seo/schema';
 
 const CAT = '/product-category';
 
@@ -90,6 +92,7 @@ function SectionHead({ title, href }: { title: string; href?: string }) {
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={localBusinessSchema()} />
       {/* ========== 1. HERO ========== */}
       <section className="bg-[var(--color-brand-500)]">
         <HomeCarousel

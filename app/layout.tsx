@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import { JsonLd } from '@/components/site/json-ld';
+import { organizationSchema, websiteSchema } from '@/lib/seo/schema';
 
 // Sukhumvit Set — matches the original hometools-center.com typography exactly.
 // Self-hosted from the source site's own .ttf files.
@@ -36,7 +38,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="th" className={sukhumvit.variable}>
-      <body>{children}</body>
+      <body>
+        <JsonLd data={[organizationSchema(), websiteSchema()]} />
+        {children}
+      </body>
     </html>
   );
 }

@@ -3,6 +3,8 @@ import { Mail, Phone, Clock, MapPin } from 'lucide-react';
 import { Breadcrumb } from '@/components/site/breadcrumb';
 import { ContactForm } from '@/components/site/contact-form';
 import { siteConfig } from '@/lib/site-config';
+import { JsonLd } from '@/components/site/json-ld';
+import { localBusinessSchema } from '@/lib/seo/schema';
 
 export const metadata: Metadata = {
   title: 'ติดต่อเรา',
@@ -13,6 +15,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-6">
+      <JsonLd data={localBusinessSchema()} />
       <Breadcrumb items={[{ label: 'หน้าหลัก', href: '/' }, { label: 'ติดต่อเรา' }]} />
       <h1 className="mt-6 !text-3xl !text-[var(--color-fg)] md:!text-4xl">ติดต่อเรา</h1>
       <p className="mt-2 text-[var(--color-body)]">
