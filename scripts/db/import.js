@@ -220,21 +220,61 @@ async function main() {
   // --- redirects: migration map + DB, dedup by from_path ---
   const seen = new Set();
   const rows = [];
-  const push = (from_path, to_path, status_code, note) => {
+  const migrationFromPaths = new Set(); // first-wins priority source, per §5.4
+  const push = (from_path, to_path, status_code, note, fromMigration) => {
     if (!from_path || !to_path) return;
     if (from_path === to_path) return;
     const key = from_path;
     if (seen.has(key)) return;
     seen.add(key); rows.push({ from_path, to_path, status_code: status_code || 301, note });
+    if (fromMigration) migrationFromPaths.add(from_path);
   };
-  for (const r of migrationMap) push(r.from_path, r.to_path, r.status_code, r.reason || 'migration');
-  for (const r of dbRedirects) push(r.from_path, r.to_path, r.status_code, r.source);
-  if (rows.length) {
-    const { error } = await sb.from('redirects').insert(rows);
+  for (const r of migrationMap) push(r.from_path, r.to_path, r.status_code, r.reason || 'migration', true);
+  for (const r of dbRedirects) push(r.from_path, r.to_path, r.status_code, r.source, false);
+
+  // §5.4 loop safety: drop 2-cycles (a pair where A.from_path == B.to_path
+  // AND A.to_path == B.from_path — following either would bounce forever).
+  // When exactly one side of the cycle came from the migration map (the
+  // first-wins-priority source), keep that one and drop the other; otherwise
+  // keep the first-seen row. Multi-hop chains (a row whose to_path equals
+  // another row's from_path) are NOT dropped — just logged for manual review,
+  // since a 2-hop 301 chain is valid (if suboptimal), unlike a true loop.
+  const byFrom = new Map(rows.map((r) => [r.from_path, r]));
+  const toDrop = new Set();
+  const handledPairs = new Set();
+  for (const r of rows) {
+    const partner = byFrom.get(r.to_path);
+    if (!partner || partner.to_path !== r.from_path) continue; // not a 2-cycle
+    const pairKey = [r.from_path, r.to_path].sort().join(' <-> ');
+    if (handledPairs.has(pairKey)) continue;
+    handledPairs.add(pairKey);
+    const rIsMigration = migrationFromPaths.has(r.from_path);
+    const partnerIsMigration = migrationFromPaths.has(partner.from_path);
+    const drop = rIsMigration && !partnerIsMigration ? partner
+      : !rIsMigration && partnerIsMigration ? r
+      : partner; // both/neither from migration map: keep r, drop partner
+    const kept = drop === r ? partner : r;
+    toDrop.add(drop.from_path);
+    console.warn(`redirect 2-cycle dropped: ${drop.from_path} -> ${drop.to_path} (kept ${kept.from_path} -> ${kept.to_path})`);
+  }
+  const finalRows = rows.filter((r) => !toDrop.has(r.from_path));
+  const finalByFrom = new Map(finalRows.map((r) => [r.from_path, r]));
+  let chainCount = 0;
+  for (const r of finalRows) {
+    const next = finalByFrom.get(r.to_path);
+    if (next) {
+      chainCount++;
+      console.warn(`redirect multi-hop chain (manual review): ${r.from_path} -> ${r.to_path} -> ${next.to_path}`);
+    }
+  }
+
+  if (finalRows.length) {
+    const { error } = await sb.from('redirects').insert(finalRows);
     if (error) throw new Error('redirects insert: ' + error.message);
   }
 
-  console.log(`imported: ${catIdByWp.size} categories, ${prodIdByWp.size} products, ${posts.length} posts, ${rows.length} redirects`);
+  console.log(`redirects: ${rows.length} deduped, ${toDrop.size} dropped (2-cycle), ${chainCount} multi-hop chain(s) warned, ${finalRows.length} inserted`);
+  console.log(`imported: ${catIdByWp.size} categories, ${prodIdByWp.size} products, ${posts.length} posts, ${finalRows.length} redirects`);
   console.log(`primary_category_id fallback used for ${primaryFallbackCount} products`);
   console.log(`products with empty images[]: ${noImageCount}`);
 

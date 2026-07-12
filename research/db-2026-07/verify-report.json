@@ -31,19 +31,24 @@
       "detail": "752 URLs checked, all on Storage"
     },
     {
-      "name": "img-200:toa-110-skim-coat-smooth",
+      "name": "img-200:grundfos-sba",
       "pass": true,
       "detail": "200"
     },
     {
-      "name": "img-200:toa-110-skim-coat-smooth-grey",
+      "name": "img-200:grundfos-scala1",
       "pass": true,
       "detail": "200"
     },
     {
-      "name": "img-200:toa-skim-coat-white",
+      "name": "img-200:grundfos-scala2",
       "pass": true,
       "detail": "200"
+    },
+    {
+      "name": "no-dead-links-in-body",
+      "pass": true,
+      "detail": "378 bodies checked, none dead"
     }
   ],
   "info": [

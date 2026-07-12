@@ -37,7 +37,7 @@ const STORAGE_PREFIX = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/`;
   check('count:redirects>=78', rc >= 78, `${rc}`);
 
   // referential: no product with a dangling primary category
-  const { data: prods } = await sb.from('products').select('id,slug,primary_category_id,images,og_image_url').limit(1000);
+  const { data: prods } = await sb.from('products').select('id,slug,primary_category_id,images,og_image_url,description_md').limit(1000);
   const { data: cats } = await sb.from('categories').select('id');
   const catIds = new Set(cats.map(c => c.id));
   const dangling = prods.filter(p => p.primary_category_id && !catIds.has(p.primary_category_id));
@@ -49,7 +49,7 @@ const STORAGE_PREFIX = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/`;
 
   // dead-media-URL gate: every product image/og URL, and every post
   // cover/og URL, must be a Supabase Storage URL (never a raw hometools-center.com URL)
-  const { data: posts } = await sb.from('posts').select('id,slug,cover_image_url,og_image_url').limit(1000);
+  const { data: posts } = await sb.from('posts').select('id,slug,cover_image_url,og_image_url,content_md').limit(1000);
   const urls = [];
   for (const p of prods) {
     for (const u of (p.images || [])) urls.push({ src: `product:${p.slug}:images`, url: u });
@@ -69,6 +69,32 @@ const STORAGE_PREFIX = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/`;
     const r = await fetch(p.images[0]);
     check(`img-200:${p.slug}`, r.status === 200, `${r.status}`);
   }
+
+  // body-scan gate: catches dead links embedded IN the rich-text body itself
+  // (as opposed to the images[]/og_image_url/cover_image_url columns checked
+  // above), e.g. an un-rewritten <a href> to a WP upload, or the
+  // root-relativized-but-still-dead form left behind when rewrite()'s
+  // unconditional domain-stripping runs on a URL that was never resolved
+  // through url-map: "/wp-content/uploads/...".
+  //
+  // The hometools-center.com check is scoped to it appearing as an actual
+  // (unescaped) link target — i.e. immediately preceded by "://" — rather
+  // than a bare substring match anywhere in the text. A bare substring match
+  // also fires on things like a Facebook l.php share-redirect whose "u="
+  // query param percent-encodes "http%3A%2F%2Fwww.hometools-center.com":
+  // that's a live, functioning external link (and hometools-center.com
+  // remains the site's own live domain post-cutover) — not a dead one — so
+  // flagging it would be a false positive unrelated to the media migration.
+  const bodyOffenders = [];
+  const isDeadBody = (text) => !!text && (text.includes('/wp-content/uploads/') || /:\/\/(?:www\.)?hometools-center\.com/.test(text));
+  for (const p of prods) {
+    if (isDeadBody(p.description_md)) bodyOffenders.push(`product:${p.slug}`);
+  }
+  for (const p of posts) {
+    if (isDeadBody(p.content_md)) bodyOffenders.push(`post:${p.slug}`);
+  }
+  check('no-dead-links-in-body', bodyOffenders.length === 0,
+    bodyOffenders.length === 0 ? `${prods.length + posts.length} bodies checked, none dead` : `${bodyOffenders.length} offender(s): ${bodyOffenders.slice(0, 10).join(', ')}`);
 
   fs.mkdirSync(path.join(__dirname, '..', '..', 'research', 'db-2026-07'), { recursive: true });
   fs.writeFileSync(path.join(__dirname, '..', '..', 'research', 'db-2026-07', 'verify-report.json'),

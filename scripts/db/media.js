@@ -37,17 +37,24 @@ for (const c of categories) { addId(c.thumbId); }
 // collect uploads URLs embedded in HTML content (for content rewrite + upload)
 // — description_html/content_html AND short_description/excerpt, which also
 // carry embedded catalog-PDF/icon links that would otherwise be dropped.
-const contentUrls = new Set();
+// We keep the EXACT matched string (m[0]), encoded or not, because that's
+// what appears verbatim in the HTML body and is what rewrite()'s exact-string
+// replace in import.js needs as a url-map key.
+const contentUrls = new Set(); // exact matched full URLs, as they appear in the HTML
 const urlRe = /https?:\/\/hometools-center\.com\/wp-content\/uploads\/([^\s"'<>)]+)/g;
-for (const p of products) {
+function collectContentUrls(text) {
+  if (!text) return;
   let m;
-  while ((m = urlRe.exec(p.description_html || ''))) contentUrls.add(m[1]);
-  while ((m = urlRe.exec(p.short_description || ''))) contentUrls.add(m[1]);
+  urlRe.lastIndex = 0;
+  while ((m = urlRe.exec(text))) contentUrls.add(m[0]);
+}
+for (const p of products) {
+  collectContentUrls(p.description_html);
+  collectContentUrls(p.short_description);
 }
 for (const b of posts) {
-  let m;
-  while ((m = urlRe.exec(b.content_html || ''))) contentUrls.add(m[1]);
-  while ((m = urlRe.exec(b.excerpt || ''))) contentUrls.add(m[1]);
+  collectContentUrls(b.content_html);
+  collectContentUrls(b.excerpt);
 }
 
 // recrawl catalog PDFs: Task 8 does urlMap[rc.catalog_pdf_url] || rc.catalog_pdf_url,
@@ -58,9 +65,13 @@ const catalogPdfRecords = recrawlProducts.filter(
   (rc) => rc.catalog_pdf_url && productSlugs.has(rc.slug)
 );
 function relFromWpUploadsUrl(url) {
-  if (!url || !url.startsWith(WP_UPLOADS)) return null;
-  // the zip stores raw UTF-8 filenames, so the DECODED path is the member to extract
-  return decodeURIComponent(url.slice(WP_UPLOADS.length));
+  // matches http(s), mirroring the https?:// content-embedded regex above
+  const m = url && /^https?:\/\/hometools-center\.com\/wp-content\/uploads\/(.+)$/.exec(url);
+  if (!m) return null;
+  // the zip stores raw UTF-8 filenames, so the DECODED path is the member to
+  // extract. decodeURIComponent on an already-plain (unencoded) path is a
+  // no-op, so it's safe to always decode regardless of how the URL appeared.
+  return decodeURIComponent(m[1]);
 }
 
 // precompute the concrete relative file paths we actually need, so we can
@@ -76,7 +87,11 @@ for (const id of attIds) {
   }
   neededFiles.add(att.file);
 }
-for (const rel of contentUrls) neededFiles.add(rel);
+for (const exactUrl of contentUrls) {
+  const rel = relFromWpUploadsUrl(exactUrl);
+  if (rel) neededFiles.add(rel);
+  else console.warn('embedded content url does not match expected uploads prefix:', exactUrl);
+}
 for (const rc of catalogPdfRecords) {
   const rel = relFromWpUploadsUrl(rc.catalog_pdf_url);
   if (rel) neededFiles.add(rel);
@@ -90,6 +105,15 @@ if (neededFiles.size === 0) {
 (async () => {
   // selectively unzip only the referenced files to a temp dir
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'htc-uploads-'));
+  try {
+    await run(tmp);
+  } finally {
+    // always remove the temp dir, including when run() throws
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+})();
+
+async function run(tmp) {
   const members = Array.from(neededFiles).map((f) => 'uploads/' + f);
   console.log(`unzipping ${members.length} referenced files…`);
   try {
@@ -130,7 +154,18 @@ if (neededFiles.size === 0) {
     if (att && att.file) { const u = await uploadRel(att.file); if (u) urlMap[`att:${id}`] = u; }
   }
   // 2) content-embedded files (description/content HTML + short_description/excerpt)
-  for (const rel of contentUrls) await uploadRel(rel);
+  // — map the EXACT matched string (encoded or not, as it appears in the HTML)
+  // in addition to the standard full-URL/bare-relpath keys uploadRel() already
+  // writes, so import.js's exact-string rewrite() substitutes what's actually
+  // in the body even when the HTML held the percent-encoded form.
+  let embeddedMapped = 0;
+  for (const exactUrl of contentUrls) {
+    const rel = relFromWpUploadsUrl(exactUrl);
+    if (!rel) continue;
+    const u = await uploadRel(rel);
+    if (u) { urlMap[exactUrl] = u; embeddedMapped++; }
+    else console.warn('failed to upload/map embedded content url:', exactUrl);
+  }
 
   // 3) recrawl catalog PDFs — map the EXACT original catalog_pdf_url string
   // (encoded or not) in addition to the standard full-URL/bare-relpath keys,
@@ -145,6 +180,5 @@ if (neededFiles.size === 0) {
   }
 
   fs.writeFileSync(path.join(DIR, 'url-map.json'), JSON.stringify(urlMap, null, 2));
-  console.log(`uploaded/mapped ${Object.keys(urlMap).length} url keys (${attIds.size} attachments, ${contentUrls.size} embedded, ${catalogPdfMapped}/${catalogPdfRecords.length} recrawl catalog PDFs)`);
-  fs.rmSync(tmp, { recursive: true, force: true });
-})();
+  console.log(`uploaded/mapped ${Object.keys(urlMap).length} url keys (${attIds.size} attachments, ${embeddedMapped}/${contentUrls.size} embedded, ${catalogPdfMapped}/${catalogPdfRecords.length} recrawl catalog PDFs)`);
+}
