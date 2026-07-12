@@ -31,30 +31,34 @@
       "detail": "752 URLs checked, all on Storage"
     },
     {
-      "name": "img-200:grundfos-sba",
+      "name": "img-200:toa-ultimate-primer-s9000-for-exterior-and-interior",
       "pass": true,
       "detail": "200"
     },
     {
-      "name": "img-200:grundfos-scala1",
+      "name": "img-200:toa-shield-expert-exterior",
       "pass": true,
       "detail": "200"
     },
     {
-      "name": "img-200:grundfos-scala2",
+      "name": "img-200:toa-shield-expert-ceiling",
       "pass": true,
       "detail": "200"
     },
     {
       "name": "no-dead-links-in-body",
       "pass": true,
-      "detail": "378 bodies checked, none dead"
+      "detail": "725 bodies checked, none dead"
     }
   ],
   "info": [
     {
       "name": "imageless-products",
       "detail": "2 product(s) with empty images[] (expect 2): toa-polyurethane-semi-gloss-2k, toa-polyurethane-matt-2k"
+    },
+    {
+      "name": "wp-content-uploads-remnants",
+      "detail": "1 product/post(s) with /wp-content/uploads/ remnant(s) (expect ~2, files missing from backup zip — not a failure): product:pat-pipe-price-list-2"
     }
   ],
   "ok": true

@@ -154,7 +154,7 @@ async function main() {
 
     const row = {
       slug: p.slug, name_th: p.name_th,
-      short_description: p.short_description || (rc && rc.short_description) || null,
+      short_description: rewrite(p.short_description || (rc && rc.short_description) || null),
       description_md,
       primary_category_id,
       images, brand_id: null,
