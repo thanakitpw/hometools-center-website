@@ -40,3 +40,4 @@ next-env.d.ts
 /research/preview-*.png
 /research/screencapture*.png
 /.next-build*.log
+backup-oldwebsite/

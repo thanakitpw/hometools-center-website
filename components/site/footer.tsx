@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, Facebook, Clock, MapPin } from 'lucide-react';
+import { Mail, Phone, Clock } from 'lucide-react';
+import { SiFacebook, SiLine, SiMessenger } from '@icons-pack/react-simple-icons';
 import { siteConfig } from '@/lib/site-config';
 
 export function SiteFooter() {
@@ -29,18 +30,27 @@ export function SiteFooter() {
               aria-label="Facebook"
               target="_blank"
               rel="noopener"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-brand-500)] text-white hover:bg-[var(--color-brand-600)]"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1877f2] text-white transition-opacity hover:opacity-90"
             >
-              <Facebook className="h-4 w-4" />
+              <SiFacebook className="h-4 w-4" color="#ffffff" />
+            </a>
+            <a
+              href={siteConfig.social.messenger}
+              aria-label="Messenger"
+              target="_blank"
+              rel="noopener"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0084ff] text-white transition-opacity hover:opacity-90"
+            >
+              <SiMessenger className="h-4 w-4" color="#ffffff" />
             </a>
             <a
               href={siteConfig.social.line}
-              aria-label="Line"
+              aria-label="LINE"
               target="_blank"
               rel="noopener"
-              className="flex h-8 items-center justify-center rounded-full bg-[#06c755] px-3 text-xs font-bold text-white hover:opacity-90"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#06c755] text-white transition-opacity hover:opacity-90"
             >
-              LINE
+              <SiLine className="h-4 w-4" color="#ffffff" />
             </a>
           </div>
         </div>

@@ -12,7 +12,10 @@ export function Pagination({
   baseUrl: string;
 }) {
   if (totalPages <= 1) return null;
-  const url = (p: number) => (p === 1 ? baseUrl : `${baseUrl}?page=${p}`);
+  const url = (p: number) => {
+    if (p === 1) return baseUrl;
+    return `${baseUrl}${baseUrl.includes('?') ? '&' : '?'}page=${p}`;
+  };
   const pages: Array<number | '...'> = [];
   for (let i = 1; i <= totalPages; i++) {
     if (i === 1 || i === totalPages || (i >= page - 1 && i <= page + 1)) pages.push(i);

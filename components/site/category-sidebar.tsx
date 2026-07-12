@@ -1,24 +1,37 @@
 import Link from 'next/link';
+import { ChevronDown } from 'lucide-react';
 import { listAllCategories, buildTree, type CategoryNode } from '@/lib/queries/categories';
 
-function Tree({ nodes, activeSlug }: { nodes: CategoryNode[]; activeSlug?: string }) {
+function Tree({ nodes, activeSlug, depth = 0 }: { nodes: CategoryNode[]; activeSlug?: string; depth?: number }) {
   return (
-    <ul className="space-y-0.5 text-sm">
+    <ul className={depth === 0 ? 'space-y-3' : 'mt-3 space-y-3 pl-4'}>
       {nodes.map(n => (
         <li key={n.id}>
-          <Link
-            href={`/product-category/${n.slug}` as any}
-            className={
-              'block rounded px-2 py-1.5 hover:bg-[var(--color-muted)] ' +
-              (activeSlug === n.slug ? 'font-semibold text-[var(--color-brand-500)]' : '')
-            }
-          >
-            {n.name_th}
-          </Link>
-          {n.children.length > 0 && (
-            <div className="ml-3 border-l border-[var(--color-border)] pl-2">
-              <Tree nodes={n.children} activeSlug={activeSlug} />
-            </div>
+          {n.children.length > 0 ? (
+            <details className="group/sidebar [&_summary::-webkit-details-marker]:hidden" open={depth === 0}>
+              <summary
+                className={
+                  'flex cursor-pointer list-none items-center justify-between gap-2 py-1 text-[16px] leading-snug outline-none transition-colors hover:text-[var(--color-brand-500)] ' +
+                  (depth === 0 ? 'font-medium text-[var(--color-brand-500)]' : 'font-medium text-[#111111]') +
+                  (activeSlug === n.slug ? ' !font-semibold !text-[var(--color-brand-500)]' : '')
+                }
+              >
+                <span>{n.name_th}</span>
+                <ChevronDown className="h-4 w-4 shrink-0 stroke-[3] transition-transform group-open/sidebar:rotate-180" />
+              </summary>
+              <Tree nodes={n.children} activeSlug={activeSlug} depth={depth + 1} />
+            </details>
+          ) : (
+            <Link
+              href={`/product-category/${n.slug}` as any}
+              className={
+                'block py-1 text-[15px] leading-snug transition-colors hover:text-[var(--color-brand-500)] ' +
+                (depth === 0 ? 'font-medium text-[var(--color-brand-500)]' : 'text-[#111111]') +
+                (activeSlug === n.slug ? ' !font-semibold !text-[var(--color-brand-500)]' : '')
+              }
+            >
+              {n.name_th}
+            </Link>
           )}
         </li>
       ))}
@@ -31,7 +44,7 @@ export async function CategorySidebar({ activeSlug }: { activeSlug?: string }) {
   const tree = buildTree(all);
   return (
     <aside className="hidden md:block">
-      <h2 className="!mb-3 !text-base !text-[var(--color-fg)]">หมวดหมู่สินค้า</h2>
+      <h2 className="!mb-8 !text-[28px] !font-bold !leading-tight !text-[#003f73]">หมวดหมู่สินค้า</h2>
       <Tree nodes={tree} activeSlug={activeSlug} />
     </aside>
   );

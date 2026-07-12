@@ -10,7 +10,7 @@ const config: NextConfig = {
   },
   typedRoutes: false,  // re-enable when all routes exist
   turbopack: {
-    root: __dirname,
+    root: import.meta.dirname,
   },
 };
 

@@ -2,15 +2,21 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Search, Menu, X } from 'lucide-react';
 import { siteConfig } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
 import { TopBar } from './top-bar';
 
+const LOGO = 'https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/2024/05/revise_logo_2022_27D_10.png';
+
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const pathname = usePathname();
+
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
   return (
     <header className="sticky top-0 z-40 bg-white shadow-sm">
@@ -18,14 +24,14 @@ export function SiteHeader() {
       <div className="border-b border-[var(--color-border)]">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
           {/* Logo */}
-          <Link href="/" className="flex shrink-0 items-center gap-2">
-            <div className="relative h-12 w-32 md:h-14 md:w-40">
+          <Link href="/" className="flex shrink-0 items-center">
+            <div className="relative h-14 w-36 md:h-[68px] md:w-44">
               <Image
-                src="https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/2024/05/revise_logo_2022_27D_10.png"
+                src={LOGO}
                 alt="Home Tool Center"
                 fill
                 priority
-                sizes="160px"
+                sizes="180px"
                 style={{ objectFit: 'contain', objectPosition: 'left' }}
               />
             </div>
@@ -36,8 +42,13 @@ export function SiteHeader() {
             {siteConfig.nav.map((item) => (
               <Link
                 key={item.href}
-                href={item.href as any}
-                className="px-3 py-2 text-sm font-medium text-[var(--color-fg)] transition-colors hover:text-[var(--color-brand-500)]"
+                href={item.href as never}
+                className={cn(
+                  'px-3.5 py-2 text-base font-medium transition-colors',
+                  isActive(item.href)
+                    ? 'text-[var(--color-accent-500)]'
+                    : 'text-[var(--color-fg)] hover:text-[var(--color-accent-500)]',
+                )}
               >
                 {item.label}
               </Link>
@@ -47,22 +58,26 @@ export function SiteHeader() {
           {/* Search (desktop) */}
           <form
             action="/shop"
-            className="hidden items-center gap-2 lg:flex"
+            className="relative hidden lg:block"
             onSubmit={(e) => {
               if (!query.trim()) e.preventDefault();
             }}
           >
-            <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted-fg)]" />
-              <input
-                name="q"
-                type="search"
-                placeholder="ค้นหา..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="h-9 w-48 rounded-md border border-[var(--color-border)] bg-white pl-8 pr-3 text-sm outline-none focus:border-[var(--color-brand-500)]"
-              />
-            </div>
+            <input
+              name="q"
+              type="search"
+              placeholder="ค้นหาสินค้า..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="h-11 w-64 rounded-full border border-slate-300 bg-white pl-5 pr-14 text-sm outline-none focus:border-[var(--color-brand-500)]"
+            />
+            <button
+              type="submit"
+              aria-label="ค้นหา"
+              className="absolute right-1.5 top-1/2 flex h-8 w-9 -translate-y-1/2 items-center justify-center rounded-lg bg-[var(--color-muted)] text-[var(--color-fg)] transition-colors hover:bg-slate-200"
+            >
+              <Search className="h-4 w-4" />
+            </button>
           </form>
 
           {/* Mobile toggle */}
@@ -82,22 +97,33 @@ export function SiteHeader() {
             {siteConfig.nav.map((item) => (
               <Link
                 key={item.href}
-                href={item.href as any}
+                href={item.href as never}
                 onClick={() => setMobileOpen(false)}
-                className="block py-2.5 text-sm font-medium text-[var(--color-fg)] hover:text-[var(--color-brand-500)]"
+                className={cn(
+                  'block py-2.5 text-sm font-medium',
+                  isActive(item.href)
+                    ? 'text-[var(--color-accent-500)]'
+                    : 'text-[var(--color-fg)] hover:text-[var(--color-accent-500)]',
+                )}
               >
                 {item.label}
               </Link>
             ))}
             <form action="/shop" className="mt-2 mb-3">
               <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted-fg)]" />
                 <input
                   name="q"
                   type="search"
-                  placeholder="ค้นหา..."
-                  className="h-9 w-full rounded-md border border-[var(--color-border)] bg-white pl-8 pr-3 text-sm outline-none focus:border-[var(--color-brand-500)]"
+                  placeholder="ค้นหาสินค้า..."
+                  className="h-10 w-full rounded-full border border-slate-300 bg-white pl-5 pr-12 text-sm outline-none focus:border-[var(--color-brand-500)]"
                 />
+                <button
+                  type="submit"
+                  aria-label="ค้นหา"
+                  className="absolute right-1.5 top-1/2 flex h-7 w-8 -translate-y-1/2 items-center justify-center rounded-lg bg-[var(--color-muted)] text-[var(--color-fg)]"
+                >
+                  <Search className="h-4 w-4" />
+                </button>
               </div>
             </form>
           </nav>

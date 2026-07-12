@@ -15,6 +15,13 @@ export async function getProductBySlug(slug: string) {
   return data as Product | null;
 }
 
+export async function getCategoryById(id: string | null) {
+  if (!id) return null;
+  const sb = await createClient();
+  const { data } = await sb.from('categories').select('slug, name_th').eq('id', id).maybeSingle();
+  return data as { slug: string; name_th: string } | null;
+}
+
 export async function getRelatedProducts(productId: string, limit = 4) {
   const sb = await createClient();
   const { data: rel } = await sb

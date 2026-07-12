@@ -20,9 +20,8 @@
   --color-border: #e5e5e5;
   --color-bg: #ffffff;
 
-  /* Typography */
-  --font-thai: 'IBM Plex Sans Thai', 'Sukhumvit Set', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
-  --font-sans: var(--font-thai);
+  /* Typography — --font-thai is provided by next/font/local (Sukhumvit Set) on <html> */
+  --font-sans: var(--font-thai, 'Sukhumvit Set'), 'Helvetica Neue', system-ui, -apple-system, sans-serif;
 
   /* Radius (button = 6px from WP) */
   --radius: 0.375rem;
@@ -62,10 +61,13 @@ h2 {
 h3 { font-size: 1.5rem; }
 h4 { font-size: 1.25rem; }
 
-a {
-  color: var(--color-brand-500);
-  text-decoration: none;
+/* In @layer base so Tailwind text-* utilities (e.g. text-white) can override link color */
+@layer base {
+  a {
+    color: var(--color-brand-500);
+    text-decoration: none;
+  }
+  a:hover { color: var(--color-brand-600); }
 }
-a:hover { color: var(--color-brand-600); }
 
 * { box-sizing: border-box; }

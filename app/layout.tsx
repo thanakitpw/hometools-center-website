@@ -1,10 +1,18 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Sans_Thai } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 
-const ibmPlexThai = IBM_Plex_Sans_Thai({
-  subsets: ['thai', 'latin'],
-  weight: ['300', '400', '500', '600', '700'],
+// Sukhumvit Set — matches the original hometools-center.com typography exactly.
+// Self-hosted from the source site's own .ttf files.
+const sukhumvit = localFont({
+  src: [
+    { path: './fonts/SukhumvitSet-Thin.ttf', weight: '100', style: 'normal' },
+    { path: './fonts/SukhumvitSet-Light.ttf', weight: '300', style: 'normal' },
+    { path: './fonts/SukhumvitSet-Text.ttf', weight: '400', style: 'normal' },
+    { path: './fonts/SukhumvitSet-Medium.ttf', weight: '500', style: 'normal' },
+    { path: './fonts/SukhumvitSet-SemiBold.ttf', weight: '600', style: 'normal' },
+    { path: './fonts/SukhumvitSet-Bold.ttf', weight: '700', style: 'normal' },
+  ],
   display: 'swap',
   variable: '--font-thai',
 });
@@ -27,7 +35,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="th" className={ibmPlexThai.variable}>
+    <html lang="th" className={sukhumvit.variable}>
       <body>{children}</body>
     </html>
   );
