@@ -41,3 +41,4 @@ next-env.d.ts
 /research/screencapture*.png
 /.next-build*.log
 backup-oldwebsite/
+.env*
