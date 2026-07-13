@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { listPosts } from '@/lib/queries/posts';
 import { Breadcrumb } from '@/components/site/breadcrumb';
 import { Pagination } from '@/components/site/pagination';
+import { BlogGridSkeleton } from '@/components/site/skeletons';
 
 export const revalidate = 3600;
 
@@ -14,18 +16,34 @@ export const metadata: Metadata = {
 
 type SearchParams = { page?: string };
 
+/**
+ * The skeleton lives in a Suspense boundary inside the page, not in a loading.tsx:
+ * a loading.tsx here would also wrap /blog/[slug], and streaming that route commits
+ * a 200 before its notFound() can run — turning missing posts into soft 404s.
+ */
 export default async function BlogIndex({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const sp = await searchParams;
   const page = Math.max(1, parseInt(sp.page || '1', 10));
-  const perPage = 12;
-  const { items, total } = await listPosts({ page, perPage });
-  const totalPages = Math.ceil(total / perPage);
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-6">
       <Breadcrumb items={[{ label: 'หน้าหลัก', href: '/' }, { label: 'บทความ' }]} />
       <h1 className="mt-6 !text-2xl !text-[var(--color-fg)] md:!text-3xl">บทความและข่าวสาร</h1>
 
+      <Suspense key={page} fallback={<BlogGridSkeleton />}>
+        <PostGrid page={page} />
+      </Suspense>
+    </div>
+  );
+}
+
+async function PostGrid({ page }: { page: number }) {
+  const perPage = 12;
+  const { items, total } = await listPosts({ page, perPage });
+  const totalPages = Math.ceil(total / perPage);
+
+  return (
+    <>
       <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {items.map(p => (
           <Link
@@ -60,6 +78,6 @@ export default async function BlogIndex({ searchParams }: { searchParams: Promis
       </div>
 
       <Pagination page={page} totalPages={totalPages} baseUrl="/blog" />
-    </div>
+    </>
   );
 }

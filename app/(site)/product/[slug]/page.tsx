@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getProductBySlug, getRelatedProducts, getCategoryById } from '@/lib/queries/products';
+import { getProductBySlug, getRelatedProducts } from '@/lib/queries/products';
+import { getCategoryById } from '@/lib/queries/categories';
 import { Breadcrumb } from '@/components/site/breadcrumb';
 import { ProductCard } from '@/components/site/product-card';
 import { ProductGallery } from '@/components/site/product-gallery';
@@ -64,7 +65,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
           breadcrumbSchema([
             { name: 'หน้าแรก', path: '/' },
             { name: 'สินค้าทั้งหมด', path: '/shop' },
-            ...(category ? [{ name: category.name_th, path: `/product-category/${category.slug}` }] : []),
+            ...(category ? [{ name: category.name_th, path: `/product-category/${category.path}` }] : []),
             { name: p.name_th, path: `/product/${p.slug}` },
           ]),
         ]}
@@ -75,7 +76,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
           items={[
             { label: 'หน้าแรก', href: '/' },
             { label: 'สินค้าทั้งหมด', href: '/shop' },
-            ...(category ? [{ label: category.name_th, href: `/product-category/${category.slug}` }] : []),
+            ...(category ? [{ label: category.name_th, href: `/product-category/${category.path}` }] : []),
             { label: p.name_th },
           ]}
         />
@@ -89,7 +90,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
           <div>
             {category && (
               <Link
-                href={`/product-category/${category.slug}` as never}
+                href={`/product-category/${category.path}` as never}
                 className="inline-block rounded-full bg-[var(--color-brand-50)] px-3 py-1 text-[13px] font-medium text-[var(--color-brand-500)] transition-colors hover:bg-[var(--color-brand-100)]"
               >
                 {category.name_th}

@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-07-12 (DB re-migration complete)
+> **Last updated:** 2026-07-13 (nested category URLs + soft-404 fix)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -133,7 +133,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 
 ### Data fixes
 - [ ] Map products → brands (`products.brand_id` is all null because Thai names like "ทีโอเอ" don't match English brand seeds like "TOA")
-- [ ] Verify each category has correct parent_id chain
+- [x] Verify each category has correct parent_id chain — all 42 rebuild into the exact nested URLs found in the WP dump; all 42 return 200 (2026-07-13)
 - [ ] Spot-check 10 random products vs WP source
 
 ### Visual polish (pixel-perfect home)

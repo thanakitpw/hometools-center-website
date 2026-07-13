@@ -1,6 +1,12 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { getCategoryBySlug, getAllCategorySlugs, getChildCategories } from '@/lib/queries/categories';
+import { notFound, permanentRedirect } from 'next/navigation';
+import {
+  getCategoryByPath,
+  getCategoryBySlug,
+  getCategoryAncestors,
+  getAllCategoryPaths,
+  getChildCategories,
+} from '@/lib/queries/categories';
 import { listProductsByCategory } from '@/lib/queries/products';
 import { ProductCard } from '@/components/site/product-card';
 import { Breadcrumb } from '@/components/site/breadcrumb';
@@ -17,19 +23,26 @@ type SearchParams = { page?: string };
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
-  const fullSlug = slug.join('/');
-  const cat = await getCategoryBySlug(fullSlug);
+  const cat = await getCategoryByPath(slug.join('/'));
   if (!cat) return { title: 'ไม่พบหมวดหมู่' };
   return {
     title: cat.seo_title || `${cat.name_th} | Home Tool Center`,
     description: cat.seo_description || undefined,
-    alternates: { canonical: `/product-category/${cat.slug}` },
+    // WordPress used the category thumbnail as og:image — keep that, it's the only
+    // place this square icon belongs (it is not a page banner).
+    openGraph: {
+      title: cat.seo_title || cat.name_th,
+      description: cat.seo_description || undefined,
+      images: cat.banner_image_url ? [cat.banner_image_url] : [],
+      type: 'website',
+    },
+    alternates: { canonical: `/product-category/${cat.path}` },
   };
 }
 
 export async function generateStaticParams() {
-  const slugs = await getAllCategorySlugs();
-  return slugs.map(s => ({ slug: s.split('/') }));
+  const paths = await getAllCategoryPaths();
+  return paths.map(p => ({ slug: p.split('/') }));
 }
 
 export default async function CategoryPage({
@@ -41,15 +54,21 @@ export default async function CategoryPage({
 }) {
   const { slug } = await params;
   const sp = await searchParams;
-  const fullSlug = slug.join('/');
-  const cat = await getCategoryBySlug(fullSlug);
-  if (!cat) notFound();
+  const cat = await getCategoryByPath(slug.join('/'));
+  if (!cat) {
+    // A bare leaf slug (or a stale ancestor chain) still points at a real category —
+    // send it to the canonical full path instead of 404ing, as WordPress did.
+    const byLeaf = await getCategoryBySlug(slug[slug.length - 1]);
+    if (byLeaf) permanentRedirect(`/product-category/${byLeaf.path}`);
+    notFound();
+  }
 
   const page = Math.max(1, parseInt(sp.page || '1', 10));
   const perPage = 12;
-  const [{ items, total }, children] = await Promise.all([
+  const [{ items, total }, children, ancestors] = await Promise.all([
     listProductsByCategory(cat.id, { page, perPage }),
     getChildCategories(cat.id),
+    getCategoryAncestors(cat),
   ]);
   const totalPages = Math.ceil(total / perPage);
 
@@ -60,7 +79,8 @@ export default async function CategoryPage({
           breadcrumbSchema([
             { name: 'หน้าหลัก', path: '/' },
             { name: 'สินค้าทั้งหมด', path: '/shop' },
-            { name: cat.name_th, path: `/product-category/${cat.slug}` },
+            ...ancestors.map(a => ({ name: a.name_th, path: `/product-category/${a.path}` })),
+            { name: cat.name_th, path: `/product-category/${cat.path}` },
           ]),
           ...(items.length > 0
             ? [itemListSchema(items.map((p) => ({ name: p.name_th, path: `/product/${p.slug}` })))]
@@ -71,18 +91,14 @@ export default async function CategoryPage({
         items={[
           { label: 'หน้าหลัก', href: '/' },
           { label: 'สินค้าทั้งหมด', href: '/shop' },
+          ...ancestors.map(a => ({ label: a.name_th, href: `/product-category/${a.path}` })),
           { label: cat.name_th },
         ]}
       />
 
       <div className="mt-6 grid gap-8 md:grid-cols-[220px_1fr]">
-        <CategorySidebar activeSlug={cat.slug} />
+        <CategorySidebar activePath={cat.path} />
         <div>
-          {cat.banner_image_url && (
-            <div className="mb-6 overflow-hidden rounded-lg">
-              <img src={cat.banner_image_url} alt={cat.name_th} className="w-full" />
-            </div>
-          )}
           <h1 className="!text-2xl !text-[var(--color-fg)] md:!text-3xl">หมวดหมู่: {cat.name_th}</h1>
           {cat.description && <p className="mt-2 text-[var(--color-body)]">{cat.description}</p>}
 
@@ -91,7 +107,7 @@ export default async function CategoryPage({
               {children.map(c => (
                 <Link
                   key={c.id}
-                  href={`/product-category/${c.slug}` as any}
+                  href={`/product-category/${c.path}` as any}
                   className="rounded-full border border-[var(--color-border)] bg-white px-3 py-1 text-xs hover:border-[var(--color-brand-500)] hover:text-[var(--color-brand-500)]"
                 >
                   {c.name_th}
@@ -112,7 +128,7 @@ export default async function CategoryPage({
             </div>
           )}
 
-          <Pagination page={page} totalPages={totalPages} baseUrl={`/product-category/${cat.slug}`} />
+          <Pagination page={page} totalPages={totalPages} baseUrl={`/product-category/${cat.path}`} />
         </div>
       </div>
     </div>

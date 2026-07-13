@@ -15,13 +15,6 @@ export async function getProductBySlug(slug: string) {
   return data as Product | null;
 }
 
-export async function getCategoryById(id: string | null) {
-  if (!id) return null;
-  const sb = await createClient();
-  const { data } = await sb.from('categories').select('slug, name_th').eq('id', id).maybeSingle();
-  return data as { slug: string; name_th: string } | null;
-}
-
 export async function getRelatedProducts(productId: string, limit = 4) {
   const sb = await createClient();
   const { data: rel } = await sb
@@ -60,10 +53,15 @@ export async function listProductsByCategory(
   const sb = await createClient();
   const from = (page - 1) * perPage;
   const to = from + perPage - 1;
+  // Membership lives in product_categories, not products.primary_category_id — WooCommerce
+  // tags a product with its category AND every ancestor, so a direct match on the join table
+  // reproduces the old archive exactly (no descendant walk needed).
   const { data, count, error } = await sb
     .from('products')
-    .select('id, slug, name_th, images, sku, short_description', { count: 'exact' })
-    .eq('primary_category_id', categoryId)
+    .select('id, slug, name_th, images, sku, short_description, product_categories!inner(category_id)', {
+      count: 'exact',
+    })
+    .eq('product_categories.category_id', categoryId)
     .eq('status', 'published')
     .order('sort_order', { ascending: true })
     .order('name_th', { ascending: true })

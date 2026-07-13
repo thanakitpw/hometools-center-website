@@ -9,7 +9,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-07-12
+**Last updated:** 2026-07-13
 
 ---
 
@@ -296,3 +296,43 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   - `brand_id` mapping — confirmed the live WooCommerce DB has **no** brand taxonomy at all (not just a Thai/English name mismatch as previously assumed); brand assignment stays a manual/admin task
   - Blog-category migration — **not** done; `posts.category_id` stays `null` (WP's `category` taxonomy was intentionally not ported into the product `categories` table, to avoid polluting product nav)
   - `[dflip id]` inline flipbook shortcodes in a handful of product/post descriptions render as literal text (not resolved to an embed); the catalog-download flow is unaffected since it's served via `catalog_pdf_url`
+
+### 2026-07-13 (session 3 — nested category URLs + soft-404 fix)
+- **Bug 1 — every nested category URL 404'd.** `categories.slug` stores only the leaf segment
+  (`decorative-coatings`), but `/product-category/[...slug]` joined all segments and matched
+  `.eq('slug', 'construction-materials-and-equipment/toa-color/decorative-coatings')`. Only the
+  3 root categories resolved; **39 of 42 were dead**, including the category cards on the home page.
+  The old WooCommerce site's canonical (verified against the live site and the SQL dump) is the
+  full ancestor chain, so these are exactly the URLs Google has indexed
+- Fix: `attachPaths()` in `lib/queries/categories.ts` rebuilds the chain from `parent_id`
+  (pure, so `app/sitemap.ts` reuses it with its cookie-free client). Category page now resolves by
+  full path; a bare leaf slug or stale ancestor chain **308s to the canonical path** rather than 404ing
+  (matches the 6 leaf→full 301s the client's own Rank Math already had). Sidebar, breadcrumb (now shows
+  ancestors), product-page category link, canonical, and sitemap all emit full paths
+- **Bug 2 (pre-existing, from `26d5fbb`) — `notFound()` returned HTTP 200 site-wide.** The `loading.tsx`
+  files added with the skeleton work put every affected route behind a Suspense boundary, so Next flushed
+  a 200 before the page could call `notFound()`/`permanentRedirect()` → **soft 404s on product, blog, and
+  category pages**, and redirects silently degraded. `loading.tsx` also applies to *child* segments, so
+  `blog/loading.tsx` broke `/blog/[slug]` too
+- Fix: dropped `loading.tsx` from the routes that can 404 (`product/[slug]`, `product-category/[...slug]`,
+  `blog/[slug]`, `blog`). `/blog`'s skeleton moved into an in-page `<Suspense>` boundary instead, which
+  doesn't leak into `/blog/[slug]`. `/shop`'s `loading.tsx` stays (no child routes, never 404s)
+- ⚠️ **Rule going forward: never add `loading.tsx` to a segment whose page (or a child's page) calls
+  `notFound()` or `redirect()`** — put the skeleton in an in-page `<Suspense>` instead
+- **Bug 3 — 37 of 42 categories listed zero products.** `listProductsByCategory()` filtered on
+  `products.primary_category_id`, ignoring the `product_categories` join table where membership actually
+  lives (decorative-coatings: 0 via primary, 61 via join). Fixed with a PostgREST inner-join filter
+  (`product_categories!inner(category_id)`). **No descendant walk is needed** — WooCommerce tags every
+  product with its category *and all ancestors*, confirmed against the dump (direct count == count
+  including children, for every category). Verified: all 42 categories now report the exact product count
+  WordPress does (decorative-coatings 61 = the old site's 6 paginated pages)
+- **Bug 4 — giant square image at the top of category pages.** `categories.banner_image_url` is the WP term
+  *thumbnail*: a 1000×1000 square icon (blue tile, white line art), which the page rendered as a full-width
+  hero. The old site never shows it that way — it uses it as `og:image`, and (only on the TOA branch) inside
+  a hand-placed Elementor strip of 7 category tiles at 300×300. Dropped the hero `<img>`; the icon now feeds
+  `openGraph.images` instead, matching WP
+- Known parity gap (not built): the TOA-branch strip of 7 category tiles. It is an Elementor widget on
+  `toa-color` and its children only — no other branch has one
+- Verified: 42/42 category paths → 200; 42/42 product counts match the WP dump; missing product/blog/category
+  → 404; leaf-only + wrong-ancestor → 308 to canonical; sitemap emits 39 nested + 3 root paths;
+  `npm run build` green

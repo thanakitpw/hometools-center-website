@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { createClient as createSupabase } from '@supabase/supabase-js';
 import { siteConfig } from '@/lib/site-config';
+import { attachPaths } from '@/lib/queries/categories';
 
 export const revalidate = 3600;
 
@@ -16,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const [products, categories, posts] = await Promise.all([
     sb.from('products').select('slug, updated_at').eq('status', 'published'),
-    sb.from('categories').select('slug, updated_at').eq('is_published', true),
+    sb.from('categories').select('id, slug, parent_id, updated_at').eq('is_published', true),
     sb.from('posts').select('slug, updated_at, published_at').eq('status', 'published'),
   ]);
 
@@ -37,8 +38,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const categoryUrls: MetadataRoute.Sitemap = (categories.data || []).map(c => ({
-    url: `${base}/product-category/${c.slug}`,
+  // Categories are addressed by their full ancestor chain, matching the WordPress URLs
+  const categoryUrls: MetadataRoute.Sitemap = attachPaths(categories.data || []).map(c => ({
+    url: `${base}/product-category/${c.path}`,
     lastModified: c.updated_at ? new Date(c.updated_at) : undefined,
     changeFrequency: 'weekly',
     priority: 0.8,
