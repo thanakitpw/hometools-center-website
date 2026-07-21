@@ -13,6 +13,7 @@ import { SiLine } from '@icons-pack/react-simple-icons';
 import { siteConfig } from '@/lib/site-config';
 import { JsonLd } from '@/components/site/json-ld';
 import { productSchema, breadcrumbSchema } from '@/lib/seo/schema';
+import { buildProductDescription } from '@/lib/product-description';
 
 export const revalidate = 3600;
 
@@ -52,8 +53,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
   ]);
 
   const phoneDigits = siteConfig.contact.phone.replace(/[^0-9]/g, '');
-  const descText = (p.short_description || '').replace(/<[^>]+>/g, '').trim();
-  const hasRealDesc = descText.length > 20;
+  // The full WordPress body lives in description_md; short_description is only the
+  // excerpt, and rendering that alone is what left these pages looking empty.
+  const desc = buildProductDescription(p.description_md, p.short_description);
+  const hasRealDesc = desc.hasContent;
   const hasPdf = !!p.catalog_pdf_url;
   const hasSpecs = !!(p.specs && p.specs.length > 0);
 
@@ -185,7 +188,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
                   <h2 className="!mb-4 !text-[22px] !font-bold !text-[var(--color-brand-light)]">รายละเอียดสินค้า</h2>
                   <div
                     className="product-desc text-[15px] leading-[1.9] text-[#2f4d70] [&_a]:text-[var(--color-brand-500)] [&_img]:mx-auto [&_img]:my-3 [&_img]:h-auto [&_img]:max-w-full [&_p]:my-2 [&_table]:my-4 [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[var(--color-border)] [&_td]:p-2 [&_th]:border [&_th]:border-[var(--color-border)] [&_th]:bg-[var(--color-muted)] [&_th]:p-2"
-                    dangerouslySetInnerHTML={{ __html: p.short_description! }}
+                    dangerouslySetInnerHTML={{ __html: desc.html }}
                   />
                 </section>
               )}

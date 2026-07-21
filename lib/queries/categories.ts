@@ -2,6 +2,7 @@ import 'server-only';
 import { createClient } from '@/lib/supabase/server';
 import { createStaticClient } from '@/lib/supabase/static';
 import type { Category } from './types';
+import { slugCandidates } from './slug';
 
 export type CategoryWithPath = Category & { path: string };
 
@@ -48,13 +49,15 @@ export async function listAllCategories() {
 
 export async function getCategoryByPath(path: string) {
   const all = await listAllCategories();
-  return all.find(c => c.path === path) ?? null;
+  const candidates = slugCandidates(path);
+  return all.find(c => candidates.includes(c.path)) ?? null;
 }
 
 /** Used to 301 a bare leaf slug (or a wrong ancestor chain) onto the canonical full path. */
 export async function getCategoryBySlug(slug: string) {
   const all = await listAllCategories();
-  return all.find(c => c.slug === slug) ?? null;
+  const candidates = slugCandidates(slug);
+  return all.find(c => candidates.includes(c.slug)) ?? null;
 }
 
 export async function getCategoryById(id: string | null) {

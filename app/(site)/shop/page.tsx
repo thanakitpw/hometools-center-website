@@ -20,7 +20,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
   const sp = await searchParams;
   const page = Math.max(1, parseInt(sp.page || '1', 10));
   const query = sp.q || '';
-  const perPage = 16;
+  const perPage = 25;
   const { items, total } = await listAllProducts({ page, perPage, query });
   const totalPages = Math.ceil(total / perPage);
 
@@ -38,7 +38,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
       </section>
 
       <section className="bg-white">
-        <div className="mx-auto max-w-[1320px] px-6 py-10">
+        <div className="mx-auto max-w-[1560px] px-6 py-10">
           <h1 className="text-center !text-[40px] !font-bold !leading-tight !text-[#111111] md:!text-[46px]">
             สินค้าทั้งหมด
           </h1>

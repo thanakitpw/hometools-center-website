@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ShopLoading() {
   return (
-    <div className="mx-auto max-w-[1320px] px-6 py-10">
+    <div className="mx-auto max-w-[1560px] px-6 py-10">
       <Skeleton className="h-9 w-56" />
       <div className="mt-10 grid gap-8 md:grid-cols-[240px_1fr] lg:gap-10">
         <SidebarSkeleton />

@@ -9,7 +9,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-07-13
+**Last updated:** 2026-07-20
 
 ---
 
@@ -336,3 +336,48 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
 - Verified: 42/42 category paths → 200; 42/42 product counts match the WP dump; missing product/blog/category
   → 404; leaf-only + wrong-ancestor → 308 to canonical; sitemap emits 39 nested + 3 root paths;
   `npm run build` green
+
+### 2026-07-20 (session 4 — Thai-slug 404s, sidebar parity, product body content)
+- **Percent-encoded slugs — 38 product pages 404'd, 87 of 109 redirects were dead.** WordPress
+  persists `post_name` percent-encoded when the title is non-ASCII, so `ท่อ-pb` was stored as
+  `%e0%b8%97%e0%b9%88%e0%b8%ad-pb` and the exact-match lookup never hit. Compounding it,
+  **Next.js 16 decodes route params inconsistently**: for the same request `generateMetadata`
+  receives the decoded slug while the page component receives the raw encoded one (verified with
+  a temporary debug log), so fixing the data alone was not enough
+- Fix: `scripts/db/extract.js` decodes at the source; `scripts/db/fix-encoded-slugs.js` repaired
+  the 47 rows already imported (38 product slugs + 9 `redirects.to_path`), with a collision guard;
+  `lib/queries/slug.ts` matches both forms at every slug lookup (products/posts/categories);
+  `lib/queries/redirects.ts` decodes the pathname before lookup; `app/sitemap.ts` percent-encodes
+  `<loc>` (it was emitting raw Thai, which violates the sitemap spec)
+- Result: 38/38 Thai product pages → 200, 107/109 redirects land on a 200. The 2 left are dead WP
+  plugin junk (`/dflip_category/*` has no equivalent route; an `astra-addon` `.css` the middleware
+  matcher excludes by design)
+- ⚠️ Old URLs with a trailing slash now chain 308 → 301 (Next normalises the slash before
+  middleware runs). Google follows it; removing the hop means `trailingSlash` site-wide — not worth it
+- **Sidebar chevrons all pointed up.** Every nesting level shared `group/sidebar`, and
+  `group-open/sidebar:` matches any *ancestor* that is open — top-level groups are open by default,
+  so children inherited the rotation. Now `open:[&>summary>svg]:rotate-180` on the `<details>`
+  itself, scoped to its own direct summary. (`[details[open]>summary>&]` does *not* compile in
+  Tailwind v4 — nested brackets; always check the built CSS)
+- **Sidebar order now matches the old site** (40/40 entries, order + nesting). The old sidebar was a
+  hand-curated Elementor menu, NOT the category tree — WooCommerce term order does not match it.
+  `scripts/db/set-category-order.js` replays that menu into `categories.sort_order` (spaced by 10,
+  errors if any category is unaccounted for). `pvc-pipes-and-fittings-thaipipe` is a ROOT category
+  the menu displayed *inside* งานระบบ — regrouped in the component only, since re-parenting would
+  change its indexed URL
+- **Product bodies were never rendered.** `products.description_md` (raw WP `post_content`, despite
+  the name) holds the full page body for 317 products; the page was rendering only
+  `short_description`. Now wired through `lib/product-description.ts`, which also strips dFlip
+  `[dflip id=…]` shortcodes (41 products) that would otherwise print as literal text
+- `scripts/db/fix-product-catalog-pdfs.js` backfilled `catalog_pdf_url` for the 7 products whose
+  shortcode was the *only* pointer to their catalog, resolving `_dflip_data.pdf_source` out of the
+  dump and through the media url-map. **334/343 products now show a detail section**; the other 9
+  are empty in WordPress too (verified against the dump)
+- ⚠️ Gate on media as well as text when deciding whether to render HTML — several products describe
+  themselves entirely with a linked catalog banner and no prose at all
+- Known issue (pre-existing, not a regression): 4 product bodies hotlink images from
+  `toagroup.com` that now 404 on TOA's own server
+- Card/layout tweaks: listing containers 1320/1280 → 1560px, product-card image full-bleed
+  `aspect-[4/5]` + `object-cover object-top`, title 16 → 13px, submenu slide-down animation via
+  `::details-content` (CSS-only on purpose — a JS accordion unmounts collapsed panels and would
+  drop ~40 internal category links out of the server-rendered HTML)

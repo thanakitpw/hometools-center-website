@@ -110,6 +110,31 @@ h4 { font-size: 1.25rem; }
   animation: shimmer 1.4s ease-in-out infinite;
 }
 
+/* Slide-down for the category sidebar's submenus. A native <details> snaps open, so
+   animate its ::details-content box: `interpolate-size` is what makes the 0 -> auto
+   height interpolable, and transitioning `content-visibility` with `allow-discrete`
+   keeps the panel painted for the whole duration instead of vanishing on frame one.
+
+   Deliberately CSS-on-top-of-<details> rather than a JS accordion: an accordion
+   unmounts collapsed panels, which would drop ~40 internal category links out of the
+   server-rendered HTML. Browsers without ::details-content simply snap open as before. */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+}
+
+.category-tree details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    content-visibility 260ms allow-discrete;
+}
+.category-tree details[open]::details-content {
+  block-size: auto;
+}
+
 /* Lenis owns the wheel while it's active, so native smooth scrolling has to step
    aside — the two interpolating at once produces a visible fight. Only applies
    once Lenis mounts and stamps these classes on <html>. */
@@ -138,7 +163,9 @@ html.lenis body {
   }
   .animate-page-enter,
   .skeleton,
-  .route-progress__bar {
+  .route-progress__bar,
+  .category-tree details::details-content,
+  .category-tree summary svg {
     animation: none !important;
     transition: none !important;
   }

@@ -2,13 +2,14 @@ import 'server-only';
 import { createClient } from '@/lib/supabase/server';
 import { createStaticClient } from '@/lib/supabase/static';
 import type { Post } from './types';
+import { slugCandidates } from './slug';
 
 export async function getPostBySlug(slug: string) {
   const sb = await createClient();
   const { data, error } = await sb
     .from('posts')
     .select('*')
-    .eq('slug', slug)
+    .in('slug', slugCandidates(slug))
     .eq('status', 'published')
     .maybeSingle();
   if (error) throw error;

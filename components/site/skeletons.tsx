@@ -1,19 +1,19 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
 /**
- * Mirrors ProductCard's box model exactly (min-h-330 / image 230 / title 44 /
+ * Mirrors ProductCard's box model exactly (full-bleed 4:5 image / title 36 /
  * button h-9). A skeleton whose size differs from the content that replaces it
  * causes the layout shift it was meant to prevent.
  */
 export function ProductCardSkeleton() {
   return (
-    <div className="flex min-h-[330px] flex-col overflow-hidden border border-[#e5e5e5] bg-white">
-      <div className="flex h-[230px] items-center justify-center p-6">
+    <div className="flex flex-col overflow-hidden border border-[#e5e5e5] bg-white">
+      <div className="aspect-[4/5]">
         <Skeleton className="h-full w-full" />
       </div>
       <div className="flex flex-1 flex-col items-center gap-3 px-4 pb-6 pt-5">
-        <Skeleton className="h-4 w-4/5" />
-        <Skeleton className="h-4 w-3/5" />
+        <Skeleton className="h-[13px] w-4/5" />
+        <Skeleton className="h-[13px] w-3/5" />
         <Skeleton className="mt-auto h-9 w-full max-w-[210px] rounded-full" />
       </div>
     </div>

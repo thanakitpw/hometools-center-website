@@ -15,6 +15,17 @@ function pathFromUrl(u) {
   try { return new URL(u).pathname; } catch { return u.startsWith('/') ? u : `/${u}`; }
 }
 
+/**
+ * WordPress stores `post_name`/term slugs percent-encoded when the title is non-ASCII
+ * (Thai), e.g. 'ท่อ-pb' is persisted as '%e0%b8%97%e0%b9%88%e0%b8%ad-pb'. Next.js hands
+ * route params to us already decoded, so storing the encoded form makes every such page
+ * 404 on an exact-match lookup. Decode here so the DB holds one canonical form.
+ */
+const decodeSlug = (s) => {
+  if (typeof s !== 'string' || !s) return s;
+  try { return decodeURIComponent(s); } catch { return s; }
+};
+
 // WooCommerce/RankMath sometimes store '0' as a "no value" sentinel (e.g. category
 // thumbnail_id, product primary-cat) which is truthy in JS — normalize to null.
 const posIntOrNull = (v) => {
@@ -89,7 +100,7 @@ const posIntOrNull = (v) => {
       const tm = tmBy.get(t.term_id) || {};
       const parentTax = t.parent ? tax.find(x => x.term_id === t.parent && x.taxonomy === 'product_cat') : null;
       return {
-        wpTermId: t.term_id, slug: term.slug, name_th: term.name,
+        wpTermId: t.term_id, slug: decodeSlug(term.slug), name_th: term.name,
         parentWpTermId: parentTax ? parentTax.term_id : null,
         description: t.description || null,
         thumbId: tm.thumbnail_id && tm.thumbnail_id !== '0' ? tm.thumbnail_id : null,
@@ -111,7 +122,7 @@ const posIntOrNull = (v) => {
       const catTermIds = ttids.filter(id => catTtids.has(id))
         .map(id => taxByTtid.get(id).term_id);
       return {
-        ID: p.ID, slug: p.post_name, name_th: p.post_title,
+        ID: p.ID, slug: decodeSlug(p.post_name), name_th: p.post_title,
         short_description: p.post_excerpt || null,
         description_html: p.post_content || null,
         status: p.post_status, post_date: p.post_date, menu_order: p.menu_order,

@@ -9,10 +9,23 @@ function anon() {
   );
 }
 
+function safeDecode(p: string) {
+  try {
+    return decodeURIComponent(p);
+  } catch {
+    return p; // malformed escape (e.g. a literal '%' in the path) — match on it verbatim
+  }
+}
+
 export async function findRedirect(fromPath: string) {
   const sb = anon();
-  // try exact + with trailing slash
-  const candidates = Array.from(new Set([fromPath, fromPath.replace(/\/?$/, '/'), fromPath.replace(/\/$/, '')]));
+  // `from_path` holds the decoded form ('/product/ท่อ-pb/') but the wire always carries
+  // it percent-encoded, so match on both. Each form is tried with and without the
+  // trailing slash, since WordPress emitted the slash and inbound links vary.
+  const forms = Array.from(new Set([fromPath, safeDecode(fromPath)]));
+  const candidates = Array.from(
+    new Set(forms.flatMap(f => [f, f.replace(/\/?$/, '/'), f.replace(/\/$/, '')]))
+  );
   const { data } = await sb
     .from('redirects')
     .select('from_path, to_path, status_code')

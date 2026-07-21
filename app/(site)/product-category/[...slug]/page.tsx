@@ -73,7 +73,7 @@ export default async function CategoryPage({
   const totalPages = Math.ceil(total / perPage);
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-6">
+    <div className="mx-auto max-w-[1560px] px-6 py-6">
       <JsonLd
         data={[
           breadcrumbSchema([
@@ -96,7 +96,7 @@ export default async function CategoryPage({
         ]}
       />
 
-      <div className="mt-6 grid gap-8 md:grid-cols-[220px_1fr]">
+      <div className="mt-6 grid gap-8 md:grid-cols-[240px_1fr] lg:gap-10">
         <CategorySidebar activePath={cat.path} />
         <div>
           <h1 className="!text-2xl !text-[var(--color-fg)] md:!text-3xl">หมวดหมู่: {cat.name_th}</h1>
@@ -123,7 +123,7 @@ export default async function CategoryPage({
           {items.length === 0 ? (
             <p className="mt-10 text-center text-[var(--color-muted-fg)]">ยังไม่มีสินค้าในหมวดหมู่นี้</p>
           ) : (
-            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="mt-4 grid gap-x-7 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {items.map(p => <ProductCard key={p.id} p={p} />)}
             </div>
           )}

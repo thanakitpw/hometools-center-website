@@ -2,13 +2,14 @@ import 'server-only';
 import { createClient } from '@/lib/supabase/server';
 import { createStaticClient } from '@/lib/supabase/static';
 import type { Product, Category, Brand } from './types';
+import { slugCandidates } from './slug';
 
 export async function getProductBySlug(slug: string) {
   const sb = await createClient();
   const { data, error } = await sb
     .from('products')
     .select('*')
-    .eq('slug', slug)
+    .in('slug', slugCandidates(slug))
     .eq('status', 'published')
     .maybeSingle();
   if (error) throw error;
@@ -81,8 +82,12 @@ export async function listAllProducts(
     .select('id, slug, name_th, images, sku, short_description', { count: 'exact' })
     .eq('status', 'published');
   if (query.trim()) q = q.ilike('name_th', `%${query.trim()}%`);
+  // Reproduce the old WooCommerce /shop archive order exactly: post_date ASC (oldest
+  // product first — PVC pipes at the top, TOA paint at the bottom). Verified pixel-for-pixel
+  // against the live site. `id` is a deterministic tiebreaker for any null published_at.
   const { data, count, error } = await q
-    .order('name_th', { ascending: true })
+    .order('published_at', { ascending: true })
+    .order('id', { ascending: true })
     .range(from, to);
   if (error) throw error;
   return { items: data || [], total: count || 0 };

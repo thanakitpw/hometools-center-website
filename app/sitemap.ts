@@ -5,6 +5,18 @@ import { attachPaths } from '@/lib/queries/categories';
 
 export const revalidate = 3600;
 
+/**
+ * Slugs migrated from WordPress can be Thai ('ท่อ-pb'). The sitemap protocol requires
+ * <loc> to be a percent-encoded RFC-3986 URL, so encode each path segment; `encodeURI`
+ * would be wrong here as it leaves '/' alone but also passes through '#', '?' and '&'.
+ * Already-encoded slugs are left as-is so they can't be double-encoded.
+ */
+const encodePath = (p: string) =>
+  p
+    .split('/')
+    .map(seg => (/%[0-9a-fA-F]{2}/.test(seg) ? seg : encodeURIComponent(seg)))
+    .join('/');
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Use anon client (sitemap runs in build/edge — no cookies)
   const sb = createSupabase(
@@ -32,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const productUrls: MetadataRoute.Sitemap = (products.data || []).map(p => ({
-    url: `${base}/product/${p.slug}`,
+    url: `${base}/product/${encodePath(p.slug)}`,
     lastModified: p.updated_at ? new Date(p.updated_at) : undefined,
     changeFrequency: 'weekly',
     priority: 0.7,
@@ -40,14 +52,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Categories are addressed by their full ancestor chain, matching the WordPress URLs
   const categoryUrls: MetadataRoute.Sitemap = attachPaths(categories.data || []).map(c => ({
-    url: `${base}/product-category/${c.path}`,
+    url: `${base}/product-category/${encodePath(c.path)}`,
     lastModified: c.updated_at ? new Date(c.updated_at) : undefined,
     changeFrequency: 'weekly',
     priority: 0.8,
   }));
 
   const postUrls: MetadataRoute.Sitemap = (posts.data || []).map(p => ({
-    url: `${base}/blog/${p.slug}`,
+    url: `${base}/blog/${encodePath(p.slug)}`,
     lastModified: p.updated_at ? new Date(p.updated_at) : p.published_at ? new Date(p.published_at) : undefined,
     changeFrequency: 'monthly',
     priority: 0.7,
