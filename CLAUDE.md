@@ -1,5 +1,8 @@
 # CLAUDE.md — Project context for Claude Code
 
+> **ภาษา:** ตอบกลับผู้ใช้เป็น **ภาษาไทย** ทุกครั้ง (โค้ด, ชื่อไฟล์, คำสั่ง shell,
+> commit message และ identifier ต่าง ๆ ยังคงเป็นภาษาอังกฤษตามเดิม)
+
 > **Companion file:** [`TASKS.md`](./TASKS.md) — single source of truth for what's
 > done vs. pending. **Always check it first** when resuming a session, and tick
 > off boxes as you finish work.
@@ -9,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-07-20
+**Last updated:** 2026-07-25
 
 ---
 
@@ -381,3 +384,48 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   `aspect-[4/5]` + `object-cover object-top`, title 16 → 13px, submenu slide-down animation via
   `::details-content` (CSS-only on purpose — a JS accordion unmounts collapsed panels and would
   drop ~40 internal category links out of the server-rendered HTML)
+
+### 2026-07-25 (session 5 — launch prep, domain attached, redirect chains flattened)
+- 🔴 **The old WP site is down.** `hometools-center.com` returns `503` on every path (nginx,
+  confirmed straight from origin `27.254.134.234` via `--resolve`, so it is not Cloudflare).
+  Cutover is therefore a *recovery*, not a scheduled migration: the content freeze and the
+  "final re-crawl" in Phase 7 are moot while WP is unreachable. Cause unknown — with the host/client
+- **Launch readiness verified against the live Vercel deployment**, not just locally. A parity
+  smoke over **535 URLs** (every published product/category/post + statics + all 109 redirect
+  `from_path`s) returned: 11/11 static, 343/343 product, 42/42 category, 30/30 blog → `200`;
+  107/109 redirects → `200`, all terminating in **301** (no 302/307 leaked). The 2 failures are
+  dead WP-plugin junk already documented in session 4
+- **Domain attached to Vercel** — `hometools-center.com` + `www.hometools-center.com` on
+  `prj_ejDxifbeD93ZOSA2Isb9oBirChpr`. `www` is set to **301 → apex** at the edge via
+  `PATCH /v9/projects/{id}/domains/{domain}`; apex is canonical (1840/1840 URL references in the
+  WP export carry no `www`). Attaching does **not** affect the live site — DNS still decides
+- **75 redirects were costing 3–4 hops.** Three causes: a trailing slash on `to_path` (Next 308s
+  it away *before* middleware), `to_path` pointing at an intermediate slug that redirects again,
+  and `to_path` pointing at a bare leaf category (which 308s to the full ancestor chain).
+  `scripts/db/flatten-redirect-chains.js` walks each rule against a live deployment and rewrites
+  `to_path` to the terminal path; re-running converges to `to flatten: 0`
+- ⚠️ The residual 2-hop cases are **not** fixable in data: they are rules whose `from_path` itself
+  ends in `/`, and Next normalises the inbound URL with a 308 before middleware ever runs.
+  Removing that hop would mean `trailingSlash: true` site-wide — not worth it (see session 4)
+- **Verified the pre-launch `noindex` guard self-clears.** `X-Robots-Tag: noindex, nofollow` is
+  present on the `.vercel.app` host on both cached (`x-vercel-cache: HIT`) and dynamic responses,
+  and keys off the `host` header — so it lifts the moment DNS points the real domain here, with
+  no code change or redeploy. (Watch out: `curl -sI | awk 'NR<=N'` truncates before reaching it)
+- **Content has zero dependency on the dead WP host** — scanned every `description_md`,
+  `content_md`, image and PDF column: 0 references to `hometools-center.com`. Remaining external
+  hosts are `static.xx.fbcdn.net` (179, emoji in post bodies), `facebook.com`/`lin.ee`/`m.me`
+  (links, harmless) and `toagroup.com` (23 — the known-broken hotlinks from session 4)
+- 🔴 **DNS: mail lives on the old server.** `MX → mail.hometools-center.com → 27.254.134.234`,
+  plus `A mail`/`A webmail`. **Only the apex and `www` records may be touched at cutover.**
+  `scripts/launch/cloudflare-cutover.js` enforces this (dry-run by default, `--apply`,
+  `--rollback`, and it refuses to consider anything but apex/`www`). Also present and not to be
+  deleted: the `google-site-verification` TXT (GSC ownership is already proven) and the SPF TXT.
+  After cutover SPF's `+a` will authorize Vercel's IPs rather than the mail host — delivery still
+  passes via `+mx`, but it should be tightened to `+a:mail.hometools-center.com`
+- Vercel DNS target for both records: `CNAME → f719314d174704b9.vercel-dns-017.com`,
+  **DNS-only / grey cloud** (proxying breaks SSL issuance). Apex fallback: `A → 76.76.21.21`.
+  Zone TTL is 300s, so rollback lands within ~5 minutes
+- Production env has only 4 of 8 vars — `RESEND_API_KEY`, `QUOTE_NOTIFY_EMAIL`,
+  `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_NOTIFY_USER_ID` are unset. Per user decision, launching
+  without them: `lib/notify.ts` returns `{skipped}` rather than throwing, so quote/contact
+  submissions still persist and show in `/admin` — they just raise no alert. Backfill after launch

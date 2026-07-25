@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-07-13 (nested category URLs + soft-404 fix)
+> **Last updated:** 2026-07-25 (launch prep — domain attached, redirect chains flattened)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -159,17 +159,32 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [ ] Add rate limiting on `/api/quote` and `/api/contact` (Upstash Redis or simple in-memory)
 - [ ] Add Cloudflare Turnstile or similar (optional)
 
-## Phase 7 — Launch ⬜
+## Phase 7 — Launch 🔄
 
-- [ ] Backup WP DB + files
-- [ ] Coordinate 7-day content freeze with client
-- [ ] Re-crawl WP one final time + re-import any new content
-- [ ] Vercel project setup + custom domain
-- [ ] Production env vars on Vercel
-- [ ] GA4 + GTM + GSC verification
-- [ ] DNS cutover (Cloudflare DNS-only → Vercel A/CNAME)
+> ⚠️ **The old WP site has been returning `503` on every path since at least 2026-07-25**
+> (nginx, straight from origin `27.254.134.234` — not a Cloudflare issue). Cutover is now a
+> recovery, not just a migration. Content freeze and a final re-crawl are moot while it is down.
+
+- [x] Backup WP DB + files — authoritative MySQL dump + `wpuploads.zip` already held (Phase 4.5)
+- [ ] ~~Coordinate 7-day content freeze~~ — moot, WP is down
+- [ ] ~~Re-crawl WP one final time~~ — impossible, WP is down
+- [x] Vercel project setup + custom domain — `hometools-center.com` + `www` attached to
+      `prj_ejDxifbeD93ZOSA2Isb9oBirChpr`; `www` set to **301 → apex** at the Vercel edge
+      (apex is the canonical host: 1840/1840 references in the WP data carry no `www`)
+- [ ] Production env vars on Vercel — only 4 of 8 set. Missing `RESEND_API_KEY`,
+      `QUOTE_NOTIFY_EMAIL`, `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_NOTIFY_USER_ID`.
+      `lib/notify.ts` skips cleanly, so quotes/messages still land in the DB and `/admin` —
+      they just send no email/LINE alert. **Decision: launch without, backfill after.**
+- [ ] GA4 + GTM + GSC verification — Phase 5.5 is entirely unbuilt; no tags on the site.
+      GSC ownership *is* already proven via the existing `google-site-verification` TXT record
+- [ ] DNS cutover (Cloudflare DNS-only → Vercel) — `scripts/launch/cloudflare-cutover.js`
+      is written and dry-run-able; **blocked on a Cloudflare API token** (`Zone → DNS → Edit`)
 - [ ] Submit sitemap to GSC, request recrawl
-- [ ] Spot-test 20 redirect URLs from old sitemap
+- [x] Spot-test redirect URLs — full parity smoke over **535 URLs**: 11/11 static, 343/343
+      products, 42/42 categories, 30/30 blog posts → `200`; 107/109 redirects → `200`.
+      The 2 failures are dead WP-plugin junk (`/dflip_category/*`, an `astra-addon` `.css`)
+- [x] Flatten multi-hop redirect chains — 75 rules were costing 3–4 hops
+      (`scripts/db/flatten-redirect-chains.js`)
 
 ## Phase 8 — Post-launch monitoring (2–4 weeks) ⬜
 
