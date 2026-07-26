@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-07-25
+**Last updated:** 2026-07-27 — 🟢 site LIVE; Google Ads / GTM tags restored (pending deploy)
 
 ---
 
@@ -429,3 +429,109 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_NOTIFY_USER_ID` are unset. Per user decision, launching
   without them: `lib/notify.ts` returns `{skipped}` rather than throwing, so quote/contact
   submissions still persist and show in `/admin` — they just raise no alert. Backfill after launch
+
+### 2026-07-25 (session 6 — 🟢 CUTOVER, site is live)
+
+- 🔴 **Correction to session 5: our Cloudflare zone was never authoritative.** It sat at
+  `status=pending` with assigned NS `brad`/`nancy`, while the registrar delegated the domain to
+  `thomas`/`kallie` — a **different Cloudflare account** (the old host's) whose zone still pointed
+  apex at the dead `27.254.134.234`. So every DNS edit made from `cloudflare-cutover.js` was
+  **inert**, and the session-5 note "DNS still decides" understated it: our zone was not in the
+  path at all. Symptom to recognise next time: the CF API lists the records you expect, but
+  `dig @<the-live-NS> …` disagrees → compare `name_servers` vs `original_name_servers` and check
+  `status`
+- **Cutover was therefore an NS change at the registrar** (PDR Ltd. / PublicDomainRegistry),
+  not a record edit — `thomas`+`kallie` → `brad`+`nancy`. The whole zone goes live at once, so
+  parity had to be proven *first*: `scripts/launch/compare-zone.js` reported **0 records missing**
+  vs. the live zone, the only delta being the intentional `www` (live `CNAME → apex`; ours
+  `CNAME → Vercel`, which serves the 301 at the edge). Mail carried over intact — `MX`,
+  `A mail`, `A webmail`, SPF, DKIM, DMARC, both `SRV`
+- Parent `.com` delegation updated within minutes (not the 24h the registrar warns about);
+  Cloudflare flipped the zone to **`active` at 2026-07-25T16:40:50Z**
+- **Post-cutover verification on the real domain** (pin the anycast IP with `curl --resolve` /
+  Node `servername` — the local resolver caches the old `A` for a while and will keep showing
+  `503 nginx` long after the site is up; don't mistake that for a failed cutover):
+  535 URLs → 11/11 static, 343/343 products, 42/42 categories, 30/30 blog `200`;
+  107/109 redirects terminate `200` through a `301`; `www` → `301` apex; identical to the
+  pre-cutover run against `.vercel.app`. The 2 failures are the known dead WP-plugin junk
+- **The `noindex` guard self-cleared as designed** — `X-Robots-Tag` is absent on the real host;
+  it keyed off the `.vercel.app` hostname, so no redeploy was needed
+- ⚠️ `products.status` / `posts.status` use **`published`**, not `publish` — a filter on the
+  wrong value silently returns 0 rows and a smoke test then reports a vacuous `0/0 → 200`
+- ⚠️ zsh does **not** word-split unquoted parameters, so `R="--resolve a:b:c"; curl $R …` passes
+  the whole string as one argv and fails. Use `${=R}`, an array, or inline the flags
+- Follow-ups: submit sitemap to GSC + request recrawl; tighten SPF (`+a` now authorizes Vercel's
+  IPs since apex moved — delivery still passes via `+mx`, change to `+a:mail.hometools-center.com`);
+  Phase 5.5 analytics is mid-build (`lib/analytics/{config,consent,events}.ts` written and
+  uncommitted, `components/site/analytics.tsx` not yet created)
+
+### 2026-07-27 (session 7 — Google Ads recovery: tracking IDs recovered, GTM restored)
+
+- **Context:** the client's Google Ads was paused after cutover because the new site carried
+  **no measurement tags at all** — from 2026-07-25 to 2026-07-27 every conversion action and
+  remarketing audience fed by the website collected nothing
+- **The old site's tag stack was recovered from the WP export, not from the client.** The live
+  WP site is down, so the IDs came out of `backup-oldwebsite/adminhometools_wp_orpro.sql` and
+  the 281 files in `research/crawl/`:
+
+  | System | ID | Evidence |
+  |---|---|---|
+  | Google Ads | `AW-11306253882` | 282 crawled pages |
+  | GTM container | `GTM-5LCNL8C9` | 843 pages |
+  | GA4 (primary) | `G-X9W48F0BWC` | 845 pages |
+  | GA4 (stale) | `G-XM0OEX8YWG`, `G-NPN1733YLJ` | 15 / 2 pages |
+  | GSC meta | `I0rNG9jQNGOaa-0NdOA8N-l2Kr8M4aLXmhZUWd0FIMs` | — (TXT already proves ownership) |
+
+  Loaded by the **GTM4WP** plugin: one container hosting both GA4 and the Ads tag
+- ⚠️ **Conversion *labels* are not recoverable from the dump** — they live inside the container,
+  never in page source. This is exactly why we reuse `GTM-5LCNL8C9` instead of building a new
+  container: every conversion/remarketing/linker tag comes back at once and the labels never
+  need to be known. Getting Publish access to that container matters more than Ads access
+- **`dataLayer_content` on the old site was only `{pagePostType, pagePostType2, pagePostAuthor}`**
+  — GTM4WP's WooCommerce e-commerce dataLayer was off. So there is **no dynamic-remarketing
+  item feed to reproduce**, which removes a large chunk of assumed work
+- **`gclid` survives the migration**: `middleware.ts` does `dest.search = search` before
+  redirecting, so query strings ride through all 109 `301`s. Had that been missing, every ad
+  click would have lost attribution
+- 🔴 **`lib/site-config.ts` shipped placeholder social links to production** —
+  `https://www.facebook.com/` and `https://line.me/`, live in the sitewide floating button since
+  cutover. A *business* bug before a tracking one. Real values, taken from the export:
+  `facebook.com/HTCpipeandtools`, `m.me/103142917882034`,
+  `line.me/R/ti/p/%40hometoolscenter`. Use the last form, **not** `lin.ee/BbS0txt` — the
+  short link appears only inside two blog bodies, while the sitewide Chatway button (the thing
+  a GTM click trigger would have been built against) used the `line.me/R/ti/p/` form.
+  `profileUrls()` in `lib/seo/schema.ts` had been silently dropping the placeholders from
+  `sameAs`, so the JSON-LD was empty rather than wrong — it now populates
+- `tel:024262745` already matched the old site exactly (`floating-contact.tsx` strips the
+  dashes off `siteConfig.contact.phone`), so any tel-based click trigger works untouched
+- **New: `components/site/analytics.tsx`** (+ `analytics-route-tracker.tsx`). Mounted from
+  **`app/(site)/layout.tsx`, deliberately not the root layout**, so `/admin` page views stay
+  out of GA4 and out of the remarketing audiences
+- ⚠️ **GTM's All Pages trigger fires once per document load.** On WordPress that meant once per
+  page; here navigation is client-side, so without help every tag on that trigger would fire
+  only for the entry page. `AnalyticsRouteTracker` pushes a `page_view` custom event on route
+  change (skipping the first render to avoid double-counting `gtm.js`), deferred one
+  `requestAnimationFrame` because Next writes the new `<title>` in a later commit.
+  **This is inert until someone adds a Custom Event trigger `page_view` inside the container.**
+- ⚠️ **Consent Mode is behind `NEXT_PUBLIC_CONSENT_MODE=1` and left OFF.** `consent.ts` defaults
+  every category to *denied*; shipping that without a banner to grant it would keep Ads
+  conversions and remarketing dark **permanently** — strictly worse than no consent mode. The WP
+  site ran none, so off = parity. Turn it on in the same change that adds the banner
+- Wired `generate_lead` / `form_error` into `QuoteDialog` + `ContactForm`, and `begin_quote` on
+  dialog open. **Still unwired** (helpers exist, nothing calls them): `view_item`,
+  `view_item_list`, `search`, `file_download`
+- Vercel production env: added `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA4_ID` (6 of 10 vars now set).
+  `useDirectGa4` is false whenever a container exists, so the GA4 ID is reference-only and does
+  not double-count
+- **From the client's Ads account** (8 campaigns): goals are การเข้าชมร้านค้า
+  (🔴 misconfigured), รายชื่อติดต่อ (8/8 campaigns, 4 actions, ⚠️ needs action), ขอการเสนอราคา
+  (1/8, ⚠️ needs action), ดูเส้นทาง / การมีส่วนร่วม / การดูหน้าเว็บ (✅ active). Over
+  27 Jun – 26 Jul: รายชื่อติดต่อ 135, ดูเส้นทาง 67, การดูหน้าเว็บ 5, **ขอการเสนอราคา 0**.
+  That window is almost entirely *pre*-cutover, so **the quote conversion was already broken on
+  WordPress** — not caused by the migration. Needs the Source column to separate
+  website-tag conversions (broken by the migration) from call/Google-Business-Profile ones
+  (unaffected)
+- ⬜ Next: deploy, verify in GTM Preview + Tag Assistant that a real quote submission fires the
+  Ads conversion, **then** let the client resume Ads. Also outstanding: audit the ads' Final
+  URLs against the live site, and check whether any conversion action is imported from GA4
+  (container alone would not restore those)

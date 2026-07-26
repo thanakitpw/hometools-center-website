@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+import { trackQuoteStart, trackGenerateLead, trackFormError, type TrackedItem } from '@/lib/analytics/events';
 
 type Props = {
   triggerLabel?: string;
@@ -18,6 +19,15 @@ type Props = {
 export function QuoteDialog({ triggerLabel = 'ขอใบเสนอราคา', productSlug, productName, className }: Props) {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  // The dialog is also used bare (no product attached) on the contact/how-to-order pages.
+  const trackedItem: TrackedItem | undefined =
+    productSlug && productName ? { slug: productSlug, name: productName } : undefined;
+
+  function handleOpenChange(next: boolean) {
+    if (next) trackQuoteStart(trackedItem);
+    setOpen(next);
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,12 +51,19 @@ export function QuoteDialog({ triggerLabel = 'ขอใบเสนอราค�
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
+        trackFormError('quote', data.error === 'validation' ? 'validation' : `http_${res.status}`);
         toast.error(data.error === 'validation' ? 'กรอกข้อมูลให้ครบถ้วน' : 'ส่งไม่สำเร็จ กรุณาลองอีกครั้ง');
         return;
       }
+      // The conversion. Point the Google Ads "ขอการเสนอราคา" action at `generate_lead`.
+      trackGenerateLead(
+        'quote',
+        trackedItem ? [{ ...trackedItem, quantity: Number(fd.get('qty') || 1) }] : undefined
+      );
       toast.success('ส่งคำขอใบเสนอราคาเรียบร้อย เราจะติดต่อกลับโดยเร็ว');
       setOpen(false);
     } catch {
+      trackFormError('quote', 'network');
       toast.error('การเชื่อมต่อขัดข้อง');
     } finally {
       setSubmitting(false);
@@ -54,7 +71,7 @@ export function QuoteDialog({ triggerLabel = 'ขอใบเสนอราค�
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button className={className}>{triggerLabel}</Button>
       </DialogTrigger>

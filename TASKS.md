@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-07-25 (launch prep — domain attached, redirect chains flattened)
+> **Last updated:** 2026-07-27 (🟢 live; GTM/Ads tags restored, pending deploy)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -93,9 +93,17 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 > Detailed plan in [`docs/marketing-plan.md`](docs/marketing-plan.md). Execute **after Phase 5 (admin) is done**.
 
 ### Tier 1 — pre-launch essentials
-- [ ] Collect IDs from client (GA4, GTM, GSC, Clarity, FB Pixel, LINE token, Google Business, Resend domain) — see `docs/marketing-plan.md` §1
-- [ ] GTM container in `app/layout.tsx` + noscript fallback
-- [ ] GA4 wired via GTM + custom events (form_submit, view_item, generate_lead, search)
+- [x] Collect IDs — **not from the client in the end, recovered from the WP export** (the old
+      site is down): Ads `AW-11306253882`, GTM `GTM-5LCNL8C9`, GA4 `G-X9W48F0BWC`, GSC meta
+      `I0rNG9jQNGOaa-0NdOA8N-l2Kr8M4aLXmhZUWd0FIMs`. Still outstanding: Clarity, FB Pixel,
+      LINE token, Google Business, Resend domain
+- [x] GTM container + noscript fallback — in **`app/(site)/layout.tsx`, not `app/layout.tsx`**,
+      so `/admin` traffic stays out of GA4 and the remarketing audiences
+      (`components/site/analytics.tsx`)
+- [~] GA4 wired via GTM + custom events — `generate_lead`, `form_error` (both forms),
+      `begin_quote`, and a client-side-navigation `page_view` are pushing.
+      **Still unwired:** `view_item`, `view_item_list`, `search`, `file_download` — the helpers
+      exist in `lib/analytics/events.ts`, nothing calls them yet
 - [ ] GSC verification meta tag
 - [ ] JSON-LD: `Organization` (site-wide)
 - [ ] JSON-LD: `LocalBusiness` (home + contact)
@@ -115,7 +123,12 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 
 ### Tier 3 — paid marketing (when budget approved)
 - [ ] Facebook Pixel + Conversions API
-- [ ] Google Ads conversion tags
+- [~] Google Ads conversion tags — not a new build: the client already runs `AW-11306253882`
+      inside `GTM-5LCNL8C9`, so restoring the container restores every conversion/remarketing
+      tag without needing the individual labels. **Remaining work is inside GTM, not in code:**
+      add a Custom Event trigger `generate_lead` to the quote/contact conversion tags, and a
+      Custom Event trigger `page_view` to anything currently on All Pages (client-side
+      navigation never fires `gtm.js` a second time)
 - [ ] LINE Ads pixel
 - [ ] CRM integration (HubSpot/Pipedrive — TBD)
 - [ ] Newsletter signup + Mailchimp/Brevo sync
@@ -159,11 +172,15 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [ ] Add rate limiting on `/api/quote` and `/api/contact` (Upstash Redis or simple in-memory)
 - [ ] Add Cloudflare Turnstile or similar (optional)
 
-## Phase 7 — Launch 🔄
+## Phase 7 — Launch ✅ (cut over 2026-07-25 16:40 UTC)
 
-> ⚠️ **The old WP site has been returning `503` on every path since at least 2026-07-25**
-> (nginx, straight from origin `27.254.134.234` — not a Cloudflare issue). Cutover is now a
-> recovery, not just a migration. Content freeze and a final re-crawl are moot while it is down.
+> 🟢 **LIVE.** `hometools-center.com` now serves the Next.js site from Vercel. Nameservers were
+> moved at the registrar (PDR) from `thomas`/`kallie` → `brad`/`nancy`; the Cloudflare zone in
+> `agency.bestsolutions@gmail.com` flipped `pending` → **`active` at 2026-07-25T16:40:50Z**.
+>
+> ⚠️ **The old WP site had been returning `503` on every path** (nginx, straight from origin
+> `27.254.134.234` — not a Cloudflare issue), so cutover was a recovery, not a scheduled
+> migration. Content freeze and a final re-crawl were moot.
 
 - [x] Backup WP DB + files — authoritative MySQL dump + `wpuploads.zip` already held (Phase 4.5)
 - [ ] ~~Coordinate 7-day content freeze~~ — moot, WP is down
@@ -175,14 +192,37 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
       `QUOTE_NOTIFY_EMAIL`, `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_NOTIFY_USER_ID`.
       `lib/notify.ts` skips cleanly, so quotes/messages still land in the DB and `/admin` —
       they just send no email/LINE alert. **Decision: launch without, backfill after.**
-- [ ] GA4 + GTM + GSC verification — Phase 5.5 is entirely unbuilt; no tags on the site.
-      GSC ownership *is* already proven via the existing `google-site-verification` TXT record
-- [ ] DNS cutover (Cloudflare DNS-only → Vercel) — `scripts/launch/cloudflare-cutover.js`
-      is written and dry-run-able; **blocked on a Cloudflare API token** (`Zone → DNS → Edit`)
-- [ ] Submit sitemap to GSC, request recrawl
-- [x] Spot-test redirect URLs — full parity smoke over **535 URLs**: 11/11 static, 343/343
-      products, 42/42 categories, 30/30 blog posts → `200`; 107/109 redirects → `200`.
-      The 2 failures are dead WP-plugin junk (`/dflip_category/*`, an `astra-addon` `.css`)
+- [x] GA4 + GTM — **done 2026-07-27**, see Phase 5.5. The site ran with **zero tags from
+      cutover (25 Jul) until this change**, so Ads conversions and remarketing collected
+      nothing for that window. GSC ownership was already proven via the
+      `google-site-verification` TXT record, so no meta tag was needed
+- [ ] Deploy the tag change to production + verify in GTM Preview / Tag Assistant
+      **before the client resumes Google Ads**
+- [x] DNS cutover — **done 2026-07-25**. Not a record edit in the end: the zone we controlled
+      was `pending` (assigned `brad`/`nancy`) while the domain was delegated to `thomas`/`kallie`
+      in a *different* Cloudflare account still pointing at the dead origin. Every edit we made
+      was inert. Fix was an **NS change at the registrar**, which cut over the whole zone at once
+- [x] Verify zone parity before the NS switch — `scripts/launch/compare-zone.js`: **0 records
+      missing** vs. the live zone; only intentional delta was `www` (live `CNAME → apex`,
+      ours `CNAME → Vercel` so the edge serves the 301). Mail untouched: `MX`, `A mail`,
+      `A webmail`, SPF, DKIM, DMARC, both `SRV` — all carried over
+- [x] Confirm the pre-launch `noindex` guard self-cleared — `X-Robots-Tag` is **absent** on the
+      real host (it keyed off the `.vercel.app` hostname, so it lifted with no redeploy)
+- [ ] Submit sitemap to GSC, request recrawl ← **next action**
+- [x] Tighten SPF — **done 2026-07-25**. `+a` had started authorizing Vercel's shared anycast IPs
+      once apex moved. Now `v=spf1 +a:mail.hometools-center.com +mx +a:private.shopsdesign.net -all`,
+      which restores the authorized set to exactly `{27.254.134.234}` as before cutover (both
+      `mail.` and `private.shopsdesign.net` resolve there). MX/DKIM/DMARC verified unchanged
+- [ ] ⏳ **Stale NS delegation — old zone still serving the dead origin.** The previous Cloudflare
+      account's zone (`thomas`/`kallie`) is *still active* and still answers apex →
+      `27.254.134.234`. Resolvers that cached the old delegation keep hitting it: `1.1.1.1` has
+      ~23h left on its cached NS (parent NS TTL is 172800s). Google/Quad9/OpenDNS already
+      followed the new delegation. **Fix: get the old Cloudflare account to point apex + `www`
+      at Vercel (or delete that zone)** — otherwise it self-resolves within ~24–48h
+- [x] Spot-test redirect URLs — full parity smoke over **535 URLs**, re-run **against the live
+      domain post-cutover**: 11/11 static, 343/343 products, 42/42 categories, 30/30 blog → `200`;
+      107/109 redirects terminate `200` via a `301`. The 2 failures are dead WP-plugin junk
+      (`/dflip_category/*`, an `astra-addon` `.css`) — identical to the pre-cutover run
 - [x] Flatten multi-hop redirect chains — 75 rules were costing 3–4 hops
       (`scripts/db/flatten-redirect-chains.js`)
 
@@ -200,7 +240,8 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 
 - [ ] Resend API key + verified sending domain
 - [ ] Line Messaging API channel access token + push target ID
-- [ ] Client confirms cutover date + content freeze window
+- [x] ~~Client confirms cutover date + content freeze window~~ — moot; WP was already down,
+      cut over 2026-07-25 as a recovery
 
 ---
 
