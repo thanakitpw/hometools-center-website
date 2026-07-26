@@ -220,7 +220,12 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
       once apex moved. Now `v=spf1 +a:mail.hometools-center.com +mx +a:private.shopsdesign.net -all`,
       which restores the authorized set to exactly `{27.254.134.234}` as before cutover (both
       `mail.` and `private.shopsdesign.net` resolve there). MX/DKIM/DMARC verified unchanged
-- [ ] ⏳ **Stale NS delegation — old zone still serving the dead origin.** The previous Cloudflare
+- [x] ⏳→✅ **Stale NS delegation — self-resolved by 2026-07-27.** Delegation is now
+      `brad`/`nancy` only, and Cloudflare, Google, Quad9 and OpenDNS all answer apex with
+      Vercel's anycast IPs (`64.29.17.x` / `216.198.79.x`). The old origin still returns `503`
+      if you force it with `--resolve`, but nothing resolves there any more — which matters for
+      paid traffic: ad clicks can no longer land on the dead host. Original note below.
+- [x] ~~**Stale NS delegation — old zone still serving the dead origin.**~~ The previous Cloudflare
       account's zone (`thomas`/`kallie`) is *still active* and still answers apex →
       `27.254.134.234`. Resolvers that cached the old delegation keep hitting it: `1.1.1.1` has
       ~23h left on its cached NS (parent NS TTL is 172800s). Google/Quad9/OpenDNS already
