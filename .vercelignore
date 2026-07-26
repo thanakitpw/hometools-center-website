@@ -1,0 +1,18 @@
+# The CLI does NOT fall back to .gitignore, so anything large has to be listed again here
+# or `vercel --prod` uploads it. `backup-oldwebsite/wpuploads.zip` alone is 535 MB, which
+# trips Vercel's 100 MB per-file limit and fails the deploy on upload.
+backup-oldwebsite/
+
+# ⚠️ Do NOT ignore `research/` wholesale — `lib/static-pages.ts` reads
+# `research/data/static-pages.json` at build time via path.join(process.cwd(), …), so
+# excluding it breaks the prerender of /about-us and every other static page. gitignore
+# semantics cannot re-include a path under an ignored parent, so the heavy subdirectories
+# are listed one by one instead and research/data/ stays.
+research/crawl/
+research/screenshots/
+research/screenshots-full/
+research/recrawl-2026-06/
+research/db-2026-07/
+research/crawl-meta.json
+research/crawl-progress.json
+research/*.png
