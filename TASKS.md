@@ -196,8 +196,15 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
       cutover (25 Jul) until this change**, so Ads conversions and remarketing collected
       nothing for that window. GSC ownership was already proven via the
       `google-site-verification` TXT record, so no meta tag was needed
-- [ ] Deploy the tag change to production + verify in GTM Preview / Tag Assistant
-      **before the client resumes Google Ads**
+- [x] Deploy the tag change to production — **done 2026-07-27**. Verified on the live domain:
+      GTM loader + noscript present, `/admin/login` has none, `X-Robots-Tag` still absent,
+      real contact hrefs served, and `?gclid=…&utm_source=…` survives a `301` to a `200`
+- [ ] Verify in GTM Preview / Tag Assistant that a real quote submission fires the Ads
+      conversion **before the client resumes Google Ads**
+- ⚠️ `.vercelignore` did not exist, so `vercel --prod` was uploading `backup-oldwebsite/`
+      (535 MB, over the 100 MB per-file limit → deploy failed). Added — but note it must **not**
+      exclude `research/` wholesale: `lib/static-pages.ts` reads `research/data/static-pages.json`
+      at build time, and dropping it breaks the prerender of `/about-us`
 - [x] DNS cutover — **done 2026-07-25**. Not a record edit in the end: the zone we controlled
       was `pending` (assigned `brad`/`nancy`) while the domain was delegated to `thomas`/`kallie`
       in a *different* Cloudflare account still pointing at the dead origin. Every edit we made
