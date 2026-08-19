@@ -232,13 +232,21 @@ hazard in this repo's branch layout that has to be checked before pushing.
 
 ## Cover images
 
-Ask for **1200 × 630 px** (JPG for photos, PNG for flat graphics with text, under
-~300 KB). That size serves the in-article cover, `og:image` and the Twitter/LINE/
-Facebook preview.
+Ask for **1200 × 630 px**. That single size serves the in-article cover, `og:image`
+and every link preview, and the blog cards use the same 1200/630 ratio, so nothing is
+ever cropped — artwork can run edge to edge with no safe margins to design around.
+Source art within a few percent of that ratio is fine; the script warns when it is not.
 
-The `/blog` listing card crops to 16:10, which trims **96 px from each side**, so
-keep logos and text at least ~110 px in from the left and right edges. The article
-cover itself is uncropped.
+```bash
+node scripts/seo/set-cover.js <slug> ~/Downloads/artwork.png
+node scripts/seo/publish-post.js seo/published/<slug>.json
+```
+
+`set-cover.js` resizes to 1200 wide, re-encodes to JPEG (~250 KB), uploads to Storage
+and patches both URL fields into the article JSON. Generated artwork routinely arrives
+as a 2 MB PNG — that is a real LCP cost on a page Google measures, and JPEG is the format
+every social scraper handles without question. A copy is kept in `seo/published/` so the
+cover can be rebuilt without hunting for the original.
 
 Until real art arrives, leave `cover_image_url` and `og_image_url` as `null` — the
 post page and the listing card both render a labelled placeholder. Be explicit with
