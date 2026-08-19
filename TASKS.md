@@ -141,8 +141,11 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] `scripts/seo/make-cover.js` — renders + uploads a 1200×630 cover/OG image
 - [x] `.claude/skills/hometools-blog-publish/` — the whole pipeline as a repeatable skill
 - [x] Article 1 written: `/blog/paint-coverage-per-bucket` (สี 1 ถัง ทาได้กี่ตารางเมตร)
-- [ ] ⏸ **Article 1 is `draft`** — waiting on cover art (1200×630). Set `status: "published"`
-      in `seo/published/paint-coverage-per-bucket.json` and re-run `publish-post.js` once it lands
+- [x] `scripts/seo/md-to-article.js` — batch converter for the content team's draft template
+- [x] Draft preview: `lib/preview.ts` shows drafts on any non-production deployment
+- [ ] ⏸ **26 articles sit in `draft`, awaiting client review** — preview deploy sent 2026-08-20.
+      Apply feedback, add cover art (1200×630 each), then flip `status` to `published`
+      and re-run `node scripts/seo/publish-post.js seo/published/*.json`
 - [x] Merge `feat/launch-and-analytics` into `main` — main was 5 commits behind what production
       was actually running, so pushing it would have stripped GTM/Ads from the live site
 - [ ] Backfill covers + `excerpt` / `seo_*` on the 30 migrated WordPress posts
