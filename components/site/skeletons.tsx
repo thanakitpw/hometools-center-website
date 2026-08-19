@@ -35,7 +35,7 @@ export function BlogGridSkeleton({ count = 6 }: { count?: number }) {
     <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: count }, (_, i) => (
         <div key={i} className="overflow-hidden rounded-lg border border-[#e5e5e5] bg-white">
-          <Skeleton className="aspect-[16/10] w-full rounded-none" />
+          <Skeleton className="aspect-[1200/630] w-full rounded-none" />
           <div className="flex flex-col gap-3 p-4">
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-3/4" />

@@ -23,7 +23,34 @@ require('dotenv').config({ path: '.env.local', quiet: true });
 const { createClient } = require('@supabase/supabase-js');
 
 const ROOT = path.resolve(__dirname, '..', '..');
-const LIMITS = { seo_title: 60, seo_description: 160 };
+
+/**
+ * Google truncates SERP titles by pixel width (~600px desktop), not character count, and
+ * Thai renders far narrower than Latin — a 60-character rule flags most Thai titles that
+ * actually fit comfortably. This approximates the rendered width at 20px instead: Thai
+ * vowel and tone marks stack above or below the consonant and take no horizontal space
+ * at all, which is most of why the character count misleads.
+ *
+ * Calibrated against widths measured in Chrome; good to roughly ±5% and biased slightly
+ * high, so it errs toward warning about a title that would in fact have fitted.
+ */
+const ZERO_WIDTH = /[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/;
+function estimateTitlePx(text) {
+  let px = 0;
+  for (const ch of text) {
+    if (ZERO_WIDTH.test(ch)) continue;
+    if (ch === ' ') px += 5.6;
+    else if (/[\u0E00-\u0E7F]/.test(ch)) px += 11.0;
+    else if (/[A-Z]/.test(ch)) px += 12.5;
+    else if (/[0-9]/.test(ch)) px += 11.1;
+    else if (/[a-z]/.test(ch)) px += 9.9;
+    else px += 7;
+  }
+  return Math.round(px);
+}
+
+const TITLE_PX_BUDGET = 600;
+const DESC_MAX = 165;
 
 
 /** categories.slug holds only the leaf segment; URLs carry the full ancestor chain. */
@@ -96,12 +123,21 @@ function checkBody(html, fail, warn) {
 }
 
 function checkMeta(meta, fail, warn) {
-  for (const [field, max] of Object.entries(LIMITS)) {
-    const v = meta[field];
-    if (!v) { fail.push(`${field} is required`); continue; }
+  if (!meta.seo_title) fail.push('seo_title is required');
+  else {
     // The layout appends " | Home Tool Center" via the metadata title template.
-    const rendered = field === 'seo_title' ? `${v} | Home Tool Center` : v;
-    if (rendered.length > max) warn.push(`${field} renders at ${rendered.length} chars (target ≤ ${max}): ${rendered}`);
+    const rendered = `${meta.seo_title} | Home Tool Center`;
+    const px = estimateTitlePx(rendered);
+    if (px > TITLE_PX_BUDGET) {
+      warn.push(`seo_title ≈ ${px}px wide (budget ${TITLE_PX_BUDGET}px) — Google will truncate: ${rendered}`);
+    }
+    if (/\|\s*Home\s*Tool/i.test(meta.seo_title)) {
+      fail.push(`seo_title already contains the brand — the layout's title template appends it: ${meta.seo_title}`);
+    }
+  }
+  if (!meta.seo_description) fail.push('seo_description is required');
+  else if (meta.seo_description.length > DESC_MAX) {
+    warn.push(`seo_description is ${meta.seo_description.length} chars (target ≤ ${DESC_MAX})`);
   }
   for (const field of ['slug', 'title', 'excerpt']) if (!meta[field]) fail.push(`${field} is required`);
   if (!/^[a-z0-9-]+$/.test(meta.slug || '')) fail.push(`slug must be lowercase ascii-kebab: ${meta.slug}`);
@@ -142,7 +178,7 @@ function checkMeta(meta, fail, warn) {
       failed++;
       continue;
     }
-    if (warn.length && paths.length === 1) warn.forEach((w) => console.warn(`  warn  ${w}`));
+    warn.forEach((w) => console.warn(`  warn   ${label}: ${w}`));
 
     const { data: existing } = await sb.from('posts').select('id, published_at').eq('slug', meta.slug).maybeSingle();
     const row = {

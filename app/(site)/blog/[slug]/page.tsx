@@ -140,7 +140,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
                   href={`/blog/${r.slug}` as any}
                   className="group overflow-hidden rounded-lg border border-[var(--color-border)] bg-white"
                 >
-                  <div className="aspect-[16/10] overflow-hidden bg-[var(--color-muted)]">
+                  <div className="aspect-[1200/630] overflow-hidden bg-[var(--color-muted)]">
                     {r.cover_image_url && <img src={r.cover_image_url} alt={r.title} className="h-full w-full object-cover" loading="lazy" />}
                   </div>
                   <div className="p-3">

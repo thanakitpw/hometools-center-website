@@ -52,7 +52,7 @@ async function PostGrid({ page }: { page: number }) {
             href={`/blog/${p.slug}` as any}
             className="group overflow-hidden rounded-lg border border-[var(--color-border)] bg-white transition-shadow hover:shadow-md"
           >
-            <div className="aspect-[16/10] overflow-hidden bg-[var(--color-muted)]">
+            <div className="aspect-[1200/630] overflow-hidden bg-[var(--color-muted)]">
               {p.cover_image_url ? (
                 <img
                   src={p.cover_image_url}
