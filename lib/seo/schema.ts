@@ -141,15 +141,36 @@ export function productSchema(p: Product, opts: { brandName?: string } = {}) {
 
 export function articleSchema(p: Post) {
   const image = p.cover_image_url || p.og_image_url || undefined;
+  const description = (p.excerpt || p.seo_description || '').replace(/<[^>]+>/g, '').trim();
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: p.title,
+    ...(description ? { description } : {}),
     ...(image ? { image } : {}),
-    ...(p.published_at ? { datePublished: p.published_at, dateModified: p.published_at } : {}),
+    ...(p.published_at
+      ? {
+          datePublished: p.published_at,
+          dateModified: p.updated_at || p.published_at,
+        }
+      : {}),
+    ...(p.tags?.length ? { keywords: p.tags.join(', ') } : {}),
     author: { '@id': ORG_ID },
     publisher: { '@id': ORG_ID },
     inLanguage: 'th',
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteConfig.url}/blog/${p.slug}` },
+  };
+}
+
+/** FAQPage markup for articles that end in a Q&A block. Pairs come from extractFaq(). */
+export function faqSchema(items: { question: string; answer: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((it) => ({
+      '@type': 'Question',
+      name: it.question,
+      acceptedAnswer: { '@type': 'Answer', text: it.answer },
+    })),
   };
 }

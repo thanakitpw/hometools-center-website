@@ -58,4 +58,5 @@ export type Post = {
   og_image_url: string | null;
   status: 'draft' | 'published' | 'archived';
   published_at: string | null;
+  updated_at?: string | null;
 };

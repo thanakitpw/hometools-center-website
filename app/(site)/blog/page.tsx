@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ImageIcon } from 'lucide-react';
 import { Suspense } from 'react';
 import { listPosts } from '@/lib/queries/posts';
 import { Breadcrumb } from '@/components/site/breadcrumb';
@@ -60,7 +61,10 @@ async function PostGrid({ page }: { page: number }) {
                   className="h-full w-full object-cover transition-transform group-hover:scale-105"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center text-xs text-[var(--color-muted-fg)]">No image</div>
+                <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-[var(--color-muted-fg)]">
+                  <ImageIcon className="h-7 w-7" strokeWidth={1.5} aria-hidden />
+                  <span className="text-xs">ภาพหน้าปกบทความ</span>
+                </div>
               )}
             </div>
             <div className="p-4">

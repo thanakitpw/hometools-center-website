@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-07-13 (nested category URLs + soft-404 fix)
+> **Last updated:** 2026-08-19 (first SEO article published + article typography)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -119,6 +119,19 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [ ] LINE Ads pixel
 - [ ] CRM integration (HubSpot/Pipedrive — TBD)
 - [ ] Newsletter signup + Mailchimp/Brevo sync
+
+### Content publishing pipeline ✅
+- [x] `.article-body` typography in `app/globals.css` (replaces the `prose` classes, which
+      never resolved — `@tailwindcss/typography` isn't installed)
+- [x] `lib/seo/faq.ts` + `faqSchema()` — FAQPage JSON-LD derived from the article HTML
+- [x] `scripts/seo/publish-post.js` — validated, idempotent upsert of `seo/published/<slug>.{html,json}`
+- [x] `scripts/seo/make-cover.js` — renders + uploads a 1200×630 cover/OG image
+- [x] Article 1 published: `/blog/paint-coverage-per-bucket` (สี 1 ถัง ทาได้กี่ตารางเมตร)
+- [ ] **Real cover art for article 1** — currently a placeholder, so the post has no `og:image`
+- [ ] **Redeploy to production** — the live build is 24 days old, so `.article-body` (and every
+      other code change since) is not on the deployed site yet
+- [ ] Backfill covers + `excerpt` / `seo_*` on the 30 migrated WordPress posts
+- [ ] Strip the duplicate in-content `<h1>` from migrated posts (page template already renders one)
 
 ### Ongoing SEO (post-launch, monthly)
 - [ ] Monthly GSC + GA4 health check

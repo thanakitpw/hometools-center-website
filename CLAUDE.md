@@ -9,7 +9,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-07-20
+**Last updated:** 2026-08-19
 
 ---
 
@@ -381,3 +381,62 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   `aspect-[4/5]` + `object-cover object-top`, title 16 → 13px, submenu slide-down animation via
   `::details-content` (CSS-only on purpose — a JS accordion unmounts collapsed panels and would
   drop ~40 internal category links out of the server-rendered HTML)
+
+### 2026-08-19 (session 5 — first SEO article published + article typography)
+- Published `seo/blogs/บทความ-สี-1-ถัง-ทาได้กี่ตารางเมตร.md` to **`/blog/paint-coverage-per-bucket`**
+  (สี 1 ถัง ทาได้กี่ตารางเมตร — primary KW ~1,000 searches/mo)
+- ⚠️ **`prose` was dead CSS.** `blog/[slug]/page.tsx` and `page-renderer.tsx` carry
+  `prose prose-base`, but the project is Tailwind v4 **without `@tailwindcss/typography`** —
+  those classes resolved to nothing, so every migrated post rendered with unbulleted lists,
+  borderless tables and no paragraph rhythm. Added a real `.article-body` block in
+  `app/globals.css`, written against the site's own tokens (headings, lists, `.table-wrap`
+  horizontal scroll, callouts, TOC, formula/example boxes, FAQ, CTA buttons) and swapped the
+  blog page onto it. `page-renderer.tsx` (static pages) is untouched — still on the dead class
+- `posts.content_md` stores **raw HTML**, not markdown (name is a leftover from the WP import;
+  the page uses `dangerouslySetInnerHTML`). Articles are therefore authored as HTML
+- New pipeline, reusable for the 2–4 articles/month rhythm:
+  - `seo/published/<slug>.html` + `<slug>.json` — body and metadata, committed
+  - `scripts/seo/publish-post.js` — idempotent upsert on `slug` (keeps the original
+    `published_at` on re-runs so the age signal and listing order survive). Gates before writing:
+    no `<h1>` in the body, no nested `<div>` inside `.faq-item`, every `#anchor` has a matching
+    `id`, and **every internal `/product/` `/product-category/` `/blog/` link is resolved against
+    the DB** (category links are checked against the full ancestor chain, not the leaf slug)
+  - `scripts/seo/make-cover.js` — composes a 1200×630 cover in Chromium from the site's own
+    Sukhumvit Set faces + logo + a product pack shot, uploads to Storage `blog/<slug>-cover.png`.
+    There is no editorial photo library; every `media` asset is a product shot
+  - ⚠️ No `npx playwright install` browsers on this machine — both scripts fall back to
+    `channel: 'chrome'` (system Google Chrome)
+- SEO wiring: `faqSchema()` in `lib/seo/schema.ts` + `lib/seo/faq.ts`, which extracts Q/A pairs
+  out of the stored HTML (regex, not cheerio — cheerio is a devDependency for the migration
+  scripts only) so the JSON-LD can never drift from the visible copy. `articleSchema()` now also
+  emits `description` / `keywords` / a real `dateModified` (`Post` type gained `updated_at`).
+  Blog metadata gained `keywords`, `authors`, `twitter`, `og:url` and `modifiedTime`
+- Verified: `/blog/paint-coverage-per-bucket` → 200, exactly one `<h1>`, clean H2/H3 outline with
+  in-page anchors, 5 JSON-LD blocks (Organization, WebSite, Article, FAQPage ×5 Q, BreadcrumbList),
+  canonical + OG image, present in `/sitemap.xml` and on `/blog`. `npm run build` + `tsc` green
+- Known, pre-existing, NOT from this session: the 30 migrated WP posts each carry a duplicate
+  `<h1>` inside `content_md` (now demoted visually by `.article-body h1`, but still two H1s in the
+  markup), and `components/site/footer.tsx` logs a duplicate-React-key error (`footerNav.about`
+  has two entries pointing at `/how-to-place-an-order`, keyed by `href`)
+- **Follow-up in the same session — layout pass + cover placeholder.** User reported the article
+  looked unstyled on the deployed site: the **production deployment is 24 days old**, so the DB
+  content appeared instantly via ISR while the CSS bundle was still the pre-`.article-body` build.
+  Nothing to fix there — but the typography got a real second pass anyway:
+  - Body 16 → **17px / line-height 1.9** (Thai stacks vowels above and tone marks below, so it
+    needs a taller line box than the same layout in Latin). `word-break: normal` +
+    `overflow-wrap: break-word` — **not `anywhere`**, which overrides the browser's Thai word
+    segmentation and breaks mid-syllable
+  - H2 recoloured to `--color-brand-500` (the global `--color-brand-light` is only ~3.1:1 on
+    white) and given a hairline rule + orange tick, so sections are scannable
+  - TOC goes 2-column ≥640px; table header brand-50/brand-700 with tabular numerals; callouts,
+    formula, example and FAQ items are now proper cards; full mobile breakpoint at 640px
+  - `.table-wrap` has a CSS-only scroll shadow (the `background-attachment: local, scroll` trick)
+    that shows only while there is more table to scroll to
+  - `.table-compact` opt-in class keeps short numeric cells on one line. **Not the default** —
+    migrated WordPress tables put whole sentences in cells and would scroll forever
+  - Cover set to `null` per user request; the post page and the `/blog` card both render a dashed
+    "ภาพหน้าปกบทความ" placeholder. ⚠️ `og:image` is therefore absent — social shares have no preview
+    image until a real cover lands. The generated one is still at
+    `media/blog/paint-coverage-per-bucket-cover.png` if they want it back
+  - ⚠️ Turbopack served a stale CSS chunk after the globals.css edit; `rm -rf .next/dev` + restart
+    was needed. Verify a CSS change by curling the linked chunk, not by trusting the screenshot
