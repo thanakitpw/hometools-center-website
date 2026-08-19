@@ -1,5 +1,8 @@
 # CLAUDE.md — Project context for Claude Code
 
+> **ภาษา:** ตอบกลับผู้ใช้เป็น **ภาษาไทย** ทุกครั้ง (โค้ด, ชื่อไฟล์, คำสั่ง shell,
+> commit message และ identifier ต่าง ๆ ยังคงเป็นภาษาอังกฤษตามเดิม)
+
 > **Companion file:** [`TASKS.md`](./TASKS.md) — single source of truth for what's
 > done vs. pending. **Always check it first** when resuming a session, and tick
 > off boxes as you finish work.
@@ -9,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-08-19
+**Last updated:** 2026-08-19 — 🟢 site LIVE; first SEO article published
 
 ---
 
@@ -382,7 +385,158 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   `::details-content` (CSS-only on purpose — a JS accordion unmounts collapsed panels and would
   drop ~40 internal category links out of the server-rendered HTML)
 
-### 2026-08-19 (session 5 — first SEO article published + article typography)
+### 2026-07-25 (session 5 — launch prep, domain attached, redirect chains flattened)
+- 🔴 **The old WP site is down.** `hometools-center.com` returns `503` on every path (nginx,
+  confirmed straight from origin `27.254.134.234` via `--resolve`, so it is not Cloudflare).
+  Cutover is therefore a *recovery*, not a scheduled migration: the content freeze and the
+  "final re-crawl" in Phase 7 are moot while WP is unreachable. Cause unknown — with the host/client
+- **Launch readiness verified against the live Vercel deployment**, not just locally. A parity
+  smoke over **535 URLs** (every published product/category/post + statics + all 109 redirect
+  `from_path`s) returned: 11/11 static, 343/343 product, 42/42 category, 30/30 blog → `200`;
+  107/109 redirects → `200`, all terminating in **301** (no 302/307 leaked). The 2 failures are
+  dead WP-plugin junk already documented in session 4
+- **Domain attached to Vercel** — `hometools-center.com` + `www.hometools-center.com` on
+  `prj_ejDxifbeD93ZOSA2Isb9oBirChpr`. `www` is set to **301 → apex** at the edge via
+  `PATCH /v9/projects/{id}/domains/{domain}`; apex is canonical (1840/1840 URL references in the
+  WP export carry no `www`). Attaching does **not** affect the live site — DNS still decides
+- **75 redirects were costing 3–4 hops.** Three causes: a trailing slash on `to_path` (Next 308s
+  it away *before* middleware), `to_path` pointing at an intermediate slug that redirects again,
+  and `to_path` pointing at a bare leaf category (which 308s to the full ancestor chain).
+  `scripts/db/flatten-redirect-chains.js` walks each rule against a live deployment and rewrites
+  `to_path` to the terminal path; re-running converges to `to flatten: 0`
+- ⚠️ The residual 2-hop cases are **not** fixable in data: they are rules whose `from_path` itself
+  ends in `/`, and Next normalises the inbound URL with a 308 before middleware ever runs.
+  Removing that hop would mean `trailingSlash: true` site-wide — not worth it (see session 4)
+- **Verified the pre-launch `noindex` guard self-clears.** `X-Robots-Tag: noindex, nofollow` is
+  present on the `.vercel.app` host on both cached (`x-vercel-cache: HIT`) and dynamic responses,
+  and keys off the `host` header — so it lifts the moment DNS points the real domain here, with
+  no code change or redeploy. (Watch out: `curl -sI | awk 'NR<=N'` truncates before reaching it)
+- **Content has zero dependency on the dead WP host** — scanned every `description_md`,
+  `content_md`, image and PDF column: 0 references to `hometools-center.com`. Remaining external
+  hosts are `static.xx.fbcdn.net` (179, emoji in post bodies), `facebook.com`/`lin.ee`/`m.me`
+  (links, harmless) and `toagroup.com` (23 — the known-broken hotlinks from session 4)
+- 🔴 **DNS: mail lives on the old server.** `MX → mail.hometools-center.com → 27.254.134.234`,
+  plus `A mail`/`A webmail`. **Only the apex and `www` records may be touched at cutover.**
+  `scripts/launch/cloudflare-cutover.js` enforces this (dry-run by default, `--apply`,
+  `--rollback`, and it refuses to consider anything but apex/`www`). Also present and not to be
+  deleted: the `google-site-verification` TXT (GSC ownership is already proven) and the SPF TXT.
+  After cutover SPF's `+a` will authorize Vercel's IPs rather than the mail host — delivery still
+  passes via `+mx`, but it should be tightened to `+a:mail.hometools-center.com`
+- Vercel DNS target for both records: `CNAME → f719314d174704b9.vercel-dns-017.com`,
+  **DNS-only / grey cloud** (proxying breaks SSL issuance). Apex fallback: `A → 76.76.21.21`.
+  Zone TTL is 300s, so rollback lands within ~5 minutes
+- Production env has only 4 of 8 vars — `RESEND_API_KEY`, `QUOTE_NOTIFY_EMAIL`,
+  `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_NOTIFY_USER_ID` are unset. Per user decision, launching
+  without them: `lib/notify.ts` returns `{skipped}` rather than throwing, so quote/contact
+  submissions still persist and show in `/admin` — they just raise no alert. Backfill after launch
+
+### 2026-07-25 (session 6 — 🟢 CUTOVER, site is live)
+
+- 🔴 **Correction to session 5: our Cloudflare zone was never authoritative.** It sat at
+  `status=pending` with assigned NS `brad`/`nancy`, while the registrar delegated the domain to
+  `thomas`/`kallie` — a **different Cloudflare account** (the old host's) whose zone still pointed
+  apex at the dead `27.254.134.234`. So every DNS edit made from `cloudflare-cutover.js` was
+  **inert**, and the session-5 note "DNS still decides" understated it: our zone was not in the
+  path at all. Symptom to recognise next time: the CF API lists the records you expect, but
+  `dig @<the-live-NS> …` disagrees → compare `name_servers` vs `original_name_servers` and check
+  `status`
+- **Cutover was therefore an NS change at the registrar** (PDR Ltd. / PublicDomainRegistry),
+  not a record edit — `thomas`+`kallie` → `brad`+`nancy`. The whole zone goes live at once, so
+  parity had to be proven *first*: `scripts/launch/compare-zone.js` reported **0 records missing**
+  vs. the live zone, the only delta being the intentional `www` (live `CNAME → apex`; ours
+  `CNAME → Vercel`, which serves the 301 at the edge). Mail carried over intact — `MX`,
+  `A mail`, `A webmail`, SPF, DKIM, DMARC, both `SRV`
+- Parent `.com` delegation updated within minutes (not the 24h the registrar warns about);
+  Cloudflare flipped the zone to **`active` at 2026-07-25T16:40:50Z**
+- **Post-cutover verification on the real domain** (pin the anycast IP with `curl --resolve` /
+  Node `servername` — the local resolver caches the old `A` for a while and will keep showing
+  `503 nginx` long after the site is up; don't mistake that for a failed cutover):
+  535 URLs → 11/11 static, 343/343 products, 42/42 categories, 30/30 blog `200`;
+  107/109 redirects terminate `200` through a `301`; `www` → `301` apex; identical to the
+  pre-cutover run against `.vercel.app`. The 2 failures are the known dead WP-plugin junk
+- **The `noindex` guard self-cleared as designed** — `X-Robots-Tag` is absent on the real host;
+  it keyed off the `.vercel.app` hostname, so no redeploy was needed
+- ⚠️ `products.status` / `posts.status` use **`published`**, not `publish` — a filter on the
+  wrong value silently returns 0 rows and a smoke test then reports a vacuous `0/0 → 200`
+- ⚠️ zsh does **not** word-split unquoted parameters, so `R="--resolve a:b:c"; curl $R …` passes
+  the whole string as one argv and fails. Use `${=R}`, an array, or inline the flags
+- Follow-ups: submit sitemap to GSC + request recrawl; tighten SPF (`+a` now authorizes Vercel's
+  IPs since apex moved — delivery still passes via `+mx`, change to `+a:mail.hometools-center.com`);
+  Phase 5.5 analytics is mid-build (`lib/analytics/{config,consent,events}.ts` written and
+  uncommitted, `components/site/analytics.tsx` not yet created)
+
+### 2026-07-27 (session 7 — Google Ads recovery: tracking IDs recovered, GTM restored)
+
+- **Context:** the client's Google Ads was paused after cutover because the new site carried
+  **no measurement tags at all** — from 2026-07-25 to 2026-07-27 every conversion action and
+  remarketing audience fed by the website collected nothing
+- **The old site's tag stack was recovered from the WP export, not from the client.** The live
+  WP site is down, so the IDs came out of `backup-oldwebsite/adminhometools_wp_orpro.sql` and
+  the 281 files in `research/crawl/`:
+
+  | System | ID | Evidence |
+  |---|---|---|
+  | Google Ads | `AW-11306253882` | 282 crawled pages |
+  | GTM container | `GTM-5LCNL8C9` | 843 pages |
+  | GA4 (primary) | `G-X9W48F0BWC` | 845 pages |
+  | GA4 (stale) | `G-XM0OEX8YWG`, `G-NPN1733YLJ` | 15 / 2 pages |
+  | GSC meta | `I0rNG9jQNGOaa-0NdOA8N-l2Kr8M4aLXmhZUWd0FIMs` | — (TXT already proves ownership) |
+
+  Loaded by the **GTM4WP** plugin: one container hosting both GA4 and the Ads tag
+- ⚠️ **Conversion *labels* are not recoverable from the dump** — they live inside the container,
+  never in page source. This is exactly why we reuse `GTM-5LCNL8C9` instead of building a new
+  container: every conversion/remarketing/linker tag comes back at once and the labels never
+  need to be known. Getting Publish access to that container matters more than Ads access
+- **`dataLayer_content` on the old site was only `{pagePostType, pagePostType2, pagePostAuthor}`**
+  — GTM4WP's WooCommerce e-commerce dataLayer was off. So there is **no dynamic-remarketing
+  item feed to reproduce**, which removes a large chunk of assumed work
+- **`gclid` survives the migration**: `middleware.ts` does `dest.search = search` before
+  redirecting, so query strings ride through all 109 `301`s. Had that been missing, every ad
+  click would have lost attribution
+- 🔴 **`lib/site-config.ts` shipped placeholder social links to production** —
+  `https://www.facebook.com/` and `https://line.me/`, live in the sitewide floating button since
+  cutover. A *business* bug before a tracking one. Real values, taken from the export:
+  `facebook.com/HTCpipeandtools`, `m.me/103142917882034`,
+  `line.me/R/ti/p/%40hometoolscenter`. Use the last form, **not** `lin.ee/BbS0txt` — the
+  short link appears only inside two blog bodies, while the sitewide Chatway button (the thing
+  a GTM click trigger would have been built against) used the `line.me/R/ti/p/` form.
+  `profileUrls()` in `lib/seo/schema.ts` had been silently dropping the placeholders from
+  `sameAs`, so the JSON-LD was empty rather than wrong — it now populates
+- `tel:024262745` already matched the old site exactly (`floating-contact.tsx` strips the
+  dashes off `siteConfig.contact.phone`), so any tel-based click trigger works untouched
+- **New: `components/site/analytics.tsx`** (+ `analytics-route-tracker.tsx`). Mounted from
+  **`app/(site)/layout.tsx`, deliberately not the root layout**, so `/admin` page views stay
+  out of GA4 and out of the remarketing audiences
+- ⚠️ **GTM's All Pages trigger fires once per document load.** On WordPress that meant once per
+  page; here navigation is client-side, so without help every tag on that trigger would fire
+  only for the entry page. `AnalyticsRouteTracker` pushes a `page_view` custom event on route
+  change (skipping the first render to avoid double-counting `gtm.js`), deferred one
+  `requestAnimationFrame` because Next writes the new `<title>` in a later commit.
+  **This is inert until someone adds a Custom Event trigger `page_view` inside the container.**
+- ⚠️ **Consent Mode is behind `NEXT_PUBLIC_CONSENT_MODE=1` and left OFF.** `consent.ts` defaults
+  every category to *denied*; shipping that without a banner to grant it would keep Ads
+  conversions and remarketing dark **permanently** — strictly worse than no consent mode. The WP
+  site ran none, so off = parity. Turn it on in the same change that adds the banner
+- Wired `generate_lead` / `form_error` into `QuoteDialog` + `ContactForm`, and `begin_quote` on
+  dialog open. **Still unwired** (helpers exist, nothing calls them): `view_item`,
+  `view_item_list`, `search`, `file_download`
+- Vercel production env: added `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA4_ID` (6 of 10 vars now set).
+  `useDirectGa4` is false whenever a container exists, so the GA4 ID is reference-only and does
+  not double-count
+- **From the client's Ads account** (8 campaigns): goals are การเข้าชมร้านค้า
+  (🔴 misconfigured), รายชื่อติดต่อ (8/8 campaigns, 4 actions, ⚠️ needs action), ขอการเสนอราคา
+  (1/8, ⚠️ needs action), ดูเส้นทาง / การมีส่วนร่วม / การดูหน้าเว็บ (✅ active). Over
+  27 Jun – 26 Jul: รายชื่อติดต่อ 135, ดูเส้นทาง 67, การดูหน้าเว็บ 5, **ขอการเสนอราคา 0**.
+  That window is almost entirely *pre*-cutover, so **the quote conversion was already broken on
+  WordPress** — not caused by the migration. Needs the Source column to separate
+  website-tag conversions (broken by the migration) from call/Google-Business-Profile ones
+  (unaffected)
+- ⬜ Next: deploy, verify in GTM Preview + Tag Assistant that a real quote submission fires the
+  Ads conversion, **then** let the client resume Ads. Also outstanding: audit the ads' Final
+  URLs against the live site, and check whether any conversion action is imported from GA4
+  (container alone would not restore those)
+
+### 2026-08-19 (session 8 — first SEO article published + article typography)
 - Published `seo/blogs/บทความ-สี-1-ถัง-ทาได้กี่ตารางเมตร.md` to **`/blog/paint-coverage-per-bucket`**
   (สี 1 ถัง ทาได้กี่ตารางเมตร — primary KW ~1,000 searches/mo)
 - ⚠️ **`prose` was dead CSS.** `blog/[slug]/page.tsx` and `page-renderer.tsx` carry
@@ -440,3 +594,13 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
     `media/blog/paint-coverage-per-bucket-cover.png` if they want it back
   - ⚠️ Turbopack served a stale CSS chunk after the globals.css edit; `rm -rf .next/dev` + restart
     was needed. Verify a CSS change by curling the linked chunk, not by trusting the screenshot
+- 🚨 **`main` was 5 commits behind what production actually ran.** Sessions 5–7 (launch, cutover,
+  Google Ads recovery) landed on `feat/launch-and-analytics` and were deployed to production from
+  there, but were never merged back. The Vercel project is **GitHub-connected with
+  `productionBranch: main`**, so pushing `main` as it stood would have built a production
+  deployment *without* GTM/Google Ads, `.vercelignore`, the DNS tooling or the contact-link
+  fixes — on a live client site. Caught by diffing `origin/main..origin/feat/launch-and-analytics`
+  and confirming the live site serves GTM. Merged that branch into `main` before pushing
+- ⚠️ **Rule going forward: `main` is the production branch — every deploy must go through it.**
+  Before any push to `main`, run `git log --oneline origin/main..origin/<other-branch>` for any
+  live branch, and sanity-check the deployed site for features the incoming tree might lack

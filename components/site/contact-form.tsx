@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+import { trackGenerateLead, trackFormError } from '@/lib/analytics/events';
 
 export function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
@@ -33,12 +34,16 @@ export function ContactForm() {
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         const msg = data.error === 'validation' ? 'กรอกข้อมูลให้ครบถ้วน' : 'ส่งไม่สำเร็จ';
+        trackFormError('contact', data.error === 'validation' ? 'validation' : `http_${res.status}`);
         toast.error(msg);
         return;
       }
+      // The conversion. Maps to the Google Ads "รายชื่อติดต่อ" goal.
+      trackGenerateLead('contact');
       toast.success('ส่งข้อความเรียบร้อย เราจะติดต่อกลับโดยเร็ว');
       form.reset();
     } catch {
+      trackFormError('contact', 'network');
       toast.error('การเชื่อมต่อขัดข้อง');
     } finally {
       setSubmitting(false);

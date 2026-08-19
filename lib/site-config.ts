@@ -11,10 +11,14 @@ export const siteConfig = {
     address: 'เลขที่ 642 ถ. พระราม ๒ แขวงบางมด เขตจอมทอง กรุงเทพมหานคร 10150',
     hours: 'จ-ส 08:00 - 17:00 / อา หยุด',
   },
+  // Recovered from the WordPress export — these are the exact hrefs the old site used, so the
+  // click triggers already configured in GTM (GTM-5LCNL8C9) keep matching after the migration.
+  // The LINE value is the sitewide chat-button URL; `lin.ee/BbS0txt` is the same OA but only
+  // ever appeared inside two blog bodies, so it is not the one GTM was watching.
   social: {
-    facebook: 'https://www.facebook.com/',
-    messenger: 'https://m.me/',
-    line: 'https://line.me/',
+    facebook: 'https://www.facebook.com/HTCpipeandtools',
+    messenger: 'https://m.me/103142917882034',
+    line: 'https://line.me/R/ti/p/%40hometoolscenter',
   },
   nav: [
     { label: 'หน้าแรก', href: '/' },
