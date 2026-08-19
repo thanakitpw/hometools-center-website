@@ -25,8 +25,6 @@ const { createClient } = require('@supabase/supabase-js');
 const ROOT = path.resolve(__dirname, '..', '..');
 const LIMITS = { seo_title: 60, seo_description: 160 };
 
-const fail = [];
-const warn = [];
 
 /** categories.slug holds only the leaf segment; URLs carry the full ancestor chain. */
 function categoryPaths(rows) {
@@ -40,7 +38,7 @@ function categoryPaths(rows) {
   );
 }
 
-async function checkInternalLinks(sb, html) {
+async function checkInternalLinks(sb, html, fail, warn, batchSlugs) {
   const links = [...html.matchAll(/href="(\/[^"#]*)"/g)].map((m) => m[1].replace(/\/$/, ''));
   const wanted = { product: new Set(), category: new Set() };
   const known = new Set(['', '/blog', '/shop', '/contact-us', '/about-us', '/promotion', '/how-to-place-an-order', '/privacy-policy', '/cookie-policy']);
@@ -56,7 +54,7 @@ async function checkInternalLinks(sb, html) {
   const [{ data: prods }, { data: cats }, { data: posts }] = await Promise.all([
     wanted.product.size ? sb.from('products').select('slug').in('slug', [...wanted.product]) : { data: [] },
     wanted.category.size ? sb.from('categories').select('id, slug, parent_id') : { data: [] },
-    blogSlugs.size ? sb.from('posts').select('slug').eq('status', 'published').in('slug', [...blogSlugs]) : { data: [] },
+    blogSlugs.size ? sb.from('posts').select('slug, status').in('slug', [...blogSlugs]) : { data: [] },
   ]);
 
   const haveProducts = new Set((prods || []).map((p) => p.slug));
@@ -67,11 +65,20 @@ async function checkInternalLinks(sb, html) {
     for (const s of wanted.category) if (!havePaths.has(s)) fail.push(`dead internal link: /product-category/${s}`);
   }
 
-  const havePosts = new Set((posts || []).map((p) => p.slug));
-  for (const s of blogSlugs) if (!havePosts.has(s)) fail.push(`dead internal link: /blog/${s}`);
+  // A batch of articles is written and reviewed together, so cross-links between them are
+  // expected to point at drafts for a while. Only a slug that exists in no form is a defect;
+  // a draft target is worth a warning so it cannot be forgotten before the batch goes live.
+  const postStatus = new Map((posts || []).map((p) => [p.slug, p.status]));
+  for (const s of blogSlugs) {
+    // A slug being written in this same run counts as existing — a batch of articles
+    // cross-links to itself, and no ordering of the inserts makes that resolvable.
+    if (batchSlugs.has(s)) { warn.push(`links to /blog/${s}, published in this same batch`); continue; }
+    if (!postStatus.has(s)) fail.push(`dead internal link: /blog/${s}`);
+    else if (postStatus.get(s) !== 'published') warn.push(`links to /blog/${s}, which is still a draft`);
+  }
 }
 
-function checkBody(html) {
+function checkBody(html, fail, warn) {
   if (/<h1[\s>]/i.test(html)) fail.push('body contains an <h1> — the page template already renders the title as the page H1');
 
   const faqItems = [...html.matchAll(/<div[^>]*class="[^"]*\bfaq-item\b[^"]*"[^>]*>([\s\S]*?)<\/div>/gi)];
@@ -88,7 +95,7 @@ function checkBody(html) {
   if (!headings.length) warn.push('no <h2 id> headings — in-page anchors and outline will be weak');
 }
 
-function checkMeta(meta) {
+function checkMeta(meta, fail, warn) {
   for (const [field, max] of Object.entries(LIMITS)) {
     const v = meta[field];
     if (!v) { fail.push(`${field} is required`); continue; }
@@ -102,57 +109,71 @@ function checkMeta(meta) {
 }
 
 (async () => {
-  const metaPath = process.argv[2];
-  const dry = process.argv.includes('--dry');
-  const draft = process.argv.includes('--draft');
-  if (!metaPath) {
-    console.error('usage: node scripts/seo/publish-post.js <seo/published/<slug>.json> [--draft] [--dry]');
+  const argv = process.argv.slice(2);
+  const dry = argv.includes('--dry');
+  const draft = argv.includes('--draft');
+  const paths = argv.filter((a) => !a.startsWith('--'));
+  if (!paths.length) {
+    console.error('usage: node scripts/seo/publish-post.js <seo/published/<slug>.json …> [--draft] [--dry]');
     process.exit(1);
   }
-
-  const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-  const html = fs.readFileSync(path.join(path.dirname(metaPath), meta.content_file), 'utf8').trim();
 
   const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-  checkMeta(meta);
-  checkBody(html);
-  await checkInternalLinks(sb, html);
+  const articles = paths.map((metaPath) => {
+    const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+    const html = fs.readFileSync(path.join(path.dirname(metaPath), meta.content_file), 'utf8').trim();
+    return { metaPath, meta, html };
+  });
+  const batchSlugs = new Set(articles.map((a) => a.meta.slug));
 
-  warn.forEach((w) => console.warn(`  warn  ${w}`));
-  if (fail.length) {
-    fail.forEach((f) => console.error(`  FAIL  ${f}`));
-    process.exit(1);
+  let failed = 0, wrote = 0;
+  for (const { metaPath, meta, html } of articles) {
+    const fail = [], warn = [];
+    checkMeta(meta, fail, warn);
+    checkBody(html, fail, warn);
+    await checkInternalLinks(sb, html, fail, warn, batchSlugs);
+
+    const label = meta.slug || path.basename(metaPath);
+    if (fail.length) {
+      console.error(`\n✗ ${label}`);
+      fail.forEach((f) => console.error(`    FAIL  ${f}`));
+      warn.forEach((w) => console.error(`    warn  ${w}`));
+      failed++;
+      continue;
+    }
+    if (warn.length && paths.length === 1) warn.forEach((w) => console.warn(`  warn  ${w}`));
+
+    const { data: existing } = await sb.from('posts').select('id, published_at').eq('slug', meta.slug).maybeSingle();
+    const row = {
+      slug: meta.slug,
+      title: meta.title,
+      excerpt: meta.excerpt,
+      content_md: html,
+      cover_image_url: meta.cover_image_url || null,
+      og_image_url: meta.og_image_url || meta.cover_image_url || null,
+      author: meta.author || null,
+      tags: meta.tags || [],
+      seo_title: meta.seo_title,
+      seo_description: meta.seo_description,
+      status: draft ? 'draft' : meta.status || 'published',
+      // Keep the original publish date on re-runs — changing it would reset the
+      // article's age signal and its position in the blog listing.
+      published_at: existing?.published_at || new Date().toISOString(),
+    };
+
+    if (dry) {
+      console.log(`  ok     ${label} — would ${existing ? 'update' : 'insert'} (${row.status})`);
+      continue;
+    }
+    const { error } = await sb.from('posts').upsert(row, { onConflict: 'slug' });
+    if (error) throw error;
+    console.log(`  ${existing ? 'updated' : 'created'}  ${row.status.padEnd(9)} /blog/${meta.slug}`);
+    wrote++;
   }
-  console.log(`  checks passed (${warn.length} warning${warn.length === 1 ? '' : 's'})`);
 
-  const { data: existing } = await sb.from('posts').select('id, published_at').eq('slug', meta.slug).maybeSingle();
-
-  const row = {
-    slug: meta.slug,
-    title: meta.title,
-    excerpt: meta.excerpt,
-    content_md: html,
-    cover_image_url: meta.cover_image_url || null,
-    og_image_url: meta.og_image_url || meta.cover_image_url || null,
-    author: meta.author || null,
-    tags: meta.tags || [],
-    seo_title: meta.seo_title,
-    seo_description: meta.seo_description,
-    status: draft ? 'draft' : meta.status || 'published',
-    // Keep the original publish date on re-runs — changing it would reset the
-    // article's age signal and its position in the blog listing.
-    published_at: existing?.published_at || new Date().toISOString(),
-  };
-
-  if (dry) {
-    console.log(`  dry run — would ${existing ? 'update' : 'insert'} /blog/${meta.slug}`);
-    return;
-  }
-
-  const { error } = await sb.from('posts').upsert(row, { onConflict: 'slug' });
-  if (error) throw error;
-  console.log(`  ${existing ? 'updated' : 'published'}  https://hometools-center.com/blog/${meta.slug}`);
+  console.log(`\n${dry ? 'dry run — ' : ''}${wrote} written, ${failed} failed, ${articles.length} checked`);
+  if (failed) process.exit(1);
 })().catch((e) => {
   console.error(e);
   process.exit(1);

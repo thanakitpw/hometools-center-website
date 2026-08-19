@@ -68,6 +68,11 @@ async function PostGrid({ page }: { page: number }) {
               )}
             </div>
             <div className="p-4">
+              {p.status !== 'published' && (
+                <span className="mb-2 inline-block rounded bg-[var(--color-accent-500)] px-2 py-0.5 text-[10px] font-semibold text-white">
+                  DRAFT
+                </span>
+              )}
               <h3 className="line-clamp-2 text-base font-semibold text-[var(--color-fg)] group-hover:text-[var(--color-brand-500)]">
                 {p.title}
               </h3>

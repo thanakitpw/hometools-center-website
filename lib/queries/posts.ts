@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { createStaticClient } from '@/lib/supabase/static';
 import type { Post } from './types';
 import { slugCandidates } from './slug';
+import { VISIBLE_STATUSES } from '@/lib/preview';
 
 export async function getPostBySlug(slug: string) {
   const sb = await createClient();
@@ -10,7 +11,7 @@ export async function getPostBySlug(slug: string) {
     .from('posts')
     .select('*')
     .in('slug', slugCandidates(slug))
-    .eq('status', 'published')
+    .in('status', VISIBLE_STATUSES)
     .maybeSingle();
   if (error) throw error;
   return data as Post | null;
@@ -22,8 +23,8 @@ export async function listPosts({ page = 1, perPage = 12 }: { page?: number; per
   const to = from + perPage - 1;
   const { data, count, error } = await sb
     .from('posts')
-    .select('id, slug, title, cover_image_url, published_at, tags, excerpt', { count: 'exact' })
-    .eq('status', 'published')
+    .select('id, slug, title, cover_image_url, published_at, tags, excerpt, status', { count: 'exact' })
+    .in('status', VISIBLE_STATUSES)
     .order('published_at', { ascending: false, nullsFirst: false })
     .range(from, to);
   if (error) throw error;
@@ -32,7 +33,7 @@ export async function listPosts({ page = 1, perPage = 12 }: { page?: number; per
 
 export async function getAllPostSlugs() {
   const sb = createStaticClient();
-  const { data } = await sb.from('posts').select('slug').eq('status', 'published');
+  const { data } = await sb.from('posts').select('slug').in('status', VISIBLE_STATUSES);
   return (data || []).map(d => d.slug);
 }
 
@@ -41,7 +42,7 @@ export async function getRelatedPosts(currentSlug: string, limit = 3) {
   const { data } = await sb
     .from('posts')
     .select('id, slug, title, cover_image_url, published_at')
-    .eq('status', 'published')
+    .in('status', VISIBLE_STATUSES)
     .neq('slug', currentSlug)
     .order('published_at', { ascending: false })
     .limit(limit);
