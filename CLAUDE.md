@@ -604,3 +604,13 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
 - ⚠️ **Rule going forward: `main` is the production branch — every deploy must go through it.**
   Before any push to `main`, run `git log --oneline origin/main..origin/<other-branch>` for any
   live branch, and sanity-check the deployed site for features the incoming tree might lack
+- Deployed and verified on the live site: GTM intact on `/` and the post, home/shop/contact all
+  200, `.article-body` in the shipped CSS bundle, 1 H1, all 5 JSON-LD blocks, canonical + sitemap
+- Article then set back to **`status: draft`** at the user's request until real cover art arrives —
+  `/blog/paint-coverage-per-bucket` now 404s and is off `/blog`, exactly as a draft should be.
+  Cover spec handed over: **1200×630**; the `/blog` card crops to 16:10 so ~96px is trimmed from
+  each side — keep logos/text ≥110px in from the edges. ⚠️ A null cover means **no `og:image`**
+- **New skill `.claude/skills/hometools-blog-publish/`** captures this whole pipeline (HTML-not-
+  markdown, the `.article-body` class vocabulary, the no-`<h1>` and FAQ-structure rules, the
+  `seo_title` brand-suffix trap, internal-link paths, cover spec, and the production-branch
+  hazard) so the next article does not have to rediscover any of it

@@ -139,8 +139,10 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] `lib/seo/faq.ts` + `faqSchema()` — FAQPage JSON-LD derived from the article HTML
 - [x] `scripts/seo/publish-post.js` — validated, idempotent upsert of `seo/published/<slug>.{html,json}`
 - [x] `scripts/seo/make-cover.js` — renders + uploads a 1200×630 cover/OG image
-- [x] Article 1 published: `/blog/paint-coverage-per-bucket` (สี 1 ถัง ทาได้กี่ตารางเมตร)
-- [ ] **Real cover art for article 1** — currently a placeholder, so the post has no `og:image`
+- [x] `.claude/skills/hometools-blog-publish/` — the whole pipeline as a repeatable skill
+- [x] Article 1 written: `/blog/paint-coverage-per-bucket` (สี 1 ถัง ทาได้กี่ตารางเมตร)
+- [ ] ⏸ **Article 1 is `draft`** — waiting on cover art (1200×630). Set `status: "published"`
+      in `seo/published/paint-coverage-per-bucket.json` and re-run `publish-post.js` once it lands
 - [x] Merge `feat/launch-and-analytics` into `main` — main was 5 commits behind what production
       was actually running, so pushing it would have stripped GTM/Ads from the live site
 - [ ] Backfill covers + `excerpt` / `seo_*` on the 30 migrated WordPress posts

@@ -12,7 +12,7 @@
     "งานสี",
     "ความรู้ช่าง"
   ],
-  "status": "published",
+  "status": "draft",
   "content_file": "paint-coverage-per-bucket.html",
   "cover_image_url": null,
   "og_image_url": null,
@@ -29,6 +29,6 @@
       "วิธีทาสีบ้านให้เรียบเนียน ไม่เป็นรอยแปรง (บทความ #10)",
       "เตรียมผนังก่อนทาสี ขั้นตอนที่ช่างมือโปรทำ (บทความ #16)"
     ],
-    "cover_pending": "รอรูปจริงจากลูกค้า — หน้าเว็บแสดง placeholder อยู่ ไฟล์ที่ generate ไว้ยังอยู่ที่ Storage: media/blog/paint-coverage-per-bucket-cover.png"
+    "cover_pending": "รอรูปจริงจากลูกค้า — ตั้ง status=draft ไว้ก่อน พอใส่ cover_image_url/og_image_url แล้วค่อยเปลี่ยนเป็น published แล้วรัน publish-post.js ซ้ำ"
   }
 }
