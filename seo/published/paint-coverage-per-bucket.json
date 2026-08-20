@@ -12,7 +12,7 @@
     "งานสี",
     "ความรู้ช่าง"
   ],
-  "status": "draft",
+  "status": "published",
   "content_file": "paint-coverage-per-bucket.html",
   "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/paint-coverage-per-bucket-cover.webp",
   "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/paint-coverage-per-bucket-cover.webp",

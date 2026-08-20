@@ -11,7 +11,7 @@
     "งานประปา",
     "ความรู้ช่าง"
   ],
-  "status": "draft",
+  "status": "published",
   "content_file": "read-water-meter.html",
   "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/read-water-meter-cover.webp",
   "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/read-water-meter-cover.webp",
