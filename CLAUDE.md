@@ -694,6 +694,20 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   title-only cards. Backfilling `excerpt` moved from cosmetic to worth doing
 - Found while screenshotting: `swing-vs-spring-check-valve` has a raw HTML entity in its title
   (`สวิงเช็ควาล์ว &amp; สปริงเช็ควาล์ว`) — 1 post, migrated data, not a regression
+- **Both fixed in the same session.** `seo/post-meta-backfill.json` holds hand-written excerpts
+  for the 26 migrated posts that had none (each written from that post's own body, 123–147 chars,
+  shaped as a meta description rather than a truncated first paragraph);
+  `scripts/seo/backfill-post-meta.js` applies them and decodes stray HTML entities.
+  **0/56 published posts now lack an excerpt**
+- ⚠️ **Entity decoding is restricted to `title` / `excerpt` / `seo_title` / `seo_description`.**
+  Those four are rendered as *text*, so `&amp;` shows up literally. `content_md` is rendered
+  through `dangerouslySetInnerHTML`, where `&amp;` and `&#8211;` are correct HTML — decoding
+  there would corrupt the markup. The script hard-codes that field list for this reason
+- ⚠️ Don't mistake correct escaping for the bug: after the fix the HTML source still reads
+  `สวิงเช็ควาล์ว &amp; สปริงเช็ควาล์ว`, because a literal `&` in text content *is* serialised
+  as `&amp;`. The real check is that `&amp;amp;` appears zero times
+- No deploy needed — this is data only, and `excerpt` reached the live meta descriptions and
+  the `/blog` cards on its own
 - Measured, correcting earlier notes: of the 30 published migrated WP posts, **26 have no
   `excerpt`, 27 no `seo_description`**, and **9 (not 30) carry a duplicate in-content `<h1>`**.
   Also **0** links from any `/product/*`, `/product-category/*` or `/shop` page into `/blog/*` —

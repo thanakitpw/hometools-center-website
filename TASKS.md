@@ -158,10 +158,13 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
       was actually running, so pushing it would have stripped GTM/Ads from the live site
 - [x] Blog shows a 2-line `excerpt` instead of a publish date; home page's article strip reads
       the 3 latest from the DB instead of three hardcoded 2023 posts
-- [ ] Fix the raw HTML entity in `swing-vs-spring-check-valve`'s title (`&amp;`)
-- [ ] Backfill `excerpt` / `seo_*` on the migrated WordPress posts — measured 2026-08-20:
-      **26/30 have no `excerpt`, 27/30 no `seo_description`**, so Google writes their snippets —
-      and since 2026-08-20 those cards render title-only on `/blog`
+- [x] Fixed the raw HTML entity in `swing-vs-spring-check-valve`'s title (`&amp;` → `&`)
+- [x] Backfilled `excerpt` on all 26 migrated posts that lacked one — **0/56 published posts
+      are now without an excerpt**. Copy in `seo/post-meta-backfill.json`, applied by
+      `scripts/seo/backfill-post-meta.js`. This also fills the meta description, since
+      `generateMetadata` falls back to `excerpt`
+- [ ] `seo_title` / `seo_description` on the migrated posts are still mostly empty — the
+      excerpt fallback covers the description, but a purpose-written one would beat it
 - [ ] Strip the duplicate in-content `<h1>` from migrated posts (page template already renders
       one). Measured 2026-08-20: **9 posts**, not all 30 as previously recorded
 - [ ] Link into articles from product/category pages — currently **0** links from
