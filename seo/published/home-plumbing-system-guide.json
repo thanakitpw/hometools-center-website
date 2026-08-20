@@ -12,8 +12,8 @@
   ],
   "status": "draft",
   "content_file": "home-plumbing-system-guide.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/home-plumbing-system-guide-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/home-plumbing-system-guide-cover.webp",
   "_notes": {
     "primary_kw": "ระบบประปาในบ้าน",
     "secondary_kw": [
@@ -21,6 +21,7 @@
       "ระบบน้ำในบ้าน",
       "การเดินท่อประปา"
     ],
-    "source_draft": "seo/blogs/12-คู่มือระบบประปาในบ้าน.md"
+    "source_draft": "seo/blogs/12-คู่มือระบบประปาในบ้าน.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/12-home-water-supply-system.png"
   }
 }

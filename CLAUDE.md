@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-08-19 — 🟢 site LIVE; first SEO article published
+**Last updated:** 2026-08-20 — 🟢 site LIVE; 26 draft articles now carry WebP cover art
 
 ---
 
@@ -614,3 +614,47 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   markdown, the `.article-body` class vocabulary, the no-`<h1>` and FAQ-structure rules, the
   `seo_title` brand-suffix trap, internal-link paths, cover spec, and the production-branch
   hazard) so the next article does not have to rediscover any of it
+
+### 2026-08-20 (session 9 — cover art for the 26-article batch, WebP)
+- Client delivered 26 cover images in `seo/blogs/รูปปกบทความ/` — all exactly 1200×630 PNG,
+  ~1.5 MB each (39.5 MB total). One per draft article, so the batch's `og:image` gap closes
+- ⚠️ **The filenames could not be trusted to map artwork → slug.** They carry their own
+  per-batch numbering (two `01-`, two `02-`, …) that does not line up with the draft numbering,
+  and the real identity of each cover is the Thai headline *burned into the image*. Built a
+  contact sheet (sharp `composite`, 380px thumbs, 3 across) and read all 26 headlines before
+  writing anything. All 26 mapped 1:1 to `seo/published/*.json`; the mapping is committed as
+  `seo/blogs/รูปปกบทความ/mapping.tsv` and echoed per-article in `_notes.cover_source`
+- **`set-cover.js` rewritten: JPEG/`sips` → WebP/`sharp`, and it now takes N `<slug> <art>`
+  pairs plus `--dry`.** Result **39.5 MB → 2.5 MB (−94%)**, ~100 KB per cover vs. the ~250 KB
+  the JPEG path produced. `sharp` is already in the tree (Next pulls it in), so no new dep,
+  and it resamples better than `sips`
+- Covers render through a **plain `<img>`, not `next/image`** (`blog/page.tsx`,
+  `blog/[slug]/page.tsx`) — nothing downstream shrinks them, so the encode is the only
+  chance to control LCP weight on a page Google measures
+- Checked q80 against the source at **1:1 on a crop of the headline**, not on a downscaled
+  screenshot: no ringing on the heavy white-stroked Thai display type, and indistinguishable
+  from q88 at +40% file size. ⚠️ A shrunk screenshot will hide exactly the artifact you are
+  looking for
+- Departed from the skill's earlier "JPEG — the format every social scraper handles without
+  question" note. WebP is supported by Facebook, LINE, X and Google today, and the ~10× size
+  win on a plain `<img>` is worth more than a compatibility margin that no longer exists.
+  Both `cover_image_url` and `og_image_url` point at the same `.webp`
+- All 26 verified end to end: Storage objects return `200 image/webp`; 26/26 post pages 200
+  with exactly one `<h1>`, the cover in `og:image`, `twitter:image`, the Article schema
+  `image` and the in-page `<img>`; `/blog` pages 1–3 show 26 covers and **zero** placeholders.
+  `npm run build` + `tsc --noEmit` green. Screenshots at 1440px confirm no cropping — card and
+  post both use `aspect-[1200/630]`, matching the artwork exactly
+- Repo hygiene: `/seo/blogs/รูปปกบทความ/*.png` gitignored (40 MB of source art); the shipped
+  `seo/published/<slug>-cover.webp` copies (2.6 MB total) stay tracked as the rebuild path.
+  Removed the two superseded tracked copies (`paint-coverage-per-bucket-cover.png`,
+  `water-tank-above-vs-underground-cover.jpg`)
+- ⚠️ Their Storage counterparts `blog/paint-coverage-per-bucket-cover.png` and
+  `blog/water-tank-above-vs-underground-cover.jpg` are now **orphaned but not deleted** —
+  confirmed zero references in `posts` (incl. `content_md`) and `products`. Delete only if
+  someone wants the bucket tidy; note that this falsifies the session-8 line about the
+  generated cover still being available at that PNG key
+- ⚠️ `npm run dev` silently moved to **port 3001** because something was already holding 3000,
+  and the squatter answered `404` for `/blog` — which reads exactly like a broken page. Always
+  confirm the port from the dev server's own output before believing a curl
+- Articles remain **`draft`** — this session only added covers. Flipping to `published` still
+  waits on the client's review of the preview deploy

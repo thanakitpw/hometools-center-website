@@ -13,8 +13,8 @@
   ],
   "status": "draft",
   "content_file": "noisy-water-pump-fix.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/noisy-water-pump-fix-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/noisy-water-pump-fix-cover.webp",
   "_notes": {
     "primary_kw": "ปั๊มน้ำเสียงดัง",
     "secondary_kw": [
@@ -22,6 +22,7 @@
       "ปั๊มน้ำตัดบ่อย",
       "ปั๊มน้ำสั่น"
     ],
-    "source_draft": "seo/blogs/07-ปั๊มน้ำเสียงดัง.md"
+    "source_draft": "seo/blogs/07-ปั๊มน้ำเสียงดัง.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/01-noisy-water-pump.png"
   }
 }

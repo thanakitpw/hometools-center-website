@@ -42,3 +42,8 @@ next-env.d.ts
 /.next-build*.log
 backup-oldwebsite/
 .env*
+
+# blog cover source art — ~40 MB of 1200x630 PNGs from the content team.
+# The shipped 1200-wide .webp copies live in seo/published/, and
+# seo/blogs/รูปปกบทความ/mapping.tsv records which artwork belongs to which article.
+/seo/blogs/รูปปกบทความ/*.png

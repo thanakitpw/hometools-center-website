@@ -13,11 +13,12 @@
   ],
   "status": "draft",
   "content_file": "ppr-pipe-vs-pvc.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/ppr-pipe-vs-pvc-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/ppr-pipe-vs-pvc-cover.webp",
   "_notes": {
     "primary_kw": "",
     "secondary_kw": [],
-    "source_draft": "seo/blogs/05-ท่อ-ppr.md"
+    "source_draft": "seo/blogs/05-ท่อ-ppr.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/08-ppr-vs-pvc.png"
   }
 }

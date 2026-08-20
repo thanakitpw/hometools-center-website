@@ -13,8 +13,8 @@
   ],
   "status": "draft",
   "content_file": "acrylic-vs-oil-paint.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/acrylic-vs-oil-paint-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/acrylic-vs-oil-paint-cover.webp",
   "_notes": {
     "primary_kw": "สีน้ำอะคริลิค กับ สีน้ำมัน",
     "secondary_kw": [
@@ -22,6 +22,7 @@
       "สีน้ำมันใช้ทาอะไร",
       "สีน้ำ vs สีน้ำมัน"
     ],
-    "source_draft": "seo/blogs/15-อะคริลิค-vs-สีน้ำมัน.md"
+    "source_draft": "seo/blogs/15-อะคริลิค-vs-สีน้ำมัน.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/06-acrylic-vs-oil-paint.png"
   }
 }

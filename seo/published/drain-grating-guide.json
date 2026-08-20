@@ -12,8 +12,8 @@
   ],
   "status": "draft",
   "content_file": "drain-grating-guide.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/drain-grating-guide-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/drain-grating-guide-cover.webp",
   "_notes": {
     "primary_kw": "ตะแกรงระบายน้ำ",
     "secondary_kw": [
@@ -21,6 +21,7 @@
       "ตะแกรงระบายน้ำเหล็ก",
       "ฝาตะแกรงระบายน้ำ"
     ],
-    "source_draft": "seo/blogs/04-ตะแกรงระบายน้ำ.md"
+    "source_draft": "seo/blogs/04-ตะแกรงระบายน้ำ.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/11-drain-grate-types.png"
   }
 }

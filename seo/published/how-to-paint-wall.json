@@ -13,8 +13,8 @@
   ],
   "status": "draft",
   "content_file": "how-to-paint-wall.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/how-to-paint-wall-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/how-to-paint-wall-cover.webp",
   "_notes": {
     "primary_kw": "วิธีทาสีบ้าน",
     "secondary_kw": [
@@ -22,6 +22,7 @@
       "ขั้นตอนทาสีบ้าน",
       "ทาสีไม่ให้เป็นรอยแปรง"
     ],
-    "source_draft": "seo/blogs/10-วิธีทาสีบ้าน.md"
+    "source_draft": "seo/blogs/10-วิธีทาสีบ้าน.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/03-smooth-diy-painting.png"
   }
 }

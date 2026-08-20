@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-08-19 (🟢 live; first SEO article published + article typography)
+> **Last updated:** 2026-08-20 (🟢 live; 26 draft articles now have WebP cover art)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -139,13 +139,18 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] `lib/seo/faq.ts` + `faqSchema()` — FAQPage JSON-LD derived from the article HTML
 - [x] `scripts/seo/publish-post.js` — validated, idempotent upsert of `seo/published/<slug>.{html,json}`
 - [x] `scripts/seo/make-cover.js` — renders + uploads a 1200×630 cover/OG image
+- [x] `scripts/seo/set-cover.js` — batch: source art → 1200-wide **WebP q80** → Storage
+      `blog/<slug>-cover.webp` → both URL fields in the article JSON
 - [x] `.claude/skills/hometools-blog-publish/` — the whole pipeline as a repeatable skill
 - [x] Article 1 written: `/blog/paint-coverage-per-bucket` (สี 1 ถัง ทาได้กี่ตารางเมตร)
 - [x] `scripts/seo/md-to-article.js` — batch converter for the content team's draft template
 - [x] Draft preview: `lib/preview.ts` shows drafts on any non-production deployment
+- [x] Cover art on all 26 articles — 26 × 1200×630 PNG from the content team, mapped to slugs
+      by reading the Thai headline burned into each image, encoded to WebP (39.5 MB → 2.5 MB,
+      −94%) and uploaded. `og:image` + Article schema image now populated on every one
 - [ ] ⏸ **26 articles sit in `draft`, awaiting client review** — preview deploy sent 2026-08-20.
-      Apply feedback, add cover art (1200×630 each), then flip `status` to `published`
-      and re-run `node scripts/seo/publish-post.js seo/published/*.json`
+      Apply feedback, then flip `status` to `published` and re-run
+      `node scripts/seo/publish-post.js seo/published/*.json`
 - [x] Merge `feat/launch-and-analytics` into `main` — main was 5 commits behind what production
       was actually running, so pushing it would have stripped GTM/Ads from the live site
 - [ ] Backfill covers + `excerpt` / `seo_*` on the 30 migrated WordPress posts

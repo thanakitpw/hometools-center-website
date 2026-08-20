@@ -13,8 +13,8 @@
   ],
   "status": "draft",
   "content_file": "wall-prep-before-painting.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/wall-prep-before-painting-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/wall-prep-before-painting-cover.webp",
   "_notes": {
     "primary_kw": "เตรียมผนังก่อนทาสี",
     "secondary_kw": [
@@ -22,6 +22,7 @@
       "ทาสีทับผนังเก่า",
       "สีรองพื้นปูน"
     ],
-    "source_draft": "seo/blogs/16-เตรียมผนังก่อนทาสี.md"
+    "source_draft": "seo/blogs/16-เตรียมผนังก่อนทาสี.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/07-wall-preparation.png"
   }
 }

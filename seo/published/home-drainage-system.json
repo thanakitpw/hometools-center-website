@@ -12,8 +12,8 @@
   ],
   "status": "draft",
   "content_file": "home-drainage-system.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/home-drainage-system-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/home-drainage-system-cover.webp",
   "_notes": {
     "primary_kw": "ระบบระบายน้ำ บ้าน",
     "secondary_kw": [
@@ -21,6 +21,7 @@
       "ท่อระบายน้ำตัน",
       "ความลาดท่อระบายน้ำ"
     ],
-    "source_draft": "seo/blogs/25-ระบบระบายน้ำบ้าน.md"
+    "source_draft": "seo/blogs/25-ระบบระบายน้ำบ้าน.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/13-home-drainage-system.png"
   }
 }

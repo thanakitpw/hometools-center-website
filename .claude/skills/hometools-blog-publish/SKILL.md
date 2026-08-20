@@ -239,14 +239,28 @@ Source art within a few percent of that ratio is fine; the script warns when it 
 
 ```bash
 node scripts/seo/set-cover.js <slug> ~/Downloads/artwork.png
+node scripts/seo/set-cover.js --dry <slug> art.png            # encode + report, no upload
+node scripts/seo/set-cover.js a art-a.png b art-b.png ...     # whole batch in one pass
 node scripts/seo/publish-post.js seo/published/<slug>.json
 ```
 
-`set-cover.js` resizes to 1200 wide, re-encodes to JPEG (~250 KB), uploads to Storage
-and patches both URL fields into the article JSON. Generated artwork routinely arrives
-as a 2 MB PNG — that is a real LCP cost on a page Google measures, and JPEG is the format
-every social scraper handles without question. A copy is kept in `seo/published/` so the
-cover can be rebuilt without hunting for the original.
+`set-cover.js` resizes to 1200 wide with `sharp`, re-encodes to **WebP q80 (~100 KB)**,
+uploads to Storage as `blog/<slug>-cover.webp` and patches both URL fields into the
+article JSON. Generated artwork routinely arrives as a 1.5–2 MB PNG — a real LCP cost on
+a page Google measures, and covers are rendered by a plain `<img>` (not `next/image`), so
+nothing else will shrink them. WebP is ~10× smaller than the source at quality that is
+indistinguishable at 1:1, even on the heavy text overlays this client's covers use; check
+a 1:1 crop rather than a downscaled screenshot if you ever raise or lower the quality.
+
+A copy is kept in `seo/published/<slug>-cover.webp` so the cover can be rebuilt without
+hunting for the original, and the source filename is recorded in `_notes.cover_source`.
+Keep bulk source art out of git — `seo/blogs/รูปปกบทความ/*.png` is gitignored, with
+`mapping.tsv` next to it recording which artwork belongs to which slug.
+
+⚠️ Never map artwork to slugs from filenames alone. These covers carry their Thai
+headline burned into the image, so build a contact sheet (sharp `composite`, ~380px
+thumbnails, 3 across) and read the headlines — a batch of 26 mismatched covers is
+invisible in any script's output.
 
 Until real art arrives, leave `cover_image_url` and `og_image_url` as `null` — the
 post page and the listing card both render a labelled placeholder. Be explicit with

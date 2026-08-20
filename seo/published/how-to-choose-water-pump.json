@@ -13,8 +13,8 @@
   ],
   "status": "draft",
   "content_file": "how-to-choose-water-pump.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/how-to-choose-water-pump-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/how-to-choose-water-pump-cover.webp",
   "_notes": {
     "primary_kw": "ปั๊มน้ำ เลือกยังไง",
     "secondary_kw": [
@@ -22,6 +22,7 @@
       "เลือกปั๊มน้ำบ้าน",
       "ปั๊มน้ำอินเวอร์เตอร์"
     ],
-    "source_draft": "seo/blogs/17-เลือกปั๊มน้ำ.md"
+    "source_draft": "seo/blogs/17-เลือกปั๊มน้ำ.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/03-choose-home-water-pump.png"
   }
 }

@@ -13,8 +13,8 @@
   ],
   "status": "draft",
   "content_file": "ppr-heat-fusion.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/ppr-heat-fusion-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/ppr-heat-fusion-cover.webp",
   "_notes": {
     "primary_kw": "วิธีต่อท่อ ppr",
     "secondary_kw": [
@@ -22,6 +22,7 @@
       "เครื่องเชื่อมท่อ ppr",
       "ต่อท่อน้ำร้อน ppr"
     ],
-    "source_draft": "seo/blogs/22-ต่อท่อ-ppr.md"
+    "source_draft": "seo/blogs/22-ต่อท่อ-ppr.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/12-ppr-heat-fusion.png"
   }
 }

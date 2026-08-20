@@ -12,8 +12,8 @@
   ],
   "status": "draft",
   "content_file": "electrical-conduit-types.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/electrical-conduit-types-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/electrical-conduit-types-cover.webp",
   "_notes": {
     "primary_kw": "ท่อร้อยสายไฟ มีกี่ประเภท",
     "secondary_kw": [
@@ -22,6 +22,7 @@
       "ท่อร้อยสายไฟสีเหลือง",
       "ท่อเฟล็กซ์"
     ],
-    "source_draft": "seo/blogs/26-ท่อร้อยสายไฟ.md"
+    "source_draft": "seo/blogs/26-ท่อร้อยสายไฟ.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/13-electrical-conduit-types.png"
   }
 }
