@@ -156,8 +156,12 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
       5 highest-value new articles
 - [x] Merge `feat/launch-and-analytics` into `main` — main was 5 commits behind what production
       was actually running, so pushing it would have stripped GTM/Ads from the live site
+- [x] Blog shows a 2-line `excerpt` instead of a publish date; home page's article strip reads
+      the 3 latest from the DB instead of three hardcoded 2023 posts
+- [ ] Fix the raw HTML entity in `swing-vs-spring-check-valve`'s title (`&amp;`)
 - [ ] Backfill `excerpt` / `seo_*` on the migrated WordPress posts — measured 2026-08-20:
-      **26/30 have no `excerpt`, 27/30 no `seo_description`**, so Google writes their snippets
+      **26/30 have no `excerpt`, 27/30 no `seo_description`**, so Google writes their snippets —
+      and since 2026-08-20 those cards render title-only on `/blog`
 - [ ] Strip the duplicate in-content `<h1>` from migrated posts (page template already renders
       one). Measured 2026-08-20: **9 posts**, not all 30 as previously recorded
 - [ ] Link into articles from product/category pages — currently **0** links from

@@ -674,6 +674,26 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   1–3 show 26 covers, **0** DRAFT badges, **0** placeholders; home/shop/contact/about 200 and
   GTM intact. Draft gating held right up to the flip — before it, 26/26 returned 404 on
   production while rendering fine on preview
+- **Visible publish dates removed from the blog; a 2-line excerpt takes their place.**
+  Evergreen how-to content reads as stale with a date on it, and 26 cards stamped with one
+  identical date reads as a dump. ⚠️ **`published_at` itself is untouched and still truthful** —
+  it keeps feeding Article JSON-LD `datePublished`, `og:article:published_time` and sitemap
+  `lastmod`. Only the rendered `<time>` and the card's date line are gone. (Asked earlier to
+  backdate the 26 to spread over 22 months; declined — that is a falsified record aimed at the
+  client, and it also feeds Google false structured data for no ranking gain, since Google
+  already knows when it first crawled each URL. Offered forward-staggered publishing instead)
+- The post byline is now conditional: **30 of the migrated WP posts have no `author`**, so with
+  the date gone the old markup would have rendered an empty bordered line
+- **Home page `บทความที่น่าสนใจ` was three hardcoded 2023 posts** (`blogCards` in
+  `app/(site)/page.tsx`) that could never update. Now reads the 3 latest via
+  `listLatestPosts()`. ⚠️ It uses the **cookie-free** client (same pattern as
+  `getAllPostSlugs`) on purpose — going through `createClient()` would read `cookies()` and
+  drop the most-hit route on the site out of static rendering. Verified `/` is still `○` with
+  `revalidate = 3600` in the build output. Cover box `aspect-square` → `aspect-[1200/630]`
+- ⚠️ The missing excerpts are now *visible*: on `/blog` pages 3+ the migrated posts render as
+  title-only cards. Backfilling `excerpt` moved from cosmetic to worth doing
+- Found while screenshotting: `swing-vs-spring-check-valve` has a raw HTML entity in its title
+  (`สวิงเช็ควาล์ว &amp; สปริงเช็ควาล์ว`) — 1 post, migrated data, not a regression
 - Measured, correcting earlier notes: of the 30 published migrated WP posts, **26 have no
   `excerpt`, 27 no `seo_description`**, and **9 (not 30) carry a duplicate in-content `<h1>`**.
   Also **0** links from any `/product/*`, `/product-category/*` or `/shop` page into `/blog/*` —
