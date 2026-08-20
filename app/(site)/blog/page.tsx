@@ -76,9 +76,9 @@ async function PostGrid({ page }: { page: number }) {
               <h3 className="line-clamp-2 text-base font-semibold text-[var(--color-fg)] group-hover:text-[var(--color-brand-500)]">
                 {p.title}
               </h3>
-              {p.published_at && (
-                <p className="mt-2 text-xs text-[var(--color-muted-fg)]">
-                  {new Date(p.published_at).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' })}
+              {p.excerpt && (
+                <p className="mt-2 line-clamp-2 text-sm leading-[1.7] text-[var(--color-muted-fg)]">
+                  {p.excerpt}
                 </p>
               )}
             </div>

@@ -44,6 +44,22 @@ export async function listPosts({ page = 1, perPage = 12 }: { page?: number; per
   return { items: data || [], total: count || 0 };
 }
 
+/**
+ * Latest posts for the home page. Cookie-free on purpose: the home page is the most-hit
+ * route on the site and reading through `createClient()` would opt it out of static
+ * rendering. Same client choice as getAllPostSlugs, so preview builds still see drafts.
+ */
+export async function listLatestPosts(limit = 3) {
+  const sb = SHOW_DRAFTS ? createAdminClient() : createStaticClient();
+  const { data } = await sb
+    .from('posts')
+    .select('id, slug, title, excerpt, cover_image_url')
+    .in('status', VISIBLE_STATUSES)
+    .order('published_at', { ascending: false, nullsFirst: false })
+    .limit(limit);
+  return data || [];
+}
+
 export async function getAllPostSlugs() {
   const sb = SHOW_DRAFTS ? createAdminClient() : createStaticClient();
   const { data } = await sb.from('posts').select('slug').in('status', VISIBLE_STATUSES);

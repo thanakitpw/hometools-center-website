@@ -88,15 +88,13 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
         )}
         <article className="mt-8">
           <h1 className="!text-[1.75rem] !leading-[1.3] !text-[var(--color-fg)] md:!text-[2.25rem]">{p.title}</h1>
-          <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 border-b border-[var(--color-border)] pb-5 text-sm text-[var(--color-muted-fg)]">
-            {p.author && <span>โดย {p.author}</span>}
-            {p.author && p.published_at && <span aria-hidden>·</span>}
-            {p.published_at && (
-              <time dateTime={p.published_at}>
-                {new Date(p.published_at).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' })}
-              </time>
-            )}
-          </p>
+          {/* No visible publish date: these are evergreen how-to articles and a date only
+              makes them look stale. published_at is still real and still exported to
+              Google via Article JSON-LD, og:article:published_time and sitemap lastmod.
+              30 of the migrated posts have no author either, hence the conditional. */}
+          <div className={`mt-4 border-b border-[var(--color-border)] ${p.author ? 'pb-5' : 'pb-1'}`}>
+            {p.author && <p className="text-sm text-[var(--color-muted-fg)]">โดย {p.author}</p>}
+          </div>
           {p.cover_image_url ? (
             <img
               src={p.cover_image_url}

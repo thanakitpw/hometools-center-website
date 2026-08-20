@@ -1,9 +1,13 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ImageIcon } from 'lucide-react';
 import { homeImg as img } from '@/lib/home-assets';
 import { HomeCarousel } from '@/components/site/home-carousel';
 import { JsonLd } from '@/components/site/json-ld';
 import { localBusinessSchema } from '@/lib/seo/schema';
+import { listLatestPosts } from '@/lib/queries/posts';
+
+// The blog strip reads from the database, so new articles rotate in on their own.
+export const revalidate = 3600;
 
 const CAT = '/product-category';
 
@@ -43,11 +47,6 @@ const promoCards = [
   { src: img.promoShipping, label: 'โปรโมชั่นการจัดส่ง' },
 ];
 
-const blogCards = [
-  { src: img.blog1, title: 'ระบบน้ำประปาภายในบ้าน', href: '/blog/home-water-supply-system', excerpt: 'ระบบน้ำประปาภายในบ้านสามารถแบ่งออกเป็น 3 ประเภทหลักๆ คือ 1.ระบบจ่ายน้ำขึ้น เหมาะสำหรับอาคารหรือบ้านที่มีความสูงไม่เกิน 3 ชั้น โดยน้ำจะถูกจ่ายจากท่อประปาหลัก…' },
-  { src: img.blog2, title: 'ประเภทท่อในระบบสุขาภิบาล', href: '/blog/sanitary-pipe-types', excerpt: 'งานระบบสุขาภิบาล ท่อถือเป็นองค์ประกอบสำคัญที่มีส่วนทำให้ระบบสุขาภิบาลทำงานได้อย่างสมบูรณ์ ในด้านการออกแบบ และการเลือกใช้วัสดุท่องานระบบสุขาภิบาล…' },
-  { src: img.blog3, title: 'ท่อประปารั่วใต้พื้นบ้าน', href: '/blog/underground-water-pipe-leak', excerpt: 'สาเหตุที่ทำให้ท่อประปารั่วใต้พื้นบ้าน วิธีแก้ไขท่อประปารั่วใต้พื้นบ้าน สำหรับท่อประปาใต้ดิน หรือใต้บ้านนั้น ค่อนข้างยากที่จะตรวจสอบหรือพบเห็น…' },
-];
 
 const aboutColumns = [
   { title: 'ซื่อสัตย์นำพา', body: 'โฮมทูล เซ็นเตอร์ เป็นร้านขายวัสดุอุปกรณ์ก่อสร้างตัวแทนจำหน่ายรายใหญ่ ทำให้สามารถจำหน่ายสินค้าในราคาที่ถูก นอกจากราคาเราให้ความสำคัญกับงานบริการ เพื่อให้ลูกค้าทุกท่านเข้าถึงการบริการที่สะดวกและรวดเร็วที่สุด' },
@@ -89,7 +88,9 @@ function SectionHead({ title, href }: { title: string; href?: string }) {
 
 /* ---------- page ---------- */
 
-export default function HomePage() {
+export default async function HomePage() {
+  const latestPosts = await listLatestPosts(3);
+
   return (
     <>
       <JsonLd data={localBusinessSchema()} />
@@ -331,15 +332,24 @@ export default function HomePage() {
         <div className="mx-auto max-w-[1140px] px-6 pb-14">
           <SectionHead title="บทความที่น่าสนใจ" href="/blog" />
           <div className="grid gap-6 md:grid-cols-3">
-            {blogCards.map((b) => (
-              <Link key={b.href} href={b.href as never} className="group flex flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-white transition-shadow hover:shadow-lg">
-                <div className="aspect-square overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={b.src} alt={b.title} className="h-full w-full object-cover transition-transform group-hover:scale-105" loading="lazy" />
+            {latestPosts.map((b) => (
+              <Link key={b.id} href={`/blog/${b.slug}` as never} className="group flex flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-white transition-shadow hover:shadow-lg">
+                <div className="aspect-[1200/630] overflow-hidden bg-[var(--color-muted)]">
+                  {b.cover_image_url ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={b.cover_image_url} alt={b.title} className="h-full w-full object-cover transition-transform group-hover:scale-105" loading="lazy" />
+                  ) : (
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-[var(--color-muted-fg)]">
+                      <ImageIcon className="h-7 w-7" strokeWidth={1.5} aria-hidden />
+                      <span className="text-xs">ภาพหน้าปกบทความ</span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex flex-1 flex-col p-4">
-                  <h3 className="text-[18px] font-semibold !text-[#0d398f] group-hover:underline">{b.title}</h3>
-                  <p className="mt-2 line-clamp-3 text-[15px] leading-[1.6] text-[#606060]">{b.excerpt}</p>
+                  <h3 className="line-clamp-2 text-[18px] font-semibold !text-[#0d398f] group-hover:underline">{b.title}</h3>
+                  {b.excerpt && (
+                    <p className="mt-2 line-clamp-2 text-[15px] leading-[1.7] text-[#606060]">{b.excerpt}</p>
+                  )}
                 </div>
               </Link>
             ))}
