@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-08-20 — 🟢 site LIVE; 26 draft articles now carry WebP cover art
+**Last updated:** 2026-08-20 — 🟢 site LIVE; 26-article SEO batch published with WebP covers
 
 ---
 
@@ -656,5 +656,26 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
 - ⚠️ `npm run dev` silently moved to **port 3001** because something was already holding 3000,
   and the squatter answered `404` for `/blog` — which reads exactly like a broken page. Always
   confirm the port from the dev server's own output before believing a curl
-- Articles remain **`draft`** — this session only added covers. Flipping to `published` still
-  waits on the client's review of the preview deploy
+- **Then published, same session, on the user's call.** All 26 flipped to `published`;
+  56 posts live (30 migrated + 26 new), 1 draft left (`blog-post-1190`, already draft in WP)
+- ⚠️ **A status flip is not enough on its own — this batch needed a deploy.** `/blog/[slug]`
+  builds its `generateStaticParams` from *published* slugs, so the 26 were never prerendered,
+  and production was serving a **cached 404** for each with `revalidate = 3600`. Waiting on ISR
+  would have left them dead for up to an hour and out of the prerendered sitemap. Pushing to
+  `main` rebuilt and they went live at once. (The skill's note that content needs no deploy
+  holds for *editing* a live post — not for one crossing draft → published)
+- 🚨 **`origin/main` was 6 commits behind local**, i.e. session 8's work was committed but never
+  pushed. Same class of hazard as session 8's, one step earlier in the chain. Ran the
+  `references/deploy.md` checks before pushing: nothing missing vs. `feat/launch-and-analytics`
+  (0 ahead), GTM wiring present in the tree, live site serving GTM. Push was safe
+- Post-publish verification on the real domain: sitemap **422 → 448 URLs (+26)**; 26/26 articles
+  200 with exactly one `<h1>`, the WebP cover in `og:image` + `twitter:image` + Article schema
+  + the in-page `<img>`, canonical correct, FAQPage and BreadcrumbList present; `/blog` pages
+  1–3 show 26 covers, **0** DRAFT badges, **0** placeholders; home/shop/contact/about 200 and
+  GTM intact. Draft gating held right up to the flip — before it, 26/26 returned 404 on
+  production while rendering fine on preview
+- Measured, correcting earlier notes: of the 30 published migrated WP posts, **26 have no
+  `excerpt`, 27 no `seo_description`**, and **9 (not 30) carry a duplicate in-content `<h1>`**.
+  Also **0** links from any `/product/*`, `/product-category/*` or `/shop` page into `/blog/*` —
+  the articles link out to category pages but nothing links back in, so the only crawl paths
+  to them are `/blog` and the sitemap

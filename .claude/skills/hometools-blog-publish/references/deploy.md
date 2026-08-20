@@ -9,6 +9,13 @@ the site as its cache turns over. `sitemap.xml` revalidates on the same hour.
 
 **Only changes to code, CSS or components need a deploy.**
 
+⚠️ **One content change does need a deploy: draft → published.** `/blog/[slug]` builds
+`generateStaticParams` from *published* slugs, so a draft was never prerendered and
+production is serving a **cached 404** for it under `revalidate = 3600` — flipping the
+status in the database does not clear that, and the post is also absent from the
+prerendered sitemap. Push to `main` (or redeploy) and it goes live at once. Editing or
+unpublishing a post that is already live is the case ISR handles on its own.
+
 ## The hazard: main is the production branch
 
 The Vercel project is GitHub-connected with `productionBranch: main`, so **any push to

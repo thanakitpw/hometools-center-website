@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-08-20 (🟢 live; 26 draft articles now have WebP cover art)
+> **Last updated:** 2026-08-20 (🟢 live; 26-article batch published with WebP covers)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -148,13 +148,21 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] Cover art on all 26 articles — 26 × 1200×630 PNG from the content team, mapped to slugs
       by reading the Thai headline burned into each image, encoded to WebP (39.5 MB → 2.5 MB,
       −94%) and uploaded. `og:image` + Article schema image now populated on every one
-- [ ] ⏸ **26 articles sit in `draft`, awaiting client review** — preview deploy sent 2026-08-20.
-      Apply feedback, then flip `status` to `published` and re-run
-      `node scripts/seo/publish-post.js seo/published/*.json`
+- [x] **26-article batch published 2026-08-20** — sitemap 422 → 448 URLs, all 26 verified on
+      the live domain (200, one `<h1>`, cover in `og:image` + Article schema, canonical, in
+      sitemap). Needed a deploy, not just ISR: the slugs were absent from `generateStaticParams`
+      at the previous build, so production held a cached 404 for each
+- [ ] Submit `sitemap.xml` in GSC (carried over from session 6) + Request Indexing on the
+      5 highest-value new articles
 - [x] Merge `feat/launch-and-analytics` into `main` — main was 5 commits behind what production
       was actually running, so pushing it would have stripped GTM/Ads from the live site
-- [ ] Backfill covers + `excerpt` / `seo_*` on the 30 migrated WordPress posts
-- [ ] Strip the duplicate in-content `<h1>` from migrated posts (page template already renders one)
+- [ ] Backfill `excerpt` / `seo_*` on the migrated WordPress posts — measured 2026-08-20:
+      **26/30 have no `excerpt`, 27/30 no `seo_description`**, so Google writes their snippets
+- [ ] Strip the duplicate in-content `<h1>` from migrated posts (page template already renders
+      one). Measured 2026-08-20: **9 posts**, not all 30 as previously recorded
+- [ ] Link into articles from product/category pages — currently **0** links from
+      `/product/*`, `/product-category/*` and `/shop` to any `/blog/*`; the only ways in are
+      `/blog` and the sitemap
 
 ### Ongoing SEO (post-launch, monthly)
 - [ ] Monthly GSC + GA4 health check
