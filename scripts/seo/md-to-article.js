@@ -30,8 +30,13 @@ const CAT = {
   tank: '/product-category/system-work/water-tank',
   manhole: '/product-category/system-work/manhole-roof-drain-fordren-and-other-accessories',
   conduit: '/product-category/system-work/conduit-pipe',
+  pe: '/product-category/system-work/pe-pipes-and-fittings',
   paint: '/product-category/construction-materials-and-equipment/toa-color/decorative-coatings',
   chemicals: '/product-category/construction-materials-and-equipment/toa-color/construction-chemicals',
+  // The shop sells no hand tools, drills or garden hoses. Articles on those topics get the
+  // all-products page rather than a category that would quietly mislead the reader.
+  shop: '/shop',
+  order: '/how-to-place-an-order',
 };
 
 /** Per-article CTA: which page on this site actually answers the article's question. */
@@ -62,6 +67,27 @@ const CTA_LINKS = {
   'gate-valve-vs-ball-valve':        [CAT.pumps,     'ดูประตูน้ำและบอลวาล์ว'],
   'home-drainage-system':            [CAT.manhole,   'ดูอุปกรณ์ระบายน้ำ'],
   'electrical-conduit-types':        [CAT.conduit,   'ดูท่อร้อยสายไฟ'],
+  // batch 2 (2026-09)
+  'garden-hose-guide':               [CAT.pumps,     'ดูก๊อกน้ำและอุปกรณ์ประปา'],
+  'heat-reflective-paint':           [CAT.paint,     'ดูสีทาบ้านและสีทาหลังคา TOA'],
+  'pvc-tis-standard':                [CAT.pvc,       'ดูท่อ PVC มอก. ทุกขนาด'],
+  'plumbing-standards-projects':     [CAT.system,    'ดูสินค้างานระบบทั้งหมด'],
+  'material-selection-projects':     [CAT.system,    'ดูสินค้างานระบบทั้งหมด'],
+  'high-rise-plumbing':              [CAT.system,    'ดูสินค้างานระบบทั้งหมด'],
+  'bulk-material-order':             [CAT.order,     'ดูวิธีสั่งซื้อและการจัดส่ง'],
+  'construction-materials-tools':    [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'project-material-supply':         [CAT.system,    'ดูสินค้างานระบบทั้งหมด'],
+  'pe-pipe-guide':                   [CAT.pe,        'ดูท่อและอุปกรณ์ PE'],
+  'unclog-drain-pipe':               [CAT.pvc,       'ดูท่อและอุปกรณ์ PVC'],
+  'pvc-fittings-types':              [CAT.pvc,       'ดูท่อและข้อต่อ PVC'],
+  'thread-seal-tape':                [CAT.pumps,     'ดูก๊อกน้ำ วาล์ว และอุปกรณ์ประปา'],
+  'water-pump-not-working':          [CAT.pumps,     'ดูปั๊มน้ำทุกรุ่น'],
+  'inverter-water-pump':             [CAT.pumps,     'ดูปั๊มน้ำทุกรุ่น'],
+  'how-to-clean-water-tank':         [CAT.tank,      'ดูแท๊งค์น้ำทุกขนาด'],
+  'basic-home-tools':                [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'electric-drill-guide':            [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'concrete-primer-guide':           [CAT.paint,     'ดูสีรองพื้นและสีทาบ้าน'],
+  'low-water-pressure-fix':          [CAT.pumps,     'ดูปั๊มน้ำทุกรุ่น'],
 };
 
 /** Tag chips shown under the article. Grouped by topic so related posts read as a set. */
@@ -75,6 +101,9 @@ const TAGS = {
   [CAT.manhole]:   ['ระบบระบายน้ำ', 'งานระบบ'],
   [CAT.conduit]:   ['ท่อร้อยสายไฟ', 'งานไฟฟ้า'],
   [CAT.system]:    ['งานระบบ', 'งานประปา'],
+  [CAT.pe]:        ['ท่อ PE', 'งานประปา', 'งานระบบ'],
+  [CAT.shop]:      ['เครื่องมือช่าง', 'วัสดุก่อสร้าง'],
+  [CAT.order]:     ['งานโครงการ', 'วัสดุก่อสร้าง'],
 };
 
 /** Articles whose HTML was written by hand — never regenerate these, even with --force. */
@@ -207,13 +236,17 @@ function convert(md, file) {
       continue;
     }
 
-    // blockquote → the "people get this wrong" callout
+    // blockquote → a callout. The drafts use it for two different things: a safety or
+    // "people get this wrong" warning, and a tip or "อ่านต่อ" cross-link to another article.
+    // Only the first deserves the orange warning treatment.
     if (t.startsWith('>')) {
       const buf = [];
       while (i < lines.length && lines[i].trim().startsWith('>')) buf.push(lines[i].trim().replace(/^>\s?/, '')), i++;
-      const joined = buf.join(' ').trim();
-      const lead = joined.match(/^\*\*([^*]+?):?\*\*\s*(.*)$/);
-      out.push('  <div class="callout callout-warning">');
+      let joined = buf.join(' ').trim();
+      const warning = /^(⚠️|❗|🚫)|^\*?\*?(ข้อควรระวัง|คำเตือน|ระวัง|ห้าม|อย่า)/.test(joined);
+      joined = joined.replace(/^(⚠️|❗|🚫)\s*/, '');
+      const lead = joined.match(/^\*\*([^*]+?):?\*\*\s*(.*)$/) || joined.match(/^([^\s:]{2,12}):\s+(.*)$/);
+      out.push(`  <div class="callout${warning ? ' callout-warning' : ''}">`);
       if (lead) {
         out.push(`    <p class="callout-title">${inline(lead[1])}</p>`);
         if (lead[2].trim()) out.push(`    <p>${inline(lead[2].trim())}</p>`);
@@ -290,12 +323,20 @@ function convert(md, file) {
   const leadAt = out.findIndex((l) => l.includes('class="lead"'));
   out.splice(leadAt + 1, 0, tocHtml);
 
-  // Closing CTA. The drafts end with a homepage link, which wastes the article's best
-  // internal-link slot — swap it for the page that actually answers the topic.
+  // Closing CTA. The drafts end with a brand pitch that links to the homepage, which wastes
+  // the article's best internal-link slot — drop that paragraph and put a CTA box pointing at
+  // the page that actually answers the topic in its place. Exception: when the paragraph also
+  // carries other internal links (an "อ่านต่อ" cross-link to a sister article, typically),
+  // deleting it would silently drop those, so keep it and send the homepage link to the
+  // contact page instead — those drafts phrase it as "ติดต่อ / ปรึกษาได้ที่ hometools-center.com".
   const cta = CTA_LINKS[slug];
   if (!cta) throw new Error(`${file}: no CTA target for "${slug}" — add one to CTA_LINKS`);
   let html = out.join('\n').trim();
-  html = html.replace(/^\s*<p>(?:(?!<\/p>).)*https:\/\/hometools-center\.com(?:(?!<\/p>).)*<\/p>\s*$/gm, '');
+  html = html.replace(/^\s*<p>(?:(?!<\/p>).)*https:\/\/hometools-center\.com(?:(?!<\/p>).)*<\/p>\s*$/gm, (para) =>
+    /href="\/(blog|product|product-category)\//.test(para)
+      ? para.replace(/href="https:\/\/hometools-center\.com\/?"/g, 'href="/contact-us"')
+      : ''
+  );
   const ctaHtml = [
     '',
     '  <div class="cta">',
@@ -308,9 +349,14 @@ function convert(md, file) {
     '  </div>',
   ].join('\n');
 
-  // Put the CTA just before the FAQ when there is one — it reads better than after it.
+  // Put the CTA just before the FAQ when the FAQ closes the article — it reads better than
+  // after it. Some drafts follow the FAQ with a summary or a brand pitch instead; there the
+  // CTA belongs at the very end, where that pitch leads straight into the buttons.
   const faqPos = html.indexOf('<h2 id="faq">');
-  html = faqPos === -1 ? html + '\n' + ctaHtml : html.slice(0, faqPos).trimEnd() + '\n' + ctaHtml + '\n\n  ' + html.slice(faqPos);
+  const sectionAfterFaq = faqPos !== -1 && /<h2 /.test(html.slice(faqPos + 1));
+  html = faqPos === -1 || sectionAfterFaq
+    ? html + '\n' + ctaHtml
+    : html.slice(0, faqPos).trimEnd() + '\n' + ctaHtml + '\n\n  ' + html.slice(faqPos);
 
   // Any remaining absolute self-link becomes relative so the validator can resolve it.
   html = html.replace(/https:\/\/hometools-center\.com(\/[^"']*)?/g, (_, p) => p || '/');
