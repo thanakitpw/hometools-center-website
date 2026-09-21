@@ -11,10 +11,10 @@
     "งานระบบ",
     "ความรู้ช่าง"
   ],
-  "status": "draft",
+  "status": "published",
   "content_file": "pvc-tis-standard.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/pvc-tis-standard-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/pvc-tis-standard-cover.webp",
   "_notes": {
     "primary_kw": "ท่อ pvc มอก",
     "secondary_kw": [
@@ -24,6 +24,6 @@
     ],
     "source_draft": "seo/blogs/29-ท่อ-pvc-มอก.md",
     "seo_title_original": "ท่อ PVC มอก. 17 คืออะไร ต่างจากท่อไม่มี มอก. ยังไง",
-    "cover_pending": "no artwork delivered in the 2026-09-21 batch of 18"
+    "cover_source": "seo/blogs/รูปปกบทความ/29-pvc-tis-standard.png"
   }
 }

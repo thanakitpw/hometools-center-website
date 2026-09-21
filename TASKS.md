@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-09-21 (🟢 live; batch 2 — 18 of 20 new articles published, 2 await covers)
+> **Last updated:** 2026-09-21 (🟢 live; SEO batch 2 — all 20 new articles published)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -173,11 +173,9 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] **Batch 2 (drafts 27–46) published 2026-09-21** — 20 articles converted, **18 live**
       with WebP covers (36.4 MB → 1.9 MB), sitemap 448 → 466 URLs. Converter learned the
       second draft template (numbered-bold FAQ, summary *after* the FAQ, "อ่านต่อ" blockquotes)
-- [ ] **2 articles still `draft`, waiting on cover art:** `/blog/garden-hose-guide`
-      (27 สายยางรดน้ำ) and `/blog/pvc-tis-standard` (29 ท่อ PVC มอก.). Once the PNGs arrive:
-      `set-cover.js` → set `status: published` → `publish-post.js` → push `main` (draft →
-      published needs a deploy). Note `/blog/plumbing-standards-projects` already links to
-      `/blog/pvc-tis-standard`, so that one link 404s until then
+- [x] The last 2 covers (27 สายยางรดน้ำ, 29 ท่อ PVC มอก.) arrived the same evening —
+      `/blog/garden-hose-guide` and `/blog/pvc-tis-standard` published; **all 20 of batch 2
+      are live**, sitemap 466 → 468
 
 ### Ongoing SEO (post-launch, monthly)
 - [ ] Monthly GSC + GA4 health check

@@ -11,10 +11,10 @@
     "งานประปา",
     "ความรู้ช่าง"
   ],
-  "status": "draft",
+  "status": "published",
   "content_file": "garden-hose-guide.html",
-  "cover_image_url": null,
-  "og_image_url": null,
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/garden-hose-guide-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/garden-hose-guide-cover.webp",
   "_notes": {
     "primary_kw": "สายยางรดน้ำ เลือก",
     "secondary_kw": [
@@ -24,6 +24,6 @@
     ],
     "source_draft": "seo/blogs/27-สายยางรดน้ำ.md",
     "seo_title_original": "เลือกสายยางรดน้ำ ไม่หักงอ ทนแดด ใช้ทน แบบไหนดี?",
-    "cover_pending": "no artwork delivered in the 2026-09-21 batch of 18"
+    "cover_source": "seo/blogs/รูปปกบทความ/27-garden-hose-guide.png"
   }
 }

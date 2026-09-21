@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-09-21 — 🟢 site LIVE; SEO batch 2 published (44 articles live, 2 drafts awaiting covers)
+**Last updated:** 2026-09-21 — 🟢 site LIVE; SEO batch 2 fully published (46 SEO articles live)
 
 ---
 
@@ -768,3 +768,8 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   the two covers arrive: `set-cover.js <slug> <png>` → `status: published` → `publish-post.js`
   → push `main`. Until then `/blog/plumbing-standards-projects` carries one link to the draft
   `/blog/pvc-tis-standard` that 404s (validator warned; accepted rather than cascading the hold)
+- **Same evening: the two missing covers arrived** (again `ChatGPT Image … (N).png`, 1731×909;
+  headlines read off a contact sheet → 27 / 29). `set-cover.js` → `status: published` →
+  `publish-post.js` → push `main`. **Batch 2 is now fully live: 46 SEO articles + 30 migrated
+  = 76 published, 1 draft (`blog-post-1190`, draft in WP too).** The dangling
+  `plumbing-standards-projects → pvc-tis-standard` link resolves
