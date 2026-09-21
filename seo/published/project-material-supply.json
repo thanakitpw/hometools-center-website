@@ -1,0 +1,27 @@
+{
+  "slug": "project-material-supply",
+  "title": "จัดหาวัสดุ โครงการก่อสร้าง งานระบบครบจบที่เดียว คู่มือสำหรับโครงการและผู้รับเหมา",
+  "seo_title": "จัดหาวัสดุ โครงการก่อสร้าง งานระบบครบจบที่เดียว",
+  "seo_description": "จัดหาวัสดุงานระบบสำหรับโครงการก่อสร้าง ครบจบที่เดียว รวมท่อ ปั๊ม วาล์ว สี ระบบระบายน้ำ พร้อมเกณฑ์เลือกซัพพลายเออร์และขั้นตอนจัดหาตั้งแต่ BOQ ถึงตรวจรับ",
+  "excerpt": "การจัดหาวัสดุ โครงการก่อสร้าง คือการจัดซื้อและส่งมอบวัสดุงานระบบให้ตรงสเปก ครบจำนวน และตรงเวลาหน้างาน ครอบคลุมท่อประปา-สุขาภิบาล ปั๊ม วาล์ว สี และระบบระบายน้ำ…",
+  "author": "Home Tool Center",
+  "tags": [
+    "งานระบบ",
+    "งานประปา",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "project-material-supply.html",
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/project-material-supply-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/project-material-supply-cover.webp",
+  "_notes": {
+    "primary_kw": "วัสดุ โครงการก่อสร้าง",
+    "secondary_kw": [
+      "จัดหาวัสดุงานระบบ",
+      "ซัพพลายเออร์วัสดุก่อสร้าง",
+      "ร้านวัสดุส่งงานโครงการ"
+    ],
+    "source_draft": "seo/blogs/35-จัดหาวัสดุโครงการ.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/35-project-material-supply.png"
+  }
+}

@@ -35,10 +35,24 @@ node scripts/seo/publish-post.js seo/published/*.json
 Before running it, add a CTA target for every new slug to `CTA_LINKS` in the converter —
 which category page answers this article's question is the one thing the draft cannot tell
 you, and the script refuses to guess. Articles whose HTML was hand-tuned go in `HAND_TUNED`
-so `--force` cannot overwrite them.
+so `--force` cannot overwrite them. Check the shop actually carries what the article is
+about before picking a category — it sells no drills, hand tools or garden hoses, and for
+those `CAT.shop` (`/shop`) is the honest target.
+
+The drafts arrive in two house templates and the converter handles both: FAQ as `**Q:**`/`A:`
+or as `**1. คำถาม**` + answer line; a `## สรุป` or brand-pitch section either before or *after*
+the FAQ (the CTA box moves to the end when something follows the FAQ); blockquotes that are
+warnings (⚠️/ระวัง/ห้าม → orange) or "อ่านต่อ" cross-links and tips (→ plain blue callout).
+The closing paragraph that links to the homepage is dropped in favour of the CTA box — unless
+it also carries other internal links, in which case it is kept and the homepage link is sent
+to `/contact-us`, so a sister-article cross-link never disappears with it.
+
+⚠️ `--force` regenerates the **JSON as well as the HTML**. Make every HTML regen first and
+edit `seo_title` / `seo_description` last, or the edits are lost.
 
 Read the sections below anyway: they describe what the converter produces and what to check
-by hand afterwards. Skim the generated HTML of at least a couple of articles.
+by hand afterwards. Skim the generated HTML of at least a couple of articles — in particular
+the tail of any article whose draft has a section after the FAQ.
 
 ## Phase 1 — read the draft and the destination
 
@@ -165,7 +179,14 @@ Google truncates SERP titles by **pixel width (~600px)**, not character count, a
 renders far narrower than Latin — the usual 60-character rule over-flags Thai titles badly.
 Measure instead: render `seo_title + ' | Home Tool Center'` in a headless browser at
 `20px Arial, 'Sukhumvit Set', sans-serif` and check the width. Trim only what overflows,
-and trim the trailing clause, never the primary keyword at the front.
+and trim the trailing clause, never the primary keyword at the front. Keep the original in
+`_notes.seo_title_original`.
+
+The estimator in `publish-post.js` is only a first pass — it under-read several titles in
+the 2026-09 batch by ~20px (flagged 601, Chrome measured 623), so a title it passes at
+590–600 is worth measuring. Playwright is in `node_modules` with no bundled browsers;
+`chromium.launch({ channel: 'chrome' })` uses the system Chrome, and a script kept outside
+the repo needs `NODE_PATH=$PWD/node_modules` to resolve it.
 
 Watch for drafts whose Title tag line already ends in `| Home Tool` (a truncated brand) as
 well as `| Home Tool Center` — both have to be stripped, or the layout's title template

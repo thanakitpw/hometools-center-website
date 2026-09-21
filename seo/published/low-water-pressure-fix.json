@@ -1,0 +1,29 @@
+{
+  "slug": "low-water-pressure-fix",
+  "title": "น้ำไหลเบา แรงดันน้ำต่ำ เกิดจากอะไร แก้ยังไงให้น้ำไหลแรง",
+  "seo_title": "น้ำไหลเบา แรงดันน้ำต่ำ เกิดจากอะไร แก้ยังไง",
+  "seo_description": "น้ำไหลเบา แรงดันน้ำต่ำ น้ำประปาไหลอ่อน เกิดจากอะไร แก้ยังไงได้บ้าง? รวมสาเหตุ วิธีตรวจหาทีละจุด และวิธีแก้ ตั้งแต่ล้างฝักบัวจนถึงติดปั๊มเพิ่มแรงดัน อ่านจบแก้ได้เอง",
+  "excerpt": "น้ำไหลเบาส่วนใหญ่เกิดจากแรงดันประปาต่ำช่วงคนใช้น้ำเยอะ ท่ออุดตันจากตะกรัน ฝักบัวหรือหัวก๊อกตัน วาล์วเปิดไม่สุด ท่อรั่ว หรือบ้านไม่มีปั๊ม/ปั๊มอ่อนเกินไป โดยเฉพาะชั้น…",
+  "author": "Home Tool Center",
+  "tags": [
+    "ปั๊มน้ำ",
+    "วาล์วและก๊อกน้ำ",
+    "งานประปา",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "low-water-pressure-fix.html",
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/low-water-pressure-fix-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/low-water-pressure-fix-cover.webp",
+  "_notes": {
+    "primary_kw": "น้ำไหลเบา",
+    "secondary_kw": [
+      "แรงดันน้ำต่ำ",
+      "น้ำประปาไหลอ่อน",
+      "ปั๊มเพิ่มแรงดันน้ำ",
+      "น้ำไหลเบาชั้น 2"
+    ],
+    "source_draft": "seo/blogs/46-น้ำไหลเบา-แรงดันต่ำ.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/46-low-water-pressure-fix.png"
+  }
+}

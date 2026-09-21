@@ -1,0 +1,27 @@
+{
+  "slug": "basic-home-tools",
+  "title": "เครื่องมือช่างพื้นฐาน ที่ทุกบ้านควรมีติดไว้",
+  "seo_title": "เครื่องมือช่างพื้นฐาน ที่ทุกบ้านควรมีติดไว้",
+  "seo_description": "เครื่องมือช่างพื้นฐานที่ทุกบ้านควรมีมีอะไรบ้าง? รวมค้อน ไขควง ประแจ คีม ตลับเมตร คัตเตอร์ สว่าน แบ่งหมวดชัด พร้อมเคล็ดลับเลือกซื้อชุดให้คุ้มและวิธีเก็บรักษา",
+  "excerpt": "เครื่องมือช่างพื้นฐานที่ทุกบ้านควรมี แบ่งได้ 6 หมวด คือ ตอก/ทุบ (ค้อน), ขัน (ไขควง ประแจ คีม), วัด (ตลับเมตร ระดับน้ำ), ตัด (คัตเตอร์ เลื่อย), เจาะ (สว่าน)…",
+  "author": "Home Tool Center",
+  "tags": [
+    "เครื่องมือช่าง",
+    "วัสดุก่อสร้าง",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "basic-home-tools.html",
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/basic-home-tools-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/basic-home-tools-cover.webp",
+  "_notes": {
+    "primary_kw": "เครื่องมือช่างพื้นฐาน",
+    "secondary_kw": [
+      "เครื่องมือช่างที่บ้านควรมี",
+      "ชุดเครื่องมือช่าง",
+      "อุปกรณ์ซ่อมบ้าน"
+    ],
+    "source_draft": "seo/blogs/43-เครื่องมือช่างพื้นฐาน.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/43-basic-home-tools.png"
+  }
+}

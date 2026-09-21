@@ -1,0 +1,29 @@
+{
+  "slug": "water-pump-not-working",
+  "title": "ปั๊มน้ำไม่ทำงาน น้ำไม่ไหล เกิดจากอะไร แก้ยังไง",
+  "seo_title": "ปั๊มน้ำไม่ทำงาน น้ำไม่ไหล เกิดจากอะไร แก้ยังไง",
+  "seo_description": "ปั๊มน้ำไม่ทำงาน น้ำไม่ไหล ปั๊มไม่ตัด หรือปั๊มไม่ดูดน้ำ เกิดจากอะไร? รวมอาการ สาเหตุ และวิธีตรวจเช็คทีละจุดที่ทำเองได้ พร้อมบอกว่าเมื่อไหร่ควรเรียกช่าง",
+  "excerpt": "ปั๊มน้ำไม่ทำงานส่วนใหญ่เกิดจาก 3 กลุ่มสาเหตุ คือ ไฟไม่เข้า (เบรกเกอร์ตัด/ปลั๊กหลวม/คาปาซิเตอร์เสีย), เพรสเชอร์สวิตช์เสียจนปั๊มไม่ตัด-ไม่ต่อ…",
+  "author": "Home Tool Center",
+  "tags": [
+    "ปั๊มน้ำ",
+    "วาล์วและก๊อกน้ำ",
+    "งานประปา",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "water-pump-not-working.html",
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/water-pump-not-working-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/water-pump-not-working-cover.webp",
+  "_notes": {
+    "primary_kw": "ปั๊มน้ำไม่ทำงาน",
+    "secondary_kw": [
+      "ปั๊มน้ำไม่ตัด",
+      "ปั๊มน้ำน้ำไม่ไหล",
+      "ปั๊มน้ำไม่ดูดน้ำ"
+    ],
+    "source_draft": "seo/blogs/40-ปั๊มน้ำไม่ทำงาน.md",
+    "seo_title_original": "ปั๊มน้ำไม่ทำงาน น้ำไม่ไหล เกิดจากอะไร แก้ยังไง เช็คเอง",
+    "cover_source": "seo/blogs/รูปปกบทความ/40-water-pump-not-working.png"
+  }
+}

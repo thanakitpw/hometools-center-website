@@ -1,0 +1,28 @@
+{
+  "slug": "material-selection-projects",
+  "title": "เลือกวัสดุงานระบบ โครงการ ให้ผ่านสเปกต้องดูอะไรบ้าง",
+  "seo_title": "เลือกวัสดุงานระบบ โครงการ ผ่านสเปกต้องดูอะไร",
+  "seo_description": "เลือกวัสดุงานระบบ โครงการ ยังไงให้ผ่านสเปกและไม่ถูกตีกลับ? อ่าน spec ให้ขาด เทียบของ \"เทียบเท่า\" คุม lead time เตรียม submittal ครบในบทความเดียว",
+  "excerpt": "การเลือกวัสดุงานระบบให้ผ่านสเปกโครงการ ต้องเริ่มจากอ่าน spec ให้ขาดว่ากำหนดแบรนด์ตายตัวหรือเปิดช่อง \"หรือเทียบเท่า\" จากนั้นเลือกของที่มี มอก. ตรงข้อกำหนด…",
+  "author": "Home Tool Center",
+  "tags": [
+    "งานระบบ",
+    "งานประปา",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "material-selection-projects.html",
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/material-selection-projects-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/material-selection-projects-cover.webp",
+  "_notes": {
+    "primary_kw": "เลือกวัสดุงานระบบ โครงการ",
+    "secondary_kw": [
+      "วัสดุผ่านสเปก",
+      "จัดซื้อวัสดุงานระบบ",
+      "spec วัสดุก่อสร้าง"
+    ],
+    "source_draft": "seo/blogs/31-เลือกวัสดุผ่านสเปกโครงการ.md",
+    "seo_title_original": "เลือกวัสดุงานระบบ โครงการ ให้ผ่านสเปกต้องดูอะไร",
+    "cover_source": "seo/blogs/รูปปกบทความ/31-material-selection-projects.png"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "slug": "bulk-material-order",
+  "title": "สั่งวัสดุ จำนวนมาก เตรียมอะไรบ้างให้คุ้มและไม่พลาด",
+  "seo_title": "สั่งวัสดุ จำนวนมาก เตรียม 6 อย่างให้คุ้ม",
+  "seo_description": "สั่งวัสดุ จำนวนมากให้ได้ราคาส่งและไม่พลาด ต้องเตรียม 6 อย่าง ตั้งแต่ BOQ สเปก มอก. ตารางเวลา ถึงพื้นที่กองเก็บ พร้อมเช็คลิสต์ก่อนสั่งและวิธีเลือกร้านคู่ค้า",
+  "excerpt": "การสั่งวัสดุ จำนวนมากให้คุ้มและไม่พลาด ต้องเตรียม 6 อย่างก่อนสั่ง คือ (1) BOQ หรือรายการวัสดุพร้อมจำนวน (2) สเปกและมาตรฐาน มอก. (3) ตารางเวลาใช้งานหน้างาน (4)…",
+  "author": "Home Tool Center",
+  "tags": [
+    "งานโครงการ",
+    "วัสดุก่อสร้าง",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "bulk-material-order.html",
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/bulk-material-order-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/bulk-material-order-cover.webp",
+  "_notes": {
+    "primary_kw": "สั่งวัสดุ จำนวนมาก",
+    "secondary_kw": [
+      "สั่งวัสดุก่อสร้างราคาส่ง",
+      "จัดซื้อวัสดุโครงการ",
+      "ร้านวัสดุส่งงานโครงการ"
+    ],
+    "source_draft": "seo/blogs/33-สั่งวัสดุจำนวนมาก.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/33-bulk-material-order.png"
+  }
+}

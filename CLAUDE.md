@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-08-20 — 🟢 site LIVE; 26-article SEO batch published with WebP covers
+**Last updated:** 2026-09-21 — 🟢 site LIVE; SEO batch 2 published (44 articles live, 2 drafts awaiting covers)
 
 ---
 
@@ -713,3 +713,58 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   Also **0** links from any `/product/*`, `/product-category/*` or `/shop` page into `/blog/*` —
   the articles link out to category pages but nothing links back in, so the only crawl paths
   to them are `/blog` and the sitemap
+
+### 2026-09-21 (session 10 — SEO batch 2: drafts 27–46, 18 of 20 published)
+- Content team delivered 46 drafts in `~/Downloads/hometools-seo-blog/` — 01–26 were
+  byte-identical to the batch already live, so the work was the **20 new ones (27–46)** — plus
+  18 covers in `~/Downloads/hometools-blog-img/`, all 1731×909 (ratio 1.904 ≈ 1200/630) and
+  generically named `ChatGPT Image … (N).png`. Contact sheet → read the burned-in headlines →
+  18 mapped 1:1; **no artwork arrived for 27 สายยางรดน้ำ (`garden-hose-guide`) or 29 ท่อ PVC
+  มอก. (`pvc-tis-standard`)**, so those two are in the DB as `draft` and off the live site
+- **The 20 drafts came in two house templates**, and the converter only knew the first:
+  - FAQ as `**1. คำถาม**` + answer line (29/30/32/36/37/38/40) alongside the `**Q:**`/`A:`
+    form — the existing regex already took both, nothing to change
+  - `## สรุป` / a brand-pitch `## … ที่ Home Tool Center` section *after* the FAQ
+    (29/30/32/36/38). The converter used to drop the CTA box before `<h2 id="faq">`
+    regardless, which left it stranded mid-article. Now: **CTA goes to the very end whenever a
+    section follows the FAQ**, so the pitch leads straight into the buttons
+  - Blockquotes used for "อ่านต่อ" cross-links (34/35) and an "เคล็ดลับ:" tip (31), not just
+    warnings. They were all being wrapped in the orange `callout-warning`. Now only quotes
+    opening with ⚠️/ข้อควรระวัง/ระวัง/ห้าม/อย่า get the warning style; the rest are plain blue
+    `.callout`, and a `คำ:` prefix becomes the `callout-title`
+- ⚠️ **Dropping the homepage-link paragraph was silently deleting cross-links.** 30 and 32
+  end with "…ได้ที่ [จัดหาวัสดุงานระบบสำหรับโครงการ](/blog/project-material-supply) หรือติดต่อเราที่
+  [hometools-center.com](https://hometools-center.com/)" — one paragraph, so the rule "delete the
+  paragraph that links home" took the hub link with it. Converter now keeps such a paragraph
+  and retargets the homepage link to `/contact-us` (every such sentence is contact/consult
+  intent); paragraphs whose *only* link is the homepage are still dropped, as before
+- `CAT` gained `pe`, `shop`, `order`. **The shop sells no drills, hand tools or garden hoses**,
+  so `basic-home-tools`, `electric-drill-guide`, `construction-materials-tools` CTA to `/shop`
+  and `garden-hose-guide` to the taps/valves category — an honest target beats a category page
+  that promises stock we don't carry. `bulk-material-order` CTAs to `/how-to-place-an-order`
+- **7 of 20 `seo_title`s overflowed 600px when measured in Chrome** (601–658px), and the
+  estimator in `publish-post.js` under-read a few by ~20px (flagged 601, actual 623). Measured
+  `seo_title + ' | Home Tool Center'` at 20px Arial via Playwright (`channel: 'chrome'`, run with
+  `NODE_PATH=$PWD/node_modules` since the script sat in the scratchpad) and trimmed trailing
+  clauses only — originals kept in `_notes.seo_title_original`. Two descriptions at 167 chars
+  trimmed to ≤158
+- ⚠️ **`md-to-article.js --force` overwrites the JSON too**, so title/description edits made
+  before a regen are lost. Order of operations that works: finish all HTML regens first, edit
+  the JSON last. (The backup attempt also fell to the zsh quirk from session 6 — an unquoted
+  `$SLUGS` is one word, so `for s in $SLUGS` ran once with a 400-char "filename". Use an array)
+- Quality gate on the WebP covers done at **1:1 crops of the headline**, not on the contact
+  sheet — no ringing on the white-stroked display type at q80; 36.4 MB → 1.9 MB (−95%)
+- Verified locally on all 20: 200, exactly one `<h1>`, FAQPage + Article + BreadcrumbList,
+  WebP in `og:image` on the 18 with covers, cover uncropped at 1280 and 390px, "อ่านต่อ"
+  callouts blue, warning callout orange. The grey boxes under "บทความที่เกี่ยวข้อง" in a
+  full-page Playwright screenshot are `loading="lazy"` images that never entered the viewport —
+  the HTML carries all three `<img src=…webp>`; don't chase that
+- ⚠️ Killing `next dev` mid-write left a torn `.next/dev/types/validator.ts` that failed `tsc`
+  with syntax errors at line 40. `rm -rf .next/dev` fixes it; it is not a project error
+- Deploy checks per `references/deploy.md` all clear (no branch ahead of `main`, GTM live and in
+  tree). Pushed to `main` because 18 posts crossed draft → published and needed the
+  `generateStaticParams` rebuild
+- **Result: 44 SEO articles + 30 migrated posts live (74 published), 3 drafts.** Follow-up when
+  the two covers arrive: `set-cover.js <slug> <png>` → `status: published` → `publish-post.js`
+  → push `main`. Until then `/blog/plumbing-standards-projects` carries one link to the draft
+  `/blog/pvc-tis-standard` that 404s (validator warned; accepted rather than cascading the hold)

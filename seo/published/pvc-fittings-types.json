@@ -1,0 +1,29 @@
+{
+  "slug": "pvc-fittings-types",
+  "title": "ข้อต่อท่อ PVC มีกี่แบบ เลือกใช้ยังไงให้ถูกงาน",
+  "seo_title": "ข้อต่อท่อ PVC มีกี่แบบ? เลือกใช้ให้ถูกงาน",
+  "seo_description": "ข้อต่อท่อ PVC มีกี่แบบ? รวมข้อต่อตรง ข้องอ สามทาง ข้อลด ยูเนียน แบบสวมกาว vs แบบเกลียว แต่ละแบบใช้ทำอะไร พร้อมตารางสรุปและวิธีเลือกให้ตรงงาน ไม่ต้องเดา",
+  "excerpt": "ข้อต่อท่อ PVC หลักๆ มีประมาณ 8-9 แบบ คือ ข้อต่อตรง (สำหรับต่อยาว), ข้องอ 45° และ 90° (เปลี่ยนทิศทาง), สามทาง (tee), สี่ทาง, ข้อลด (reducer), ยูเนียน (union)…",
+  "author": "Home Tool Center",
+  "tags": [
+    "ท่อ PVC",
+    "งานประปา",
+    "งานระบบ",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "pvc-fittings-types.html",
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/pvc-fittings-types-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/pvc-fittings-types-cover.webp",
+  "_notes": {
+    "primary_kw": "ข้อต่อท่อ pvc",
+    "secondary_kw": [
+      "ข้อต่อ pvc มีอะไรบ้าง",
+      "ข้องอ pvc",
+      "สามทาง pvc",
+      "ยูเนียน pvc"
+    ],
+    "source_draft": "seo/blogs/38-ข้อต่อท่อ-pvc.md",
+    "cover_source": "seo/blogs/รูปปกบทความ/38-pvc-fittings-types.png"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "slug": "high-rise-plumbing",
+  "title": "เดินท่อประปาอาคารสูง ต้องคำนึงถึงอะไรบ้าง คู่มือสำหรับผู้รับเหมาและงานโครงการ",
+  "seo_title": "เดินท่อประปาอาคารสูง ต้องคำนึงถึงอะไรบ้าง",
+  "seo_description": "คู่มือเดินท่อประปาอาคารสูงสำหรับผู้รับเหมา ตั้งแต่คุมแรงดันน้ำ แบ่งโซนแรงดัน ระบบ upfeed/downfeed ปั๊มเพิ่มแรงดัน วาล์ว PRV เลือก class ท่อ และทดสอบแรงดัน",
+  "excerpt": "การเดินท่อประปาอาคารสูงต่างจากบ้านทั่วไปตรงที่ต้องจัดการ \"แรงดันน้ำ\" เป็นหลัก เพราะแรงดันสถิตเพิ่มขึ้นราว 1 บาร์ทุกความสูง 10 เมตร ถ้าไม่แบ่งโซนแรงดัน (zoning)…",
+  "author": "Home Tool Center",
+  "tags": [
+    "งานระบบ",
+    "งานประปา",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "high-rise-plumbing.html",
+  "cover_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/high-rise-plumbing-cover.webp",
+  "og_image_url": "https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/blog/high-rise-plumbing-cover.webp",
+  "_notes": {
+    "primary_kw": "ท่อประปา อาคารสูง",
+    "secondary_kw": [
+      "ระบบประปาอาคารสูง",
+      "แรงดันน้ำอาคารสูง",
+      "zoning ระบบน้ำ"
+    ],
+    "source_draft": "seo/blogs/32-ท่อประปาอาคารสูง.md",
+    "seo_title_original": "เดินท่อประปาอาคารสูง ต้องคำนึงถึงอะไรบ้าง คู่มือผู้รับเหมา",
+    "cover_source": "seo/blogs/รูปปกบทความ/32-high-rise-plumbing.png"
+  }
+}
