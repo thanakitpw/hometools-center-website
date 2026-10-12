@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-09-21 — 🟢 site LIVE; SEO batch 2 fully published (46 SEO articles live)
+**Last updated:** 2026-10-12 — 🟢 site LIVE again after moving to a new Supabase project (old one quota-restricted)
 
 ---
 
@@ -61,11 +61,14 @@ direct e-commerce checkout).
 
 ## Supabase project
 
-- Ref: `jwyvdngiccmjhcwlmyql`
-- URL: `https://jwyvdngiccmjhcwlmyql.supabase.co`
-- MCP server is configured at `.mcp.json` — call `mcp__supabase__*` tools directly
+- Ref: `dwogyznhmveltanehaya` (Tokyo, `ap-northeast-1`) — **since 2026-10-12**, on a different
+  Supabase account than the original. The old project `jwyvdngiccmjhcwlmyql` (Sydney) is
+  quota-restricted and kept only for reference (`OLD_*` vars in `.env.local`)
+- URL: `https://dwogyznhmveltanehaya.supabase.co`
+- The MCP OAuth flow failed (`Unrecognized client_id`); use the Management API with
+  `SUPABASE_ACCESS_TOKEN` (`POST /v1/projects/{ref}/database/query`) instead
 - Service-role key + anon key live in `.env.local` (gitignored)
-- Storage public URL prefix: `https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/`
+- Storage public URL prefix: `https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/`
 
 ---
 
@@ -773,3 +776,32 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   `publish-post.js` → push `main`. **Batch 2 is now fully live: 46 SEO articles + 30 migrated
   = 76 published, 1 draft (`blog-post-1190`, draft in WP too).** The dangling
   `plumbing-standards-projects → pvc-tis-standard` link resolves
+
+### 2026-10-12 (session 11 — Supabase quota outage, moved to a new project)
+- 🔴 **Outage:** the free-tier project hit `exceed_cached_egress_quota` (7.4 / 5 GB) and Supabase
+  restricted it: REST + Storage returned `402`, so every product/category page `500`'d (incl. the
+  Google Ads landing URL) and every image broke. Pages already in the ISR cache stayed up, image-less
+- **Cause:** egress jumped ~6× on **2026-10-08** (≈200 MB → 1.2–1.4 GB/day) with no code change.
+  `PdfFlipbook` fetched the *entire* catalog PDF on every product view (44 products, avg 4.3 MB,
+  max 18 MB; every product in the Ads landing category `pvc-pipes-and-fittings-scg` has one), so
+  more ad clicks multiplied straight into Storage egress. Fix: the flipbook now waits for a click
+- **Move (user declined to pay for Pro for now):** new project `dwogyznhmveltanehaya`.
+  The DB was still readable through the Management API even while restricted, so all 13 tables
+  + `auth.users`/`auth.identities` (password hash kept — admin login unchanged) came over 1:1;
+  exports in `backup-oldwebsite/supabase-2026-10-12/` (gitignored, contains customer PII).
+  Storage was **not** downloadable (`402` even with the service key) — the 828 referenced keys were
+  rebuilt from `wpuploads.zip` + `seo/published/*.webp`, verified by exact byte size against
+  `storage.objects` (20 `home/u-*` keys had to be matched by size; the `recrawl/` folder, 179 MB, is
+  unreferenced and was not moved). Host rewritten in DB rows, code, and `seo/published/*.json`
+- Vercel: the domain is served by `thanakit-dev/hometools-website-redesign` (`prj_De33…`, created
+  2026-10-09, **not git-connected** — deploy with `vercel --prod`). `NEXT_PUBLIC_*` vars must be added
+  with `--visibility config --no-sensitive` or the CLI rejects them (after the `rm` has already run)
+- Sitewide phone → **081-234-2974** (`lib/site-config.ts` + `site_settings.contact`). ⚠️ Any GTM
+  click trigger matching `tel:024262745` (session 7) no longer fires — update it in the container
+- Verified on the real domain: sitemap 468/468 `200`, redirects 107/109 (the 2 known WP junk),
+  Ads URL `200`, 64/64 images `200` from the new host, GTM present
+- Traffic attribution is blocked on tooling: Supabase logs API returns `Backend error` on the
+  restricted project, and Vercel per-request metrics need Observability Plus (Pro). Use GA4 +
+  Google Ads daily clicks to confirm the Oct 8 jump
+- ⚠️ The new project is free tier too. Watch its egress for a few days
+
