@@ -12,7 +12,7 @@ export function SiteFooter() {
         <div className="md:col-span-5">
           <Link href="/" className="inline-block">
             <Image
-              src="https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/2024/05/revise_logo_2022_27D_10.png"
+              src="https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/2024/05/revise_logo_2022_27D_10.png"
               alt="Home Tool Center"
               width={180}
               height={84}

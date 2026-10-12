@@ -20,7 +20,7 @@ const { createClient } = require('@supabase/supabase-js');
 const ROOT = path.resolve(__dirname, '..', '..');
 const FONTS = path.join(ROOT, 'app', 'fonts');
 const LOGO =
-  'https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/2024/05/revise_logo_2022_27D_10.png';
+  'https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/2024/05/revise_logo_2022_27D_10.png';
 
 /** Per-article art direction. Keyed by slug so re-running reproduces the same cover. */
 const COVERS = {
@@ -33,7 +33,7 @@ const COVERS = {
       { label: 'ถังเล็ก 2.5 แกลลอน', value: '75–80 ตร.ม.' },
     ],
     product:
-      'https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/2024/12/20231026-toa-supershield-titanium.png',
+      'https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/2024/12/20231026-toa-supershield-titanium.png',
   },
 };
 

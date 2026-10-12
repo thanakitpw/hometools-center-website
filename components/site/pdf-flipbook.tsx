@@ -11,10 +11,14 @@ type Props = { url: string; title?: string };
 export function PdfFlipbook({ url, title }: Props) {
   const [pages, setPages] = useState<string[]>([]);
   const [ratio, setRatio] = useState(1.414); // h/w (A4 default)
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  // Nothing is fetched until the visitor asks: catalogs run up to ~18 MB, and
+  // auto-loading them on every product view (bots included) exhausted the
+  // Supabase Storage egress quota and took the site down on 2026-10-12.
+  const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
   const bookRef = useRef<any>(null);
 
   useEffect(() => {
+    if (status !== 'loading') return;
     let cancelled = false;
     (async () => {
       try {
@@ -44,7 +48,22 @@ export function PdfFlipbook({ url, title }: Props) {
       }
     })();
     return () => { cancelled = true; };
-  }, [url]);
+  }, [url, status]);
+
+  if (status === 'idle') {
+    return (
+      <div className="flex h-[320px] w-full flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-muted)] text-sm text-[var(--color-muted-fg)]">
+        <span>{title || 'แคตตาล็อก'}</span>
+        <button
+          type="button"
+          onClick={() => setStatus('loading')}
+          className="rounded-full bg-[var(--color-brand-500)] px-5 py-2 font-medium text-white transition-colors hover:bg-[var(--color-brand-600)]"
+        >
+          เปิดดูแคตตาล็อก
+        </button>
+      </div>
+    );
+  }
 
   if (status === 'loading') {
     return (

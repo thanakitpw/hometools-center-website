@@ -5,8 +5,7 @@ export const siteConfig = {
   url: 'https://hometools-center.com',
   logoUrl: '/logo-htc.png', // will be migrated from WP
   contact: {
-    phone: '02-426-2745',
-    mobile: '081-234-2974',
+    phone: '081-234-2974',
     email: 'hometoolcenter.pipe@gmail.com',
     address: 'เลขที่ 642 ถ. พระราม ๒ แขวงบางมด เขตจอมทอง กรุงเทพมหานคร 10150',
     hours: 'จ-ส 08:00 - 17:00 / อา หยุด',

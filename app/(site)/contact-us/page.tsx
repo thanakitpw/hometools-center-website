@@ -8,7 +8,7 @@ import { localBusinessSchema } from '@/lib/seo/schema';
 
 export const metadata: Metadata = {
   title: 'ติดต่อเรา',
-  description: 'ติดต่อ Home Tool Center ศูนย์รวมวัสดุก่อสร้างครบวงจร — โทร 02-426-2745',
+  description: 'ติดต่อ Home Tool Center ศูนย์รวมวัสดุก่อสร้างครบวงจร — โทร 081-234-2974',
   alternates: { canonical: '/contact-us' },
 };
 
@@ -34,7 +34,6 @@ export default function ContactPage() {
                 <a href={`tel:${siteConfig.contact.phone}`} className="text-base font-medium text-[var(--color-fg)]">
                   {siteConfig.contact.phone}
                 </a>
-                <p className="mt-1 text-xs text-[var(--color-muted-fg)]">มือถือ: {siteConfig.contact.mobile}</p>
               </div>
             </li>
             <li className="flex items-start gap-3">

@@ -5,7 +5,7 @@ const config: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'hometools-center.com' },
-      { protocol: 'https', hostname: 'jwyvdngiccmjhcwlmyql.supabase.co' },
+      { protocol: 'https', hostname: 'dwogyznhmveltanehaya.supabase.co' },
     ],
   },
   typedRoutes: false,  // re-enable when all routes exist

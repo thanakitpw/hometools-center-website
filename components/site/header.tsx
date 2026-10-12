@@ -9,7 +9,7 @@ import { siteConfig } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
 import { TopBar } from './top-bar';
 
-const LOGO = 'https://jwyvdngiccmjhcwlmyql.supabase.co/storage/v1/object/public/media/2024/05/revise_logo_2022_27D_10.png';
+const LOGO = 'https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/2024/05/revise_logo_2022_27D_10.png';
 
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
