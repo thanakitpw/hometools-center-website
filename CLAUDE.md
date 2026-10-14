@@ -821,3 +821,8 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
 - ⚠️ Plain `curl` against the live domain now gets a **Vercel Security Checkpoint** page (403), so
   live smoke tests via curl read as failures; check the firewall/bot settings before trusting them
 - Remaining non-blocking: draft product `pat-pipe-price-list-2` references 2 `wp-content` files
+- `/how-to-place-an-order` no longer goes through `PageRenderer`: hand-laid page (4 numbered channel
+  cards → payment + shipping cards → inline `ContactForm` as the order form). Contact details come from
+  `siteConfig` because the WP copy still carried the old `02-426-2745`. Footer "การขนส่ง" →
+  `#shipping`, which also fixes the duplicate React key in `footerNav.about` (session 8)
+- Both commits deployed to production with `vercel --prod` (`d93675e`, `30c914f`)
