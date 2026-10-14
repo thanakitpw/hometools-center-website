@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-10-12 — 🟢 site LIVE again after moving to a new Supabase project (old one quota-restricted)
+**Last updated:** 2026-10-14 — static-page images moved off the dead WP host
 
 ---
 
@@ -805,3 +805,19 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   Google Ads daily clicks to confirm the Oct 8 jump
 - ⚠️ The new project is free tier too. Watch its egress for a few days
 
+
+### 2026-10-14 (session 12 — static-page images were hotlinking the dead WP host)
+- Media audit across code + `research/data/static-pages.json` + every DB media column (893 URLs):
+  all 828 Storage URLs `200`. The only live breakage was **21 images on 5 static pages**
+  (`about-us`, `contact-us`, `promotion`, `how-to-place-an-order`, `privacy-policy`) still pointing at
+  `hometools-center.com/wp-content/uploads/…` — broken since cutover, because that host is now us.
+  Phase 4/4.5 only migrated DB media; `static-pages.json` was never rewritten
+- All 21 were in `wpuploads.zip`. ⚠️ Its Thai entry names are mangled by `unzip -l`/`unzip -Z1` —
+  extract with Python `zipfile` (decode cp437 → utf-8 when the UTF-8 flag is unset, then NFC).
+  ⚠️ `grep` in this Claude shell is a wrapper function; use `command grep` when its output matters
+- Keys via `scripts/db/lib/media-key.js` (4 already existed, byte sizes matched); 17 uploaded.
+  Also dropped a stale WP reCAPTCHA `iframe` block from `how-to-place-an-order`
+- ⚠️ `lib/static-pages.ts` caches the JSON in a module variable — restart `next dev` after editing it
+- ⚠️ Plain `curl` against the live domain now gets a **Vercel Security Checkpoint** page (403), so
+  live smoke tests via curl read as failures; check the firewall/bot settings before trusting them
+- Remaining non-blocking: draft product `pat-pipe-price-list-2` references 2 `wp-content` files
