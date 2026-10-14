@@ -36,7 +36,7 @@ export const siteConfig = {
     ]},
     about: { title: 'เกี่ยวกับ', items: [
       { label: 'วิธีสั่งซื้อ', href: '/how-to-place-an-order' },
-      { label: 'การขนส่ง', href: '/how-to-place-an-order' },
+      { label: 'การขนส่ง', href: '/how-to-place-an-order#shipping' },
       { label: 'เกี่ยวกับเรา', href: '/about-us' },
       { label: 'นโยบายความเป็นส่วนตัว', href: '/privacy-policy' },
     ]},
