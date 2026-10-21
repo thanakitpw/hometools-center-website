@@ -844,5 +844,9 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
 - **No deploy was needed:** the slugs had never been requested, so on-demand ISR rendered all
   12 → `200` on first hit. The session-9 "cached 404" trap only applies to slugs fetched
   while still draft. `/blog` listed them at once; `sitemap.xml` follows within the hour
-- ⚠️ `vercel --prod` failed `Not authorized`: the CLI is logged into `agencybestsolutions-9690`,
-  not the `thanakit-dev` team that owns `prj_De33…`. Re-login before the next code deploy
+- ⚠️ `vercel --prod` failed `Not authorized`: the CLI was logged into `agencybestsolutions-9690`.
+  User re-logged in as **`thanakitdev-2238`** (team `thanakit-dev`, owns `prj_De33…`) — works now
+- 🚨 **Correction to session 11: `prj_De33…` IS now git-connected** (it has a
+  `…-git-main-thanakit-dev.vercel.app` alias). Both pushes to `main` this session auto-built
+  production deployments aliased to `hometools-center.com`. **Every push to `main` ships the
+  live site** — run the `references/deploy.md` checks before pushing; `vercel --prod` is not needed
