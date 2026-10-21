@@ -1,0 +1,28 @@
+{
+  "slug": "water-heater-guide",
+  "title": "เครื่องทำน้ำอุ่น เลือกกี่วัตต์ดี ติดตั้งยังไงให้ปลอดภัย",
+  "seo_title": "เครื่องทำน้ำอุ่น เลือกกี่วัตต์ดี ติดตั้งยังไงให้ปลอดภัย",
+  "seo_description": "เครื่องทำน้ำอุ่น เลือกกี่วัตต์ดี? คู่มือเลือกวัตต์ 3500-6000W ตามจำนวนจุดและฤดู เทียบน้ำอุ่น vs น้ำร้อน ระบบความปลอดภัย ELCB สายดิน และการติดตั้งที่ถูกต้อง",
+  "excerpt": "การเลือกเครื่องทำน้ำอุ่นให้ดูที่ 3 เรื่องหลัก คือ กำลังวัตต์ให้เหมาะกับการใช้ (จุดเดียว 3500-4500W, หน้าหนาวหรือน้ำแรง 4500-6000W), ระบบความปลอดภัยต้องมี ELCB…",
+  "author": "Home Tool Center",
+  "tags": [
+    "ท่อ PPR",
+    "งานประปา",
+    "งานระบบ",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "water-heater-guide.html",
+  "cover_image_url": "https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/blog/water-heater-guide-cover.webp",
+  "og_image_url": "https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/blog/water-heater-guide-cover.webp",
+  "_notes": {
+    "primary_kw": "เครื่องทำน้ำอุ่น เลือก",
+    "secondary_kw": [
+      "เครื่องทำน้ำอุ่นกี่วัตต์",
+      "เครื่องทำน้ำอุ่น vs น้ำร้อน",
+      "ติดตั้งเครื่องทำน้ำอุ่น"
+    ],
+    "source_draft": "seo/blogs/50-เครื่องทำน้ำอุ่น.md",
+    "cover_source": "../../../Downloads/รูปบทความ hometools/ChatGPT Image 21 ต.ค. 2569 13_48_11-4.png"
+  }
+}

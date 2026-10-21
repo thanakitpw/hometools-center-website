@@ -88,6 +88,20 @@ const CTA_LINKS = {
   'electric-drill-guide':            [CAT.shop,      'ดูสินค้าทั้งหมด'],
   'concrete-primer-guide':           [CAT.paint,     'ดูสีรองพื้นและสีทาบ้าน'],
   'low-water-pressure-fix':          [CAT.pumps,     'ดูปั๊มน้ำทุกรุ่น'],
+  // batch 3 (2026-10). No toilets, showers, heaters, drill bits or measuring tools in stock:
+  // those CTA to /shop, or to the pipe a heater actually needs (PPR carries hot water).
+  'choose-toilet':                   [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'toilet-troubleshooting':          [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'choose-shower':                   [CAT.pumps,     'ดูปั๊มน้ำและอุปกรณ์ประปา'],
+  'water-heater-guide':              [CAT.ppr,       'ดูท่อ PPR สำหรับน้ำร้อน'],
+  'flexible-connector-replace':      [CAT.pumps,     'ดูสายฉีดชำระและอุปกรณ์ประปา'],
+  'install-faucet':                  [CAT.pumps,     'ดูวาล์วและอุปกรณ์ประปา'],
+  'pvc-uv-protection':               [CAT.pvc,       'ดูท่อและอุปกรณ์ PVC'],
+  'emergency-pipe-leak':             [CAT.pvc,       'ดูท่อและข้อต่อ PVC'],
+  'silicone-sealant':                [CAT.chemicals, 'ดูซิลิโคนและเคมีภัณฑ์ TOA'],
+  'drill-bits-guide':                [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'measuring-tools':                 [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'drill-concrete-wall':             [CAT.shop,      'ดูสินค้าทั้งหมด'],
 };
 
 /** Tag chips shown under the article. Grouped by topic so related posts read as a set. */
