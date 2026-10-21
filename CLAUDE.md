@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-10-14 — static-page images moved off the dead WP host
+**Last updated:** 2026-10-21 — SEO batch 3 (articles 47–58) published
 
 ---
 
@@ -826,3 +826,23 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   `siteConfig` because the WP copy still carried the old `02-426-2745`. Footer "การขนส่ง" →
   `#shipping`, which also fixes the duplicate React key in `footerNav.about` (session 8)
 - Both commits deployed to production with `vercel --prod` (`d93675e`, `30c914f`)
+
+### 2026-10-21 (session 13 — SEO batch 3: drafts 47–58)
+- 12 drafts (`seo/blogs/47–58`) + 12 covers (`~/Downloads/รูปบทความ hometools/`, 1731×909,
+  generic `ChatGPT Image … -N.png`). Contact sheet → headlines read → covers map 1:1 **in
+  filename-time order** to 47→58 (`_notes.cover_source` per article). WebP 25.9 MB → 1.2 MB
+- The shop stocks **no toilets, showers, water heaters, drill bits, measuring tools or wall
+  plugs** (checked `products.name_th`). CTAs: toilet/drill/measuring articles → `/shop`,
+  water heater → PPR (the hot-water pipe), shower/faucet/flex-hose → the taps/valves category
+  (it holds `สายฉีดชำระ`), silicone → TOA construction chemicals (4 silicone SKUs + caulking gun).
+  The drafts' closing pitches promising those products were dropped by the converter as usual
+- ⚠️ **This batch put its internal links inside HTML comments** (`<!-- Internal link … -->`),
+  which the converter strips. Added by hand as a `<div class="callout" data-related>` "อ่านต่อ"
+  box before the CTA. `--force` would erase them — regenerate only if re-adding. Dropped
+  `/blog/leaky-faucet-causes` (no such post)
+- 3 `seo_title`s trimmed for the 600px budget (Chrome-measured); originals in `_notes`
+- **No deploy was needed:** the slugs had never been requested, so on-demand ISR rendered all
+  12 → `200` on first hit. The session-9 "cached 404" trap only applies to slugs fetched
+  while still draft. `/blog` listed them at once; `sitemap.xml` follows within the hour
+- ⚠️ `vercel --prod` failed `Not authorized`: the CLI is logged into `agencybestsolutions-9690`,
+  not the `thanakit-dev` team that owns `prj_De33…`. Re-login before the next code deploy

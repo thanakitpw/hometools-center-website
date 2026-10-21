@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-09-21 (🟢 live; SEO batch 2 — all 20 new articles published)
+> **Last updated:** 2026-10-21 (🟢 live; SEO batch 3 — articles 47–58 published)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -176,6 +176,9 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] The last 2 covers (27 สายยางรดน้ำ, 29 ท่อ PVC มอก.) arrived the same evening —
       `/blog/garden-hose-guide` and `/blog/pvc-tis-standard` published; **all 20 of batch 2
       are live**, sitemap 466 → 468
+- [x] **Batch 3 (drafts 47–58) published 2026-10-21** — 12 articles with WebP covers
+      (25.9 MB → 1.2 MB), covers matched by burned-in headline. Drafts kept their sister-article
+      links in HTML comments, so they were surfaced as an "อ่านต่อ" callout before the CTA
 
 ### Ongoing SEO (post-launch, monthly)
 - [ ] Monthly GSC + GA4 health check
