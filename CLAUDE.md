@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-10-21 — SEO batch 3 (articles 47–58) published
+**Last updated:** 2026-10-31 — Resend email alerts live on production (session 15)
 
 ---
 
@@ -850,3 +850,46 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   `…-git-main-thanakit-dev.vercel.app` alias). Both pushes to `main` this session auto-built
   production deployments aliased to `hometools-center.com`. **Every push to `main` ships the
   live site** — run the `references/deploy.md` checks before pushing; `vercel --prod` is not needed
+
+### 2026-10-21 (session 14 — redesign prototype for client review)
+- Expanded the single-page Stitch design (`design/hometools-redesign-preview.html`) into a static
+  multi-page prototype: generator `design/prototype/build.mjs` → `design/prototype/dist/`
+  (Tailwind 3.4.17 via `npx`, tokens in `tailwind.config.cjs`, interactions in `src/app.js`)
+- Client asked for: container **1300px** (`.wrap`) and **larger small text** (type scale bumped:
+  `text-xs` 13.5px, `text-sm` 15px, new `text-2xs` 12.5px replaces the design's 10/11px)
+- Scope narrowed by the user mid-build to **one page per template** (14 pages): home, shop,
+  1 category (`pvc-pipes-and-fittings-scg`), 1 product (`pvc-pipe-rubber-ring`), blog index,
+  1 post (`low-water-pressure-fix`), about, contact, promotion, how-to-order, request-quote,
+  privacy, cookie, 404. Every other product/category/post link points at that template's sample
+  (`SAMPLE` in build.mjs). Data is a read-only anon snapshot in `design/prototype/data/`
+- Deployed as its **own** Vercel project `thanakit-dev/hometools-redesign-prototype`
+  (`prj_cw0HDRsUrgsgEwhj5ByfA2PYCSOI`) → https://hometools-redesign-prototype.vercel.app.
+  Not git-connected; redeploy with `node build.mjs && cd dist && vercel deploy --prod --scope thanakit-dev`.
+  Production site untouched (nothing pushed to `main`)
+- No-index: `X-Robots-Tag: noindex, nofollow, …` on every response (dist/vercel.json) + meta robots;
+  robots.txt deliberately *allows* crawling so Google can see the noindex. No GTM/analytics
+- ⚠️ `vercel link` writes `dist/.env.local` (a VERCEL_OIDC_TOKEN) and `.gitignore` — delete them
+  before deploying a static folder or they ship with it. The deployment that carried it was removed
+- Design content flagged to the user, not changed: trust banner says 45 ปี vs copy 30 ปี; TOA
+  campaign artwork shows an expired date (10 เม.ย. 2568); design font is IBM Plex Sans Thai
+  (live site uses Sukhumvit Set)
+
+### 2026-10-31 (session 15 — form email alerts via Resend)
+- Audit: since launch the forms only wrote to the DB — no alert ever fired. 9 rows total
+  (`quote_requests` 3, `contact_messages` 6): 2 dev tests from 2026-05-20, 1 bot spam, **6 real
+  leads, all still `status: new`**, oldest 27 Jul. Most real quote requests arrive via the
+  *contact* form, not the product-page `QuoteDialog`
+- 🐛 **`notify()` was fire-and-forget after the response returned** — on Vercel the function can
+  be frozen there and the email silently never sent. Both routes now wrap it in `after()`
+  (`36ca08d`, deployed and verified with a live test submission)
+- Resend key received. It is **send-only** (`restricted_api_key` — cannot list domains/emails) and
+  belongs to an account whose owner email is `cindicraumer959529@outlook.com`. Until a domain is
+  verified, `onboarding@resend.dev` can only deliver to that owner address (403 otherwise), so
+  production `QUOTE_NOTIFY_EMAIL` is **temporarily that outlook address** (confirmed received).
+  Target recipient after verification: `thanakitpw@gmail.com`
+- ⬜ Next: add Resend DNS in Cloudflare (`resend._domainkey` TXT, `send` MX →
+  `rsend-apne1.forge.rmta.net`, `send` TXT SPF incl. `send.forge.rmta.net` — confirm exact
+  names/values in the Resend dashboard), verify, switch `from` in `lib/notify.ts` to
+  `noreply@hometools-center.com`, flip `QUOTE_NOTIFY_EMAIL`, redeploy (env changes need a deploy)
+- Vercel CLI re-logged in as `thanakitdev-2238`. `vercel env add` stored `QUOTE_NOTIFY_EMAIL` as
+  Sensitive by default — fine for a server-only var

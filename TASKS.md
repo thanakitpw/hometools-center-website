@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-10-21 (🟢 live; SEO batch 3 — articles 47–58 published)
+> **Last updated:** 2026-10-31 (🟢 live; Resend email alerts on — temp recipient until domain verified)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -235,8 +235,9 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] Vercel project setup + custom domain — `hometools-center.com` + `www` attached to
       `prj_ejDxifbeD93ZOSA2Isb9oBirChpr`; `www` set to **301 → apex** at the Vercel edge
       (apex is the canonical host: 1840/1840 references in the WP data carry no `www`)
-- [ ] Production env vars on Vercel — only 4 of 8 set. Missing `RESEND_API_KEY`,
-      `QUOTE_NOTIFY_EMAIL`, `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_NOTIFY_USER_ID`.
+- [ ] Production env vars on Vercel — `RESEND_API_KEY` + `QUOTE_NOTIFY_EMAIL` set 2026-10-31
+      (recipient temporarily the Resend account owner, see session 15). Still missing
+      `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_NOTIFY_USER_ID`.
       `lib/notify.ts` skips cleanly, so quotes/messages still land in the DB and `/admin` —
       they just send no email/LINE alert. **Decision: launch without, backfill after.**
 - [x] GA4 + GTM — **done 2026-07-27**, see Phase 5.5. The site ran with **zero tags from
@@ -297,7 +298,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 
 ## Blocked / waiting on user ⏸
 
-- [ ] Resend API key + verified sending domain
+- [ ] Resend verified sending domain (API key received 2026-10-31; DNS records not yet added)
 - [ ] Line Messaging API channel access token + push target ID
 - [x] ~~Client confirms cutover date + content freeze window~~ — moot; WP was already down,
       cut over 2026-07-25 as a recovery
