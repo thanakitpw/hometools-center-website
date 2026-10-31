@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse, after, type NextRequest } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { quoteSchema } from '@/lib/validators';
 import { notify } from '@/lib/notify';
@@ -33,8 +33,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'db' }, { status: 500 });
   }
 
-  // Fire-and-forget notify (don't block response)
-  notify({
+  // after() keeps the function alive on Vercel until the notification is sent
+  after(() => notify({
     kind: 'quote',
     name: parsed.data.name,
     phone: parsed.data.phone,
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     message: parsed.data.message || null,
     items: parsed.data.items,
     source_page: parsed.data.source_page || null,
-  }).catch(e => console.error('notify:', e));
+  }).catch(e => console.error('notify:', e)));
 
   return NextResponse.json({ ok: true });
 }

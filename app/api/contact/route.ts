@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse, after, type NextRequest } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { contactSchema } from '@/lib/validators';
 import { notify } from '@/lib/notify';
@@ -32,14 +32,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'db' }, { status: 500 });
   }
 
-  notify({
+  // after() keeps the function alive on Vercel until the notification is sent
+  after(() => notify({
     kind: 'contact',
     name: parsed.data.name,
     phone: parsed.data.phone || '',
     email: parsed.data.email || null,
     message: `${parsed.data.subject ? `[${parsed.data.subject}] ` : ''}${parsed.data.message}`,
     source_page: parsed.data.source_page || null,
-  }).catch(e => console.error('notify:', e));
+  }).catch(e => console.error('notify:', e)));
 
   return NextResponse.json({ ok: true });
 }
