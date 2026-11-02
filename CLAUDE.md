@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-10-31 — Resend email alerts live on production (session 15)
+**Last updated:** 2026-11-02 — Resend domain verified; alerts go to the client inbox (session 15)
 
 ---
 
@@ -49,7 +49,7 @@ direct e-commerce checkout).
 | DB | Supabase Postgres + RLS |
 | Storage | Supabase Storage (bucket `media`, public) |
 | Auth | Supabase Auth, 2 roles: `admin` / `editor` |
-| Email | Resend (key pending from user) |
+| Email | Resend — domain `hometools-center.com` verified 2026-11-02, sender `noreply@hometools-center.com` |
 | Notify | Line **Messaging API** via OA (NOT Line Notify — deprecated 2025-04) |
 | Hosting | Vercel (edge) |
 | DNS | Cloudflare **DNS-only** (gray cloud) — no proxy |
@@ -887,9 +887,17 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   verified, `onboarding@resend.dev` can only deliver to that owner address (403 otherwise), so
   production `QUOTE_NOTIFY_EMAIL` is **temporarily that outlook address** (confirmed received).
   Target recipient after verification: `thanakitpw@gmail.com`
-- ⬜ Next: add Resend DNS in Cloudflare (`resend._domainkey` TXT, `send` MX →
-  `rsend-apne1.forge.rmta.net`, `send` TXT SPF incl. `send.forge.rmta.net` — confirm exact
-  names/values in the Resend dashboard), verify, switch `from` in `lib/notify.ts` to
-  `noreply@hometools-center.com`, flip `QUOTE_NOTIFY_EMAIL`, redeploy (env changes need a deploy)
+- **2026-11-02 — domain verified, alerts go to the client.** Resend's records for this account
+  are **TXT `resend._domainkey`** (DKIM) + **CNAME `rsend` → `rsend-apne1.forge.rmta.net`** and
+  **CNAME `send` → `send.forge.rmta.net`** (both DNS-only) — CNAMEs, not the classic MX/SPF-TXT
+  pair; the targets carry the MX + SPF themselves. Added via a short-lived Cloudflare token
+  (Zone DNS Edit + Zone Read, this zone only, 7 days) — no existing record touched
+- The zone's DMARC is strict (`p=quarantine; adkim=s; aspf=s`). It still passes: Resend signs
+  `d=hometools-center.com`, so DKIM aligns exactly even though SPF (on `send.`) cannot
+- `from` → `Home Tool Center <noreply@hometools-center.com>` (`32d3cf7`); production
+  `QUOTE_NOTIFY_EMAIL` → **`hometoolcenter.pipe@gmail.com`** (the address on the contact page).
+  Live test submission → `200`, test row deleted
+- ⚠️ zsh again: `for q in "name TYPE" …; dig +short @ns $q` passes `"name TYPE"` as **one** argv
+  and returns empty — it reads exactly like a missing record. Pass name and type separately
 - Vercel CLI re-logged in as `thanakitdev-2238`. `vercel env add` stored `QUOTE_NOTIFY_EMAIL` as
   Sensitive by default — fine for a server-only var

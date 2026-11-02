@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-10-31 (🟢 live; Resend email alerts on — temp recipient until domain verified)
+> **Last updated:** 2026-11-02 (🟢 live; Resend domain verified, form alerts → client inbox)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -118,7 +118,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [ ] Vercel Analytics + Speed Insights enable
 - [ ] 404 logging → admin can convert to redirect
 - [ ] Site search analytics (log `/shop?q=`)
-- [ ] Resend domain verification (SPF/DKIM in Cloudflare)
+- [x] Resend domain verification (DKIM TXT + 2 sending CNAMEs in Cloudflare) — 2026-11-02
 - [ ] Google Business Profile setup/claim
 
 ### Tier 3 — paid marketing (when budget approved)
@@ -213,8 +213,8 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [ ] Submit sitemap to GSC (post-launch)
 
 ### Notify hardening
-- [ ] Verify Resend sending domain (currently uses `onboarding@resend.dev`)
-- [ ] Update `from:` address in `lib/notify.ts`
+- [x] Verify Resend sending domain — 2026-11-02
+- [x] Update `from:` address in `lib/notify.ts` → `noreply@hometools-center.com`
 - [ ] Confirm Line OA channel + push target works end-to-end
 - [ ] Add rate limiting on `/api/quote` and `/api/contact` (Upstash Redis or simple in-memory)
 - [ ] Add Cloudflare Turnstile or similar (optional)
@@ -235,8 +235,8 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] Vercel project setup + custom domain — `hometools-center.com` + `www` attached to
       `prj_ejDxifbeD93ZOSA2Isb9oBirChpr`; `www` set to **301 → apex** at the Vercel edge
       (apex is the canonical host: 1840/1840 references in the WP data carry no `www`)
-- [ ] Production env vars on Vercel — `RESEND_API_KEY` + `QUOTE_NOTIFY_EMAIL` set 2026-10-31
-      (recipient temporarily the Resend account owner, see session 15). Still missing
+- [ ] Production env vars on Vercel — `RESEND_API_KEY` + `QUOTE_NOTIFY_EMAIL`
+      (`hometoolcenter.pipe@gmail.com`) set, see session 15. Still missing
       `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_NOTIFY_USER_ID`.
       `lib/notify.ts` skips cleanly, so quotes/messages still land in the DB and `/admin` —
       they just send no email/LINE alert. **Decision: launch without, backfill after.**
@@ -298,7 +298,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 
 ## Blocked / waiting on user ⏸
 
-- [ ] Resend verified sending domain (API key received 2026-10-31; DNS records not yet added)
+- [x] Resend API key + verified sending domain — 2026-11-02
 - [ ] Line Messaging API channel access token + push target ID
 - [x] ~~Client confirms cutover date + content freeze window~~ — moot; WP was already down,
       cut over 2026-07-25 as a recovery
