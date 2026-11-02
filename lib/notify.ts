@@ -63,7 +63,7 @@ async function sendEmail(n: QuoteNotification) {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      from: 'Home Tool Center <onboarding@resend.dev>', // change to verified domain later
+      from: 'Home Tool Center <noreply@hometools-center.com>', // domain verified in Resend (DNS in Cloudflare)
       to: [NOTIFY_EMAIL],
       subject,
       html: buildHtml(n),
