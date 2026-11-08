@@ -1,0 +1,34 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hometools",
+  // ใช้ worker.ts ของเราเองแทน .open-next/worker.js เพื่อ redirect www → โดเมนหลัก
+  "main": "./worker.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "hometools" }],
+  // ที่เก็บหน้า ISR (สินค้า ~343 หน้า, หมวด, บทความ, หน้าแรก)
+  "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "hometools-next-cache" }],
+  // สถานะ revalidatePath จากหลังบ้าน
+  "d1_databases": [
+    {
+      "binding": "NEXT_TAG_CACHE_D1",
+      "database_name": "hometools-next-tags",
+      "database_id": "7d033ffc-46c3-44a9-8cd0-04c5683ee024"
+    }
+  ],
+  // คิว revalidate ตามเวลา (revalidate = 3600)
+  "durable_objects": {
+    "bindings": [{ "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DOQueueHandler"] }],
+  "images": { "binding": "IMAGES" },
+  "observability": { "enabled": true },
+  // ผูกโดเมนจริงกับ Worker (Cloudflare สร้าง DNS และ SSL ให้เอง) www ถูก redirect ใน worker.ts
+  "routes": [
+    { "pattern": "hometools-center.com", "custom_domain": true },
+    { "pattern": "www.hometools-center.com", "custom_domain": true }
+  ],
+  // เก็บ URL *.workers.dev ไว้ทดสอบ (middleware ใส่ noindex ให้ host ที่ไม่ใช่โดเมนจริงอยู่แล้ว)
+  "workers_dev": true
+}

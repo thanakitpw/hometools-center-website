@@ -51,13 +51,24 @@ direct e-commerce checkout).
 | Auth | Supabase Auth, 2 roles: `admin` / `editor` |
 | Email | Resend — domain `hometools-center.com` verified 2026-11-02, sender `noreply@hometools-center.com` |
 | Notify | Line **Messaging API** via OA (NOT Line Notify — deprecated 2025-04) |
-| Hosting | Vercel (edge) |
-| DNS | Cloudflare **DNS-only** (gray cloud) — no proxy |
+| Hosting | **Cloudflare Workers** via OpenNext (`@opennextjs/cloudflare`), worker `hometools` — moved off Vercel 2026-11-08 after the old team's deployment went `402 DEPLOYMENT_DISABLED`. See "Deploy (Cloudflare Workers)" |
+| DNS | Cloudflare. Apex + `www` are Worker custom domains (proxied, created by wrangler); everything else (mail, Resend, `cdn.`) stays DNS-only |
 | Admin pattern | Custom in-app `/admin/*` (NOT 3rd-party CMS) |
 | URL strategy | Preserve WP URL patterns (`/product/`, `/product-category/`). Blog moves from top-level Thai slugs → `/blog/<english>` with 301 |
 | Content audit | Migrate ALL — no pruning |
 | Brand assets | Pulled from WP (pixel-perfect intent) |
 | Skills | Do NOT use `bsc-*` skills (user is developing them) |
+
+## Deploy (Cloudflare Workers)
+
+- `wrangler.jsonc`: worker `hometools`, custom domains apex + `www`, R2 `hometools-next-cache` (ISR), D1 `hometools-next-tags` (revalidatePath), Durable Object revalidation queue
+- `worker.ts` wraps `.open-next/worker.js`: `www` → apex and `http` → `https` 301 (Vercel's domain settings used to do this; the zone has Always Use HTTPS off)
+- Worker secrets (`wrangler secret put`): `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `QUOTE_NOTIFY_EMAIL`. Build-time public vars: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA4_ID`
+- ⚠️ **Never run `opennextjs-cloudflare build` in a folder that has `.env.local`/`.env`** — OpenNext inlines every `.env*` value into `.open-next/cloudflare/next-env.mjs` and ships it in the Worker (service role key included). Build from a copy without `.env*` files (or Workers Builds) and check `next-env.mjs` is `{}`
+- No filesystem at runtime: `lib/static-pages.ts` imports `research/data/static-pages.json` instead of `fs.readFileSync`
+- No `VERCEL_ENV` on Workers: `lib/preview.ts` falls back to `NODE_ENV` so production builds hide drafts
+- `middleware.ts` redirect lookup loads the whole `redirects` table into memory for 5 min (`lib/queries/redirects.ts`) — an admin edit to a redirect takes up to 5 min to apply
+- Rollback to Vercel: CNAME apex + `www` → `f719314d174704b9.vercel-dns-017.com` (DNS-only); `_vercel` TXT records are still in the zone
 
 ## Supabase project
 

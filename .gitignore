@@ -47,3 +47,9 @@ backup-oldwebsite/
 # The shipped 1200-wide .webp copies live in seo/published/, and
 # seo/blogs/รูปปกบทความ/mapping.tsv records which artwork belongs to which article.
 /seo/blogs/รูปปกบทความ/*.png
+
+# Cloudflare (OpenNext + wrangler)
+.open-next
+.wrangler
+.dev.vars*
+cloudflare-env.d.ts

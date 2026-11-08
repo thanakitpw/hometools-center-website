@@ -1,5 +1,6 @@
-import fs from 'node:fs';
-import path from 'node:path';
+// import ตรงแทนการอ่านไฟล์ด้วย fs ตอนรัน เพราะ Cloudflare Workers ไม่มีไฟล์ระบบให้อ่าน
+// (ไฟล์ ~60KB ถูกรวมเข้า bundle ตอน build)
+import staticPages from '@/research/data/static-pages.json';
 
 type Block =
   | { type: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'li'; text: string }
@@ -14,13 +15,8 @@ export type StaticPage = {
   blocks: Block[];
 };
 
-let cache: Record<string, StaticPage> | null = null;
-
 function load() {
-  if (cache) return cache;
-  const file = path.join(process.cwd(), 'research', 'data', 'static-pages.json');
-  cache = JSON.parse(fs.readFileSync(file, 'utf8'));
-  return cache!;
+  return staticPages as unknown as Record<string, StaticPage>;
 }
 
 // Garbage from Complianz cookie banner widget

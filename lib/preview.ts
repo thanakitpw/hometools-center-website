@@ -12,7 +12,11 @@ import 'server-only';
  * Preview deployments are also served `X-Robots-Tag: noindex, nofollow` by middleware.ts
  * (any host that isn't the canonical domain), so drafts surfaced here cannot be indexed.
  */
-export const SHOW_DRAFTS = process.env.VERCEL_ENV !== 'production';
+// บน Cloudflare Workers ไม่มี VERCEL_ENV ถ้าใช้เงื่อนไขเดิมเว็บจริงจะโชว์ draft
+// จึงใช้ NODE_ENV แทนเมื่อไม่ได้รันบน Vercel (production build = ซ่อน draft, next dev = โชว์)
+export const SHOW_DRAFTS = process.env.VERCEL_ENV
+  ? process.env.VERCEL_ENV !== 'production'
+  : process.env.NODE_ENV !== 'production';
 
 /** Statuses a listing or lookup should accept in the current environment. */
 export const VISIBLE_STATUSES = SHOW_DRAFTS ? ['published', 'draft'] : ['published'];
