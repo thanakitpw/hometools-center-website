@@ -2,7 +2,7 @@
 
 > Source of truth for what's done / pending. Update this file as work progresses.
 >
-> **Last updated:** 2026-11-02 (🟢 live; Resend domain verified, form alerts → client inbox)
+> **Last updated:** 2026-11-23 (🟢 live; SEO batch 4 — drafts 59–73 published)
 
 Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user/external)
 
@@ -179,6 +179,9 @@ Legend: ✅ done · 🔄 in progress · ⬜ todo · ⏸ blocked (waiting on user
 - [x] **Batch 3 (drafts 47–58) published 2026-10-21** — 12 articles with WebP covers
       (25.9 MB → 1.2 MB), covers matched by burned-in headline. Drafts kept their sister-article
       links in HTML comments, so they were surfaced as an "อ่านต่อ" callout before the CTA
+- [x] **Batch 4 (drafts 59–73) published 2026-11-23** — 15 articles with WebP covers
+      (36.1 MB → 2.0 MB). The converter now builds the "อ่านต่อ" callout from comment links
+      itself, and renders a visible FAQ from comment-only JSON-LD (72 บันไดช่าง)
 
 ### Ongoing SEO (post-launch, monthly)
 - [ ] Monthly GSC + GA4 health check

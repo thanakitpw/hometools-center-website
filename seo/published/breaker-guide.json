@@ -1,0 +1,28 @@
+{
+  "slug": "breaker-guide",
+  "title": "เลือกเบรกเกอร์กี่แอมป์ดี เมนเบรกเกอร์ กับ ลูกย่อย ต่างกันยังไง",
+  "seo_title": "เลือกเบรกเกอร์กี่แอมป์ดี? เมน-ลูกย่อยต่างกันยังไง",
+  "seo_description": "เลือกเบรกเกอร์กี่แอมป์ดี? รู้จักเมนเบรกเกอร์ vs ลูกย่อย เลือกขนาดแอมป์ตามโหลดและสายไฟ พร้อม RCBO กันดูด อ่านตารางจบ เลือกให้ปลอดภัยตั้งแต่ครั้งแรก",
+  "excerpt": "การเลือกเบรกเกอร์ให้ดูที่ 2 อย่างคือ โหลดที่ใช้ กับ ขนาดสายไฟของวงจรนั้น โดยทั่วไป วงจรแสงสว่างใช้ 10-16A ปลั๊ก 16-20A แอร์และเครื่องทำน้ำอุ่น 20-32A…",
+  "author": "Home Tool Center",
+  "tags": [
+    "งานไฟฟ้า",
+    "เบรกเกอร์",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "breaker-guide.html",
+  "cover_image_url": "https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/blog/breaker-guide-cover.webp",
+  "og_image_url": "https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/blog/breaker-guide-cover.webp",
+  "_notes": {
+    "primary_kw": "เลือกเบรกเกอร์",
+    "secondary_kw": [
+      "เบรกเกอร์กี่แอมป์",
+      "เมนเบรกเกอร์",
+      "ลูกย่อยเบรกเกอร์",
+      "RCBO กันดูด"
+    ],
+    "source_draft": "seo/blogs/60-เลือกเบรกเกอร์.md",
+    "cover_source": "../../../Downloads/untitled folder 18/ChatGPT Image 23 พ.ย. 2569 16_01_00-2.png"
+  }
+}

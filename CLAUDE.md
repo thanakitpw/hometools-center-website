@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-11-02 — Resend domain verified; alerts go to the client inbox (session 15)
+**Last updated:** 2026-11-23 — SEO batch 4 (drafts 59–73) published (session 16)
 
 ---
 
@@ -912,3 +912,29 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   and returns empty — it reads exactly like a missing record. Pass name and type separately
 - Vercel CLI re-logged in as `thanakitdev-2238`. `vercel env add` stored `QUOTE_NOTIFY_EMAIL` as
   Sensitive by default — fine for a server-only var
+
+### 2026-11-23 (session 16 — SEO batch 4: drafts 59–73, all 15 published)
+- `seo/blogs/59–73` each arrived **twice** (English- and Thai-named file, byte-identical);
+  the Thai-named ones were used as `source_draft`. Covers in `~/Downloads/untitled folder 18/`
+  (15 × 1729×910 `ChatGPT Image …`), mapped 1:1 **in filename-time order** to 59→73 after
+  reading the burned-in headlines off a contact sheet. WebP 36.1 MB → 2.0 MB
+- ⚠️ `node_modules` was missing (removed for the Cloudflare build) — `npm ci` was needed before
+  any script would run. `.env.local` is back in the tree, so **do not run
+  `opennextjs-cloudflare build` here** (see Deploy section)
+- `md-to-article.js` changes:
+  - meta block keys `Primary keyword:` / `Secondary keywords:` now parsed (was `KW` only)
+  - links listed only in the drafts' comments ("INTERNAL LINKS ที่ควรใส่ในบทความ") are turned
+    into the `<div class="callout" data-related>` "อ่านต่อ" box automatically — no hand edit
+  - a draft whose FAQ exists only as comment JSON-LD (72 บันไดช่าง) gets a visible FAQ section
+    rendered from it, before `## สรุป`, so FAQPage schema still ships
+  - `TAGS_BY_SLUG` override; new `CAT.wood` / `CAT.metal` (TOA wood/metal coatings)
+- Stock check: **no wire, breakers, sockets/switches, water filters, grinders, ladders or wall
+  plugs**. CTAs: wire → conduit, breaker/socket/grinder/ladder/anchors → `/shop`, filter and
+  hard-water → taps/valves, gutter → roof-drain category, wood/metal paint → the TOA wood/metal
+  coatings categories. Two pitch paragraphs claiming that stock were removed by hand
+  (`electrical-wire-size`, `home-water-filter` → added to `HAND_TUNED`)
+- `find-pipe-leak` seo_title had a stray `| เช็คเอง` mid-title (trimmed); `cut-pvc-pipe`
+  description 167 → 154 chars. All 15 titles ≤ 590px (Chrome canvas measure)
+- No deploy needed: slugs never requested on production while draft, so on-demand ISR served
+  all 15 → `200` on first hit with 1 `<h1>`, FAQPage, WebP `og:image`, no noindex; all listed on `/blog`
+

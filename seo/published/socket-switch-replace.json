@@ -1,0 +1,28 @@
+{
+  "slug": "socket-switch-replace",
+  "title": "เปลี่ยนปลั๊กไฟ-สวิตช์ไฟเอง เลือกยังไง + ทำยังไงให้ปลอดภัย",
+  "seo_title": "เปลี่ยนปลั๊กไฟ-สวิตช์เอง เลือกยังไงให้ปลอดภัย",
+  "seo_description": "เปลี่ยนปลั๊กไฟและสวิตช์เองได้ไหม? คู่มือเลือกปลั๊ก เต้ารับ ปลั๊กกราวด์ สวิตช์ พร้อมวิธีเปลี่ยนทีละขั้น ปิดเบรกเกอร์-ต่อสาย L N G ให้ถูก อ่านจบทำเองได้",
+  "excerpt": "การเปลี่ยนปลั๊กไฟหรือสวิตช์เองทำได้ ถ้าปิดเบรกเกอร์วงจรนั้นก่อนทุกครั้ง แล้วใช้ไขควงลองไฟเช็กว่าไม่มีไฟค้างจริง จากนั้นถอดของเก่า จดตำแหน่งสาย ต่อสาย L (ไฟ) N…",
+  "author": "Home Tool Center",
+  "tags": [
+    "งานไฟฟ้า",
+    "ปลั๊กไฟและสวิตช์",
+    "ความรู้ช่าง"
+  ],
+  "status": "published",
+  "content_file": "socket-switch-replace.html",
+  "cover_image_url": "https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/blog/socket-switch-replace-cover.webp",
+  "og_image_url": "https://dwogyznhmveltanehaya.supabase.co/storage/v1/object/public/media/blog/socket-switch-replace-cover.webp",
+  "_notes": {
+    "primary_kw": "เปลี่ยนปลั๊กไฟ",
+    "secondary_kw": [
+      "เลือกปลั๊กไฟ",
+      "สวิตช์ไฟ",
+      "ปลั๊กกราวด์",
+      "เต้ารับ"
+    ],
+    "source_draft": "seo/blogs/61-เปลี่ยนปลั๊กสวิตช์.md",
+    "cover_source": "../../../Downloads/untitled folder 18/ChatGPT Image 23 พ.ย. 2569 16_01_01-3.png"
+  }
+}

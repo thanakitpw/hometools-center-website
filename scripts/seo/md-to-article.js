@@ -32,6 +32,8 @@ const CAT = {
   conduit: '/product-category/system-work/conduit-pipe',
   pe: '/product-category/system-work/pe-pipes-and-fittings',
   paint: '/product-category/construction-materials-and-equipment/toa-color/decorative-coatings',
+  wood: '/product-category/construction-materials-and-equipment/toa-color/wood-coatings',
+  metal: '/product-category/construction-materials-and-equipment/toa-color/metal-coatings',
   chemicals: '/product-category/construction-materials-and-equipment/toa-color/construction-chemicals',
   // The shop sells no hand tools, drills or garden hoses. Articles on those topics get the
   // all-products page rather than a category that would quietly mislead the reader.
@@ -102,12 +104,39 @@ const CTA_LINKS = {
   'drill-bits-guide':                [CAT.shop,      'ดูสินค้าทั้งหมด'],
   'measuring-tools':                 [CAT.shop,      'ดูสินค้าทั้งหมด'],
   'drill-concrete-wall':             [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  // batch 4 (2026-11). No wire, breakers, sockets, water filters, grinders, ladders or wall
+  // plugs in stock. Wire → conduit (what the article itself sends wire through); the
+  // rest → /shop, or the plumbing a filter/faucet is plumbed in with. Rain gutters → roof drains.
+  'electrical-wire-size':            [CAT.conduit,   'ดูท่อร้อยสายไฟ'],
+  'breaker-guide':                   [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'socket-switch-replace':           [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'cut-pvc-pipe':                    [CAT.pvc,       'ดูท่อและอุปกรณ์ PVC'],
+  'find-pipe-leak':                  [CAT.pvc,       'ดูท่อและข้อต่อ PVC'],
+  'outdoor-faucet':                  [CAT.pumps,     'ดูก๊อกน้ำ วาล์ว และอุปกรณ์ประปา'],
+  'home-water-filter':               [CAT.pumps,     'ดูวาล์วและอุปกรณ์ประปา'],
+  'hard-water-scale':                [CAT.pumps,     'ดูก๊อกน้ำ วาล์ว และอุปกรณ์ประปา'],
+  'wood-paint-guide':                [CAT.wood,      'ดูสีงานไม้ TOA'],
+  'metal-rust-paint':                [CAT.metal,     'ดูสีทาเหล็กและสีกันสนิม TOA'],
+  'roof-leak-repair':                [CAT.chemicals, 'ดูวัสดุกันซึม TOA'],
+  'rain-gutter-guide':               [CAT.manhole,   'ดูรูฟเดรนและอุปกรณ์ระบายน้ำ'],
+  'angle-grinder-guide':             [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'ladder-safety':                   [CAT.shop,      'ดูสินค้าทั้งหมด'],
+  'wall-anchors-guide':              [CAT.shop,      'ดูสินค้าทั้งหมด'],
+};
+
+/** Tag override for articles whose CTA category says nothing about the topic. */
+const TAGS_BY_SLUG = {
+  'breaker-guide':         ['งานไฟฟ้า', 'เบรกเกอร์'],
+  'socket-switch-replace': ['งานไฟฟ้า', 'ปลั๊กไฟและสวิตช์'],
+  'electrical-wire-size':  ['สายไฟ', 'ท่อร้อยสายไฟ', 'งานไฟฟ้า'],
 };
 
 /** Tag chips shown under the article. Grouped by topic so related posts read as a set. */
 const TAGS = {
   [CAT.paint]:     ['สีทาบ้าน', 'สี TOA', 'งานสี'],
   [CAT.chemicals]: ['กันซึม', 'เคมีภัณฑ์ก่อสร้าง', 'งานสี'],
+  [CAT.wood]:      ['สีงานไม้', 'สี TOA', 'งานสี'],
+  [CAT.metal]:     ['สีทาเหล็ก', 'สีกันสนิม', 'งานสี'],
   [CAT.pvc]:       ['ท่อ PVC', 'งานประปา', 'งานระบบ'],
   [CAT.ppr]:       ['ท่อ PPR', 'งานประปา', 'งานระบบ'],
   [CAT.pumps]:     ['ปั๊มน้ำ', 'วาล์วและก๊อกน้ำ', 'งานประปา'],
@@ -121,7 +150,9 @@ const TAGS = {
 };
 
 /** Articles whose HTML was written by hand — never regenerate these, even with --force. */
-const HAND_TUNED = new Set(['paint-coverage-per-bucket']);
+// electrical-wire-size / home-water-filter: closing pitch removed by hand (claimed stock of
+// wire, breakers and water filters the shop does not carry).
+const HAND_TUNED = new Set(['paint-coverage-per-bucket', 'electrical-wire-size', 'home-water-filter']);
 
 const CTA_BODY =
   'ทีมงาน Home Tool Center ยินดีให้คำแนะนำเรื่องการเลือกสินค้าให้เหมาะกับหน้างาน พร้อมจัดส่งและออกใบเสนอราคาให้';
@@ -180,8 +211,8 @@ function convert(md, file) {
   const slug = (field(/URL slug\s*:\s*\/blog\/([^\s(]+)/) || '').trim();
   if (!slug) throw new Error(`${file}: no "URL slug : /blog/…" in the SEO META block`);
 
-  const primaryKw = field(/Primary KW\s*:\s*([^\n(]+)/);
-  const secondaryKw = field(/Secondary KW\s*:\s*([^\n]+)/).split(',').map((s) => s.trim()).filter(Boolean);
+  const primaryKw = field(/Primary (?:KW|keyword)\s*:\s*([^\n(]+)/);
+  const secondaryKw = field(/Secondary (?:KW|keywords?)\s*:\s*([^\n]+)/).split(',').map((s) => s.trim()).filter(Boolean);
   // The drafts write the title with the brand already appended; the layout's metadata
   // template adds "| Home Tool Center" itself, so strip it or it renders twice.
   // Some drafts write the brand in full, some truncate it to "| Home Tool"; either way the
@@ -189,9 +220,44 @@ function convert(md, file) {
   const seoTitle = field(/Title tag[^:]*:\s*([^\n]+)/).replace(/\s*\|\s*Home\s*Tool(\s*Center)?\s*$/i, '');
   const seoDesc = field(/Meta desc[^:]*:\s*([^\n]+)/);
 
+  // Some drafts list their sister-article links only inside comments for the web team
+  // ("INTERNAL LINKS ที่ควรใส่ในบทความ"), never in the copy. Collect them so they can be put
+  // back as an "อ่านต่อ" box instead of disappearing with the comment.
+  const commentLinks = [];
+  for (const c of md.match(/<!--[\s\S]*?-->/g) || []) {
+    for (const ln of c.split('\n')) {
+      const m = ln.match(/\/blog\/([a-z0-9-]+)/);
+      if (!m) continue;
+      const label = ln.slice(0, m.index)
+        .replace(/^\s*[-*]\s*/, '')
+        .replace(/\s*(→|->|\()\s*$/, '')
+        .replace(/^["“]|["”]$/g, '')
+        .trim();
+      if (label && !commentLinks.some((l) => l.slug === m[1])) commentLinks.push({ slug: m[1], label });
+    }
+  }
+
   // Body = everything after the meta block, with every other HTML comment removed
   // (the drafts append INTERNAL LINKS / FAQ SCHEMA notes meant for the web team).
   let body = md.slice(metaBlock ? metaBlock[0].length : 0).replace(/<!--[\s\S]*?-->/g, '');
+
+  // A draft that carries its FAQ only as JSON-LD in a comment (no visible Q&A) would ship
+  // without FAQPage schema, which is derived from the visible HTML. Render the writer's own
+  // Q&A as a visible FAQ section — before "สรุป" if there is one, else at the end.
+  if (!/^##\s+.*(FAQ|คำถามที่พบบ่อย)/im.test(body)) {
+    for (const c of md.match(/<!--[\s\S]*?-->/g) || []) {
+      const j = c.indexOf('{'), k = c.lastIndexOf('}');
+      if (!/FAQPage/.test(c) || j === -1) continue;
+      let ld;
+      try { ld = JSON.parse(c.slice(j, k + 1)); } catch { continue; }
+      const qa = (ld.mainEntity || []).map((q) => `**${q.name}**\n${q.acceptedAnswer?.text || ''}`);
+      if (!qa.length) continue;
+      const faqMd = `## คำถามที่พบบ่อย (FAQ)\n\n${qa.join('\n\n')}\n\n`;
+      const sum = body.search(/^##\s+สรุป/m);
+      body = sum === -1 ? body + '\n\n' + faqMd : body.slice(0, sum) + faqMd + body.slice(sum);
+      break;
+    }
+  }
 
   const h1 = body.match(/^#\s+(.+)$/m);
   if (!h1) throw new Error(`${file}: no H1`);
@@ -351,7 +417,18 @@ function convert(md, file) {
       ? para.replace(/href="https:\/\/hometools-center\.com\/?"/g, 'href="/contact-us"')
       : ''
   );
+  const related = commentLinks.filter((l) => l.slug !== slug && !html.includes(`href="/blog/${l.slug}"`));
+  const relLinks = related.map((l) => `<a href="/blog/${l.slug}">${esc(l.label)}</a>`);
+  const relatedHtml = relLinks.length
+    ? [
+        '',
+        '  <div class="callout" data-related>',
+        `    <p>อ่านต่อ: ${relLinks.length > 1 ? relLinks.slice(0, -1).join(', ') + ' และ ' + relLinks.at(-1) : relLinks[0]}</p>`,
+        '  </div>',
+      ]
+    : [];
   const ctaHtml = [
+    ...relatedHtml,
     '',
     '  <div class="cta">',
     `    <p class="cta-title">ต้องการสินค้าสำหรับงานนี้?</p>`,
@@ -393,7 +470,7 @@ function convert(md, file) {
     seo_description: seoDesc,
     excerpt,
     author: 'Home Tool Center',
-    tags: [...(TAGS[cta[0]] || []), 'ความรู้ช่าง'],
+    tags: [...(TAGS_BY_SLUG[slug] || TAGS[cta[0]] || []), 'ความรู้ช่าง'],
     status: 'draft',
     content_file: `${slug}.html`,
     cover_image_url: null,
