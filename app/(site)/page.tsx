@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, ImageIcon } from 'lucide-react';
 import { homeImg as img } from '@/lib/home-assets';
@@ -8,6 +9,10 @@ import { listLatestPosts } from '@/lib/queries/posts';
 
 // The blog strip reads from the database, so new articles rotate in on their own.
 export const revalidate = 3600;
+
+// Every other route sets its own canonical; the home page had none, so `/?gclid=…` and
+// `/?utm_…` variants from ads and social were left for Google to consolidate on its own.
+export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 const CAT = '/product-category';
 

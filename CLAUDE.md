@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-11-23 — SEO batch 4 (drafts 59–73) published (session 16)
+**Last updated:** 2026-11-23 — SEO audit + fixes, wp-content redirects deployed (session 17)
 
 ---
 
@@ -64,6 +64,8 @@ direct e-commerce checkout).
 - `wrangler.jsonc`: worker `hometools`, custom domains apex + `www`, R2 `hometools-next-cache` (ISR), D1 `hometools-next-tags` (revalidatePath), Durable Object revalidation queue
 - `worker.ts` wraps `.open-next/worker.js`: `www` → apex and `http` → `https` 301 (Vercel's domain settings used to do this; the zone has Always Use HTTPS off)
 - Worker secrets (`wrangler secret put`): `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `QUOTE_NOTIFY_EMAIL`. Build-time public vars: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA4_ID`
+- ⚠️ **Build-time env: `.env.local` has only 3 `NEXT_PUBLIC_*` vars — `NEXT_PUBLIC_GTM_ID=GTM-5LCNL8C9` and `NEXT_PUBLIC_GA4_ID=G-X9W48F0BWC` are NOT in it.** Export them in the shell before building or the deploy silently drops GTM (and with it every Google Ads conversion). Check `grep -rl GTM-5LCNL8C9 .open-next` before deploying
+- Deploys are **manual** (`npx opennextjs-cloudflare deploy`; no Workers Builds) — pushing `main` deploys nothing. Rollback: `npx wrangler rollback <version-id>`
 - ⚠️ **Never run `opennextjs-cloudflare build` in a folder that has `.env.local`/`.env`** — OpenNext inlines every `.env*` value into `.open-next/cloudflare/next-env.mjs` and ships it in the Worker (service role key included). Build from a copy without `.env*` files (or Workers Builds) and check `next-env.mjs` is `{}`
 - No filesystem at runtime: `lib/static-pages.ts` imports `research/data/static-pages.json` instead of `fs.readFileSync`
 - No `VERCEL_ENV` on Workers: `lib/preview.ts` falls back to `NODE_ENV` so production builds hide drafts
@@ -937,4 +939,37 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   description 167 → 154 chars. All 15 titles ≤ 590px (Chrome canvas measure)
 - No deploy needed: slugs never requested on production while draft, so on-demand ISR served
   all 15 → `200` on first hit with 1 `<h1>`, FAQPage, WebP `og:image`, no noindex; all listed on `/blog`
+
+### 2026-11-23 (session 17 — SEO audit, GA4/GSC data, fixes deployed)
+- **GA4 is property `a278960413p398414862` under agency.bestsolutions@gmail.com (Chrome `authuser=3`)**
+  and is **linked to Search Console** — query/landing-page data is readable under Reports →
+  Search Console even though **no account we have can open the GSC property itself**
+  (thanakitpw, marketing.bestsolutionscorp, agency.bestsolutions all "no access"). Re-verify via a
+  new DNS TXT in Cloudflare to get sitemap submit / URL inspection
+- Findings (May 1 – Nov 22): Organic sessions 756 (May) → ~1,250/mo (Oct–Nov) but organic key events
+  flat at ~25/mo — blog traffic converts ~0; the homepage and product/category pages carry them.
+  Top organic query is informational ("ระบบสุขาภิบาล"); commercial terms rank poorly (ท่อ pe 11.8,
+  ท่อ pvc 19, ท่อ ppr 40). Paid + Cross-network produce ~85% of key events; Cross-network key events
+  fell 830 (Oct) → 172 (Nov to date)
+- 🔴 **Every `/wp-content/uploads/*` URL had been a 404 since cutover** while Google still ranked the
+  old catalog PDFs (PAT catalog 163 clicks, 11% CTR). `worker.ts` now 301s them to Storage using
+  `lib/wp-uploads-map.json` (1,137 paths, built by `scripts/launch/build-wp-uploads-map.js`, only
+  HEAD-200 targets kept; WP `-300x300`/`-scaled` variants fall back to the original)
+- Data fixes (live without deploy): 42 category `seo_title`/`seo_description` rewritten
+  (`seo/category-meta.json` → `scripts/seo/apply-category-meta.js`; originals in
+  `seo/category-meta.previous.json`) — Rank Math titles had the brand in them, so it rendered twice,
+  and 41/42 had no description. 43 catalog-style products whose title was just a brand ("ANA", "SR")
+  got a title + description (`seo/product-meta.json` → `scripts/seo/apply-product-meta.js`, only fills
+  empty fields). 9 migrated posts had an `<h1>` in `content_md` → demoted to `<h2>`
+  (`scripts/seo/demote-content-h1.js`, originals in `seo/content-h1-backup.json`)
+- Home page now has a canonical (`app/(site)/page.tsx`)
+- Deployed version `fd2f04d1` (previous `ecf7d9bd`). Verified live: pages 200, GTM present, PDFs 301
+  → 200 `application/pdf`, www/http 301, old Thai redirects intact
+- ⚠️ Disk on this Mac was full (283 MB free) — `opennextjs-cloudflare build` died with ENOSPC midway.
+  It needs well over 500 MB free. Moving `.env.local` aside for the build is fine, but restore it
+  with `cp` from a kept copy, not `mv`, so a full disk cannot strand it
+- Not done yet (from the audit): product/category pages are `private, no-store` (queries use the
+  cookie client, so `revalidate` is ignored — every view and crawl hits Supabase); no product/category
+  → blog links; cannibalising blog clusters (pipe leaks ×4, water meter ×2, clogs ×2, plumbing
+  system ×3, sanitary ×2); category pages have no intro copy; Product schema has no price
 

@@ -1,0 +1,171 @@
+{
+  "_note": "SEO title + meta description per product category (2026-11-23). seo_title must NOT contain the brand: app/layout.tsx appends ' | Home Tool Center'. Applied by scripts/seo/apply-category-meta.js, which keeps the previous values in seo/category-meta.previous.json.",
+  "system-work": {
+    "seo_title": "สินค้างานระบบประปา ท่อ PVC PPR PE ปั๊มน้ำ วาล์ว",
+    "seo_description": "รวมสินค้างานระบบประปาและสุขาภิบาล ท่อ PVC SCG, PPR, PE/HDPE, PB, PP ท่อร้อยสายไฟ ปั๊มน้ำ Grundfos มิเตอร์น้ำ วาล์ว ถังเก็บน้ำ ขอใบเสนอราคาได้ จัดส่งทั่วไทย"
+  },
+  "pvc-pipes-and-fittings-scg": {
+    "seo_title": "ท่อ PVC ตราช้าง SCG และข้อต่อ ท่อฟ้า ท่อเหลือง",
+    "seo_description": "ท่อ PVC และอุปกรณ์ SCG ตราช้าง ท่อฟ้างานประปา ท่อเหลืองร้อยสายไฟ ท่อขาว BS/JIS ท่อเทาเกษตร ท่อแหวนยาง พร้อมข้อต่อและน้ำยาประสานท่อ ขอใบเสนอราคาได้"
+  },
+  "scg": {
+    "seo_title": "ท่อ PVC SCG ตราช้าง ครบทุกรุ่น พร้อมแคตตาล็อก",
+    "seo_description": "สินค้าแบรนด์ SCG ตราช้าง ท่อ PVC สีฟ้า สีเหลือง สีขาว สีเทา ท่อแหวนยาง ท่อ PP-R ท่อ PE บอลวาล์ว และน้ำยาประสานท่อ ดูแคตตาล็อกและขอใบเสนอราคาได้ทันที"
+  },
+  "pvc-pipes-and-fittings-thaipipe": {
+    "seo_title": "ท่อ PVC ท่อน้ำไทย (Thai Pipe) และอุปกรณ์",
+    "seo_description": "ท่อ PVC และอุปกรณ์ตราท่อน้ำไทย (Thai Pipe) สำหรับงานประปาและระบายน้ำ ดูรายละเอียดสินค้าและแคตตาล็อก แล้วขอใบเสนอราคาได้ที่ Home Tool Center จัดส่งทั่วไทย"
+  },
+  "thai-pipe": {
+    "seo_title": "ท่อน้ำไทย THAI PIPE ท่อ PVC และข้อต่อ",
+    "seo_description": "สินค้าแบรนด์ท่อน้ำไทย (THAI PIPE) ท่อ PVC และข้อต่อสำหรับงานประปา ระบายน้ำ และงานระบบอาคาร ดูแคตตาล็อก แล้วขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "ppr-pipes-and-fittings": {
+    "seo_title": "ท่อ PPR และข้อต่อ ท่อน้ำร้อน-น้ำเย็น THAI PPR",
+    "seo_description": "ท่อ PPR และอุปกรณ์ THAI PPR สำหรับระบบน้ำร้อนและน้ำเย็น ต่อด้วยความร้อน ใช้ได้ทั้งบ้านและงานโครงการ ดูแคตตาล็อกและขอใบเสนอราคาได้ จัดส่งทั่วไทย"
+  },
+  "thai-ppr": {
+    "seo_title": "ท่อ THAI PPR และข้อต่อ พร้อมแคตตาล็อก",
+    "seo_description": "ท่อและข้อต่อ THAI PPR สำหรับงานน้ำร้อน น้ำเย็น และระบบประปาอาคาร ดูรายละเอียดสินค้าและแคตตาล็อก PDF พร้อมขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "pe-pipes-and-fittings": {
+    "seo_title": "ท่อ PE HDPE ท่อประปาและท่อร้อยสายไฟ",
+    "seo_description": "ท่อ PE และ HDPE สำหรับงานประปาและร้อยสายไฟ ยี่ห้อ SR, Thai Asia Pipe (TAP), UHM พร้อมข้อต่อและใบราคา Price List สั่งจำนวนมากหรืองานโครงการ ขอใบเสนอราคาได้"
+  },
+  "sr": {
+    "seo_title": "ท่อ PE ยี่ห้อ SR และข้อต่อ พร้อมแคตตาล็อก",
+    "seo_description": "ท่อ PE และข้อต่อยี่ห้อ SR สำหรับงานประปาและงานระบบ ดูรายละเอียดสินค้าและแคตตาล็อก แล้วขอใบเสนอราคาได้ที่ Home Tool Center จัดส่งทั่วไทย"
+  },
+  "thai-asia-pipe": {
+    "seo_title": "ท่อ HDPE ยี่ห้อ TAP (Thai Asia Pipe)",
+    "seo_description": "ท่อ HDPE ยี่ห้อ Thai Asia Pipe (TAP) ทั้งท่อน้ำประปา HDPE และท่อร้อยสายไฟ HDPE ทนแรงดัน ยืดหยุ่น ดูแคตตาล็อกและขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "uhm": {
+    "seo_title": "ท่อ HDPE ยี่ห้อ UHM พร้อมใบราคา Price List",
+    "seo_description": "ท่อเอชดีพีอี (HDPE) ยี่ห้อ UHM สำหรับงานประปาและงานระบบ ดูใบราคา Price List HDPE และขอใบเสนอราคาสำหรับงานโครงการได้ที่ Home Tool Center"
+  },
+  "pb-pipes-and-fittings": {
+    "seo_title": "ท่อ PB (Polybutylene) และข้อต่อ พร้อมใบราคา",
+    "seo_description": "ท่อ PB (Polybutylene) ยี่ห้อ UHM สำหรับงานน้ำร้อนและน้ำเย็น ยืดหยุ่น ติดตั้งง่าย ดูใบราคา Price List PB และขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "uhm-pb-pipes-and-fittings": {
+    "seo_title": "ท่อ PB ยี่ห้อ UHM และใบราคา Price List",
+    "seo_description": "ท่อและข้อต่อ PB ยี่ห้อ UHM สำหรับระบบน้ำร้อน น้ำเย็น และงานประปาอาคาร ดูรายละเอียดและใบราคา Price List PB แล้วขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "pp-pipes-and-fittings": {
+    "seo_title": "ท่อ PP และข้อต่อ พร้อมใบราคาและแคตตาล็อก",
+    "seo_description": "ท่อ PP (Polypropylene) ยี่ห้อ UHM สำหรับงานระบายน้ำและงานระบบ ดูใบราคา Price List ท่อ PP และแคตตาล็อก แล้วขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "uhm-pp-pipes-and-fittings": {
+    "seo_title": "ท่อ PP ยี่ห้อ UHM และใบราคา Price List",
+    "seo_description": "ท่อและข้อต่อ PP ยี่ห้อ UHM ดูรายละเอียดสินค้า แคตตาล็อก และใบราคา Price List ท่อ PP สำหรับงานบ้านและงานโครงการ ขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "conduit-pipe": {
+    "seo_title": "ท่อเหล็กร้อยสายไฟ Conduit PAT และข้อต่อ",
+    "seo_description": "ท่อเหล็กร้อยสายไฟ (Conduit) ยี่ห้อ PAT พร้อมโค้งและข้อต่อ สำหรับงานไฟฟ้าอาคารและโรงงาน ดูแคตตาล็อกและใบราคา แล้วขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "pat": {
+    "seo_title": "ท่อเหล็กร้อยสายไฟ PAT แคตตาล็อกและใบราคา",
+    "seo_description": "ท่อเหล็กร้อยสายไฟยี่ห้อ PAT พร้อมแคตตาล็อก ใบราคาโค้งและข้อต่อ สำหรับผู้รับเหมาและงานระบบไฟฟ้า ขอใบเสนอราคาได้ที่ Home Tool Center จัดส่งทั่วไทย"
+  },
+  "pe-lined-steel-pipe": {
+    "seo_title": "ท่อเหล็กบุ PE (PE-Lined Steel Pipe) SYLER",
+    "seo_description": "ท่อเหล็กบุ PE ยี่ห้อ SYLER ท่อเหล็กที่บุภายในด้วย PE สำหรับงานประปาอาคารและงานระบบ ลดปัญหาสนิมในท่อ ดูใบราคา Price List และขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "syler": {
+    "seo_title": "ท่อ SYLER ท่อเหล็กบุ PE พร้อมใบราคา",
+    "seo_description": "ท่อเหล็กบุ PE ยี่ห้อ SYLER พร้อมแคตตาล็อกและใบราคา Price List สำหรับงานประปาอาคารสูงและงานโครงการ ขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "industrial-rubber-hose": {
+    "seo_title": "ท่อยางอุตสาหกรรม NCR สำหรับงานโรงงาน",
+    "seo_description": "ท่อยางอุตสาหกรรมยี่ห้อ NCR สำหรับงานโรงงานและงานอุตสาหกรรม ดูรายละเอียดและแคตตาล็อก เลือกสเปกให้ตรงงาน แล้วขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "ncr": {
+    "seo_title": "ท่อยาง NCR ท่อยางอุตสาหกรรม พร้อมแคตตาล็อก",
+    "seo_description": "ท่อยางอุตสาหกรรมยี่ห้อ NCR ดูแคตตาล็อกและรายละเอียดสินค้า สำหรับงานโรงงานและงานระบบ ขอใบเสนอราคาได้ที่ Home Tool Center จัดส่งทั่วไทย"
+  },
+  "meters-taps-sluices-water-pumps-and-valves": {
+    "seo_title": "ปั๊มน้ำ มิเตอร์น้ำ ก๊อกน้ำ ประตูน้ำ และวาล์ว",
+    "seo_description": "รวมปั๊มน้ำ Grundfos และ Mitsubishi มิเตอร์น้ำ Asahi ประตูน้ำและวาล์ว ANA สายฉีดชำระ สำหรับบ้านและงานโครงการ เลือกรุ่นให้ตรงงาน ขอใบเสนอราคาได้ จัดส่งทั่วไทย"
+  },
+  "ana": {
+    "seo_title": "ประตูน้ำและวาล์ว ANA พร้อมแคตตาล็อก",
+    "seo_description": "ประตูน้ำและวาล์วยี่ห้อ ANA สำหรับงานประปาและงานระบบ ดูแคตตาล็อก PDF รายละเอียดรุ่นและขนาด แล้วขอใบเสนอราคาได้ที่ Home Tool Center จัดส่งทั่วไทย"
+  },
+  "asahi": {
+    "seo_title": "มิเตอร์น้ำ ASAHI (มาตรวัดน้ำ) รุ่น GMK และ WVM",
+    "seo_description": "มิเตอร์น้ำ (มาตรวัดน้ำ) ยี่ห้อ ASAHI รุ่น GMK และ WVM สำหรับบ้านพัก อาคาร และงานโครงการ ดูรายละเอียดรุ่น แล้วขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "grundfos": {
+    "seo_title": "ปั๊มน้ำ Grundfos ทุกรุ่น SCALA CMB SBA KPC",
+    "seo_description": "ปั๊มน้ำ Grundfos รุ่น SCALA1, SCALA2, CMB-PT, CMB-PM1, CMBE, CMBE TWIN, SBA และ KPC สำหรับบ้านและอาคาร เลือกรุ่นให้ตรงแรงดันที่ต้องการ ขอใบเสนอราคาได้"
+  },
+  "hitachi": {
+    "seo_title": "ปั๊มน้ำ HITACHI พร้อมแคตตาล็อก",
+    "seo_description": "ปั๊มน้ำยี่ห้อ HITACHI สำหรับบ้านและอาคาร ดูแคตตาล็อกรุ่นต่าง ๆ แล้วปรึกษาทีมงานเรื่องการเลือกขนาดปั๊ม พร้อมขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "mitsubishi": {
+    "seo_title": "ปั๊มน้ำ Mitsubishi Super Pump ปั๊มแช่ ปั๊มหอยโข่ง",
+    "seo_description": "ปั๊มน้ำ Mitsubishi Super Pump ทั้งปั๊มแช่และปั๊มหอยโข่ง สำหรับงานบ้าน งานเกษตร และงานระบบ ดูรายละเอียดรุ่นและขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "sanwa": {
+    "seo_title": "สายฉีดชำระและก๊อกน้ำ SANWA พร้อมแคตตาล็อก",
+    "seo_description": "สายฉีดชำระ ก๊อกน้ำ และอุปกรณ์ประปายี่ห้อ SANWA ดู General Catalog รุ่นต่าง ๆ แล้วขอใบเสนอราคาได้ที่ Home Tool Center สั่งจำนวนมากหรืองานโครงการได้"
+  },
+  "water-tank": {
+    "seo_title": "ถังเก็บน้ำ แท๊งค์น้ำ JUMBO และตราเพชร",
+    "seo_description": "ถังเก็บน้ำ (แท๊งค์น้ำ) ยี่ห้อ JUMBO รุ่น ELIXIR, GRAND และถังเก็บน้ำตราเพชร ดูโบรชัวร์ขนาดและรุ่นต่าง ๆ แล้วขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "jumbo": {
+    "seo_title": "ถังเก็บน้ำ JUMBO (จัมโบ้) ELIXIR และ GRAND",
+    "seo_description": "ถังเก็บน้ำตราจัมโบ้ (JUMBO) รุ่น ELIXIR และ GRAND ดูโบรชัวร์ขนาดความจุและรุ่นต่าง ๆ แล้วขอใบเสนอราคาได้ที่ Home Tool Center จัดส่งทั่วไทย"
+  },
+  "diamond-brand": {
+    "seo_title": "ถังเก็บน้ำตราเพชร พร้อมแคตตาล็อก",
+    "seo_description": "ถังเก็บน้ำตราเพชร ดูแคตตาล็อกขนาดความจุและรุ่นต่าง ๆ สำหรับบ้านและอาคาร แล้วขอใบเสนอราคาได้ที่ Home Tool Center จัดส่งทั่วไทย"
+  },
+  "manhole-roof-drain-fordren-and-other-accessories": {
+    "seo_title": "ฝาแมนโฮล รูฟเดรน ฟอร์เดรน และที่แขวนท่อ",
+    "seo_description": "ฝาแมนโฮลเหล็กหล่อ (Ductile / Grey Cast Iron) ท่อและอุปกรณ์เหล็กหล่อ และที่แขวนท่อ (Pipe Hanger) ยี่ห้อ KNACK ดูแคตตาล็อกและขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "knack": {
+    "seo_title": "ฝาแมนโฮล KNACK เหล็กหล่อ และที่แขวนท่อ",
+    "seo_description": "ฝาแมนโฮล KNACK ทั้งแบบ Ductile Cast Iron และ Grey Cast Iron ท่อและอุปกรณ์เหล็กหล่อ ที่แขวนท่อ พร้อมแคตตาล็อก ขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "construction-materials-and-equipment": {
+    "seo_title": "วัสดุก่อสร้าง สี TOA ยิปซัม และเคมีภัณฑ์ก่อสร้าง",
+    "seo_description": "รวมวัสดุและอุปกรณ์ก่อสร้าง สี TOA ทุกประเภท สีทาบ้าน สีทาเหล็ก สีงานไม้ สีอีพ็อกซี่ เคมีภัณฑ์กันซึม และแผ่นยิปซัม TOA ขอใบเสนอราคาได้ จัดส่งทั่วไทย"
+  },
+  "toa-color": {
+    "seo_title": "สี TOA ตัวแทนจำหน่าย สีทาบ้าน สีทาเหล็ก สีงานไม้",
+    "seo_description": "ตัวแทนจำหน่ายสี TOA ครบทุกกลุ่ม สีทาบ้านภายนอก-ภายใน สีทาเหล็กกันสนิม สีงานไม้ เคมีภัณฑ์กันซึม สีอีพ็อกซี่ และยิปซัม TOA ขอใบเสนอราคาได้ จัดส่งทั่วไทย"
+  },
+  "decorative-coatings": {
+    "seo_title": "สีทาบ้าน TOA ภายนอก-ภายใน ซุปเปอร์ชิลด์ 7in1",
+    "seo_description": "สีทาบ้าน TOA ภายนอกและภายใน ซุปเปอร์ชิลด์ ดูราคลีน 7 in 1 ออร์แกนิค แคร์ พร้อมสีรองพื้นปูนใหม่-ปูนเก่า เลือกให้ตรงงาน ขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "construction-chemicals": {
+    "seo_title": "เคมีภัณฑ์ก่อสร้าง TOA กันซึม รูฟซีล ซิลิโคน",
+    "seo_description": "เคมีภัณฑ์ก่อสร้าง TOA วัสดุกันซึมดาดฟ้า รูฟซีล พียู วอเตอร์พรูฟ ซีเมนต์กันซึม น้ำยากันซึม ซิลิโคน และไฟเบอร์เมช ขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "special-paint": {
+    "seo_title": "สีตกแต่งพิเศษ TOA ลอฟท์ สีทองคำ สีสร้างลาย",
+    "seo_description": "สีตกแต่งพิเศษ TOA ทีโอเอ ลอฟท์ สีทองคำ ทีโอเอ โกลด์ อีลาสติกชิลด์ เดคคอร์ สโตน วอลล์เท็กซ์ พร้อมลูกกลิ้งและเกรียงสร้างลาย ขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "metal-coatings": {
+    "seo_title": "สีทาเหล็ก สีรองพื้นกันสนิม TOA กลิปตั้น รัสท์เทค",
+    "seo_description": "สีทาเหล็กและสีรองพื้นกันสนิม TOA กลิปตั้น รัสท์เทค รัสท์ ชิลด์ 2IN1 พร้อมแบรนด์โฟร์ซีซั่นส์ เป็ดหงส์ โกเบ ปลาฉลาม และทินเนอร์ ขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "wood-coatings": {
+    "seo_title": "สีงานไม้ TOA สีย้อมไม้ วู้ดสเตน โพลียูรีเทน",
+    "seo_description": "สีงานไม้ TOA สีย้อมไม้วู้ดสเตน โพลียูรีเทน ภายใน-ภายนอก แล็กเกอร์ และสีรองพื้นไม้กันเชื้อรา เลือกให้ตรงงานไม้ของคุณ ขอใบเสนอราคาได้ที่ Home Tool Center"
+  },
+  "heavy-duty-coatings": {
+    "seo_title": "สีอีพ็อกซี่ สีทาพื้น สีทาถนน TOA งานอุตสาหกรรม",
+    "seo_description": "สีงานหนัก TOA สีอีพ็อกซี่ทาพื้น ฟลอร์การ์ด สีทาถนน สีกันไฟ สีกันความร้อน สีทนความร้อน สีทาถังน้ำดื่ม สำหรับโรงงานและงานโครงการ ขอใบเสนอราคาได้"
+  },
+  "gypsum": {
+    "seo_title": "แผ่นยิปซัม TOA ทุกชนิด และโครงคร่าวฝ้า-ผนังเบา",
+    "seo_description": "แผ่นยิปซัม TOA แผ่นมาตรฐาน ทนชื้น ทนไฟ กันร้อน แผ่นชายคา ทีบาร์ พร้อมโครงคร่าวฝ้าเพดาน ผนังเบา และปูนฉาบยิปซัม ขอใบเสนอราคาได้ที่ Home Tool Center"
+  }
+}
