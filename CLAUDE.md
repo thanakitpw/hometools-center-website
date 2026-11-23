@@ -12,7 +12,7 @@
 > 2. Append to the "Session log" at the bottom of this file.
 > 3. Bump "Last updated" on both files.
 
-**Last updated:** 2026-11-23 — SEO audit + fixes, wp-content redirects deployed (session 17)
+**Last updated:** 2026-11-23 — category page content (intro + guide + FAQ) live (session 18)
 
 ---
 
@@ -972,4 +972,26 @@ Blocked items (waiting on user) are listed in `TASKS.md` under "Blocked / waitin
   cookie client, so `revalidate` is ignored — every view and crawl hits Supabase); no product/category
   → blog links; cannibalising blog clusters (pipe leaks ×4, water meter ×2, clogs ×2, plumbing
   system ×3, sanitary ×2); category pages have no intro copy; Product schema has no price
+
+### 2026-11-23 (session 18 — category page content)
+- All 42 category pages now carry copy: 21 main categories get an intro + guide + FAQ
+  (`seo/categories/<slug>.html`), 21 brand sub-categories a one-paragraph intro linking to their
+  parent (`seo/categories/_intros.json`). `scripts/seo/apply-category-content.js` writes them into
+  **`categories.description`** after resolving every internal link against the DB; originals in
+  `seo/category-content.previous.json`
+- Format: everything before `<!--more-->` renders under the H1 (`.category-intro`), everything after
+  it renders below the product grid in `.article-body`, **page 1 only**; FAQPage JSON-LD comes from
+  the `.faq-item` blocks (`lib/category-content.ts`, `lib/seo/faq.ts`). Plain-text descriptions typed
+  in /admin still render as before
+- `description` was reused because `SUPABASE_ACCESS_TOKEN` in `.env.local` is **expired** (Management
+  API 401), so no DDL (new column) was possible. Get a fresh token before any schema change
+- ⚠️ Order matters: the rendering code had to be deployed **before** the HTML was written to the DB —
+  the old page printed `description` as text and would have shown raw tags
+- Fixed in passing: `?page=` past the last page 500'd on every category (PostgREST PGRST103 → throw);
+  now 404. `?page=abc` no longer reaches the query as NaN. Category content column got `min-w-0`
+  — a table inside a grid item otherwise widened the page to 535px on a 390px phone
+- Deployed `771382ae` (render code) then `f5360457` (fixes). Verified live: 42/42 categories 200 with
+  intro and no raw tags; 21/21 guides have one H1 + FAQPage; GTM present; PDF redirects intact
+- Noticed, not changed: the `ท่อ-pvc-และอุปกรณ์-pvc-สีฟ้า` product body (a top organic landing page)
+  still quotes the old phone `02-870-3351-3`
 

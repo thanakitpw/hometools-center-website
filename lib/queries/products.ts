@@ -67,6 +67,10 @@ export async function listProductsByCategory(
     .order('sort_order', { ascending: true })
     .order('name_th', { ascending: true })
     .range(from, to);
+  // PostgREST answers a range past the last row with PGRST103 (HTTP 416). That is a
+  // `?page=` beyond the end, not a failure — return an empty page so the route can 404
+  // instead of throwing a 500.
+  if (error?.code === 'PGRST103') return { items: [], total: 0 };
   if (error) throw error;
   return { items: data || [], total: count || 0 };
 }

@@ -14,7 +14,9 @@ import { CategorySidebar } from '@/components/site/category-sidebar';
 import { Pagination } from '@/components/site/pagination';
 import Link from 'next/link';
 import { JsonLd } from '@/components/site/json-ld';
-import { breadcrumbSchema, itemListSchema } from '@/lib/seo/schema';
+import { breadcrumbSchema, faqSchema, itemListSchema } from '@/lib/seo/schema';
+import { extractFaq } from '@/lib/seo/faq';
+import { splitCategoryContent } from '@/lib/category-content';
 
 export const revalidate = 3600;
 
@@ -63,14 +65,23 @@ export default async function CategoryPage({
     notFound();
   }
 
-  const page = Math.max(1, parseInt(sp.page || '1', 10));
+  // `|| 1` because Math.max(1, NaN) is NaN, which would reach the query as range(NaN).
+  const page = Math.max(1, parseInt(sp.page || '1', 10) || 1);
   const perPage = 12;
   const [{ items, total }, children, ancestors] = await Promise.all([
     listProductsByCategory(cat.id, { page, perPage }),
     getChildCategories(cat.id),
     getCategoryAncestors(cat),
   ]);
+  // A page number past the end (stale WordPress pagination, hand-typed URLs) is a 404,
+  // not an empty 200 that Google would index as a thin duplicate.
+  if (page > 1 && items.length === 0) notFound();
   const totalPages = Math.ceil(total / perPage);
+  // The long guide + FAQ belongs to the category's canonical (page 1) only; repeating it on
+  // ?page=2… would just duplicate the copy across URLs.
+  const content = splitCategoryContent(cat.description);
+  const bodyHtml = page === 1 ? content.bodyHtml : null;
+  const faq = extractFaq(bodyHtml);
 
   return (
     <div className="mx-auto max-w-[1560px] px-6 py-6">
@@ -85,6 +96,7 @@ export default async function CategoryPage({
           ...(items.length > 0
             ? [itemListSchema(items.map((p) => ({ name: p.name_th, path: `/product/${p.slug}` })))]
             : []),
+          ...(faq.length > 0 ? [faqSchema(faq)] : []),
         ]}
       />
       <Breadcrumb
@@ -98,9 +110,17 @@ export default async function CategoryPage({
 
       <div className="mt-6 grid gap-8 md:grid-cols-[240px_1fr] lg:gap-10">
         <CategorySidebar activePath={cat.path} />
-        <div>
+        {/* min-w-0: a grid item defaults to min-width:auto, so the guide's tables would
+            otherwise widen this column past the phone viewport instead of scrolling. */}
+        <div className="min-w-0">
           <h1 className="!text-2xl !text-[var(--color-fg)] md:!text-3xl">หมวดหมู่: {cat.name_th}</h1>
-          {cat.description && <p className="mt-2 text-[var(--color-body)]">{cat.description}</p>}
+          {content.introText && <p className="mt-2 text-[var(--color-body)]">{content.introText}</p>}
+          {content.introHtml && (
+            <div
+              className="category-intro mt-3 max-w-[860px] text-[15px] leading-[1.8] text-[var(--color-body)]"
+              dangerouslySetInnerHTML={{ __html: content.introHtml }}
+            />
+          )}
 
           {children.length > 0 && (
             <div className="mt-6 flex flex-wrap gap-2">
@@ -129,6 +149,14 @@ export default async function CategoryPage({
           )}
 
           <Pagination page={page} totalPages={totalPages} baseUrl={`/product-category/${cat.path}`} />
+
+          {bodyHtml && (
+            <section
+              aria-label={`ข้อมูลเพิ่มเติมเกี่ยวกับ${cat.name_th}`}
+              className="article-body mt-14 max-w-[860px] border-t border-[var(--color-border)] pt-10"
+              dangerouslySetInnerHTML={{ __html: bodyHtml }}
+            />
+          )}
         </div>
       </div>
     </div>
